@@ -3,7 +3,7 @@
   "scripts": {
     "lint": "eslint --ext ts",
     "lint:fix": "eslint --ext ts --fix",
-    "prebuild": "npm run lint && npm run check-types",
+    "prebuild": "npm run lint",
     "build": "tsc",
     "serve": "npm run build && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
