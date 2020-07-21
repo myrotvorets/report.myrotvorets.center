@@ -1,0 +1,13 @@
+@import '../../scss/vars';
+@import '../../scss/mixins';
+
+.site-footer {
+	@include fb-color("primary", true);
+	text-align: center;
+	padding: .9em;
+
+	p {
+		margin: 0;
+		font-size: 1rem;
+	}
+}

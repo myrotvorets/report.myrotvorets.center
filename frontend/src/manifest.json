@@ -1,0 +1,26 @@
+{
+	"short_name": "Report a Criminal",
+	"name": "Report to Myrotvorets",
+	"lang": "uk",
+	"icons": [
+		{
+			"src": "@ref(./assets/logo192.png)",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "@ref(./assets/logo256.png)",
+			"type": "image/png",
+			"sizes": "256x256"
+		},
+		{
+			"src": "@ref(./assets/logo512.png)",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"start_url": "index.html?utm_source=pwa",
+	"display": "standalone",
+	"theme_color": "#0056B3",
+	"background_color": "#0056B3"
+}

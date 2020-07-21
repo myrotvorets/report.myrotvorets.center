@@ -1,0 +1,127 @@
+@import '../../scss/vars';
+
+.Criminal {
+    border: 1px solid $color-primary;
+    border-radius: 5px;
+    padding: $block-inner-padding;
+    margin: 0 0 $block-margin;
+
+    dt {
+        font-weight: bold;
+
+        &::after {
+            content: ': ';
+            font-weight: bold;
+        }
+    }
+
+    @media (min-width: 450px) {
+        dt {
+            display: inline;
+        }
+    }
+
+    dt.thumb {
+        width: 156px;
+        height: 156px;
+        margin: 0 $block-margin 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ccc;
+
+        img {
+            max-width: 150px;
+            max-height: 150px;
+        }
+
+        &::after {
+            content: none;
+        }
+    }
+
+    @media (min-width: 600px) {
+        dt.thumb {
+            float: left;
+        }
+    }
+
+    dd {
+        display: inline;
+        margin: 0;
+        margin-inline-start: 0;
+
+        &:not(:last-child)::after {
+            content: '';
+            display: block;
+            height: 0.5em;
+        }
+    }
+}
+
+.blood {
+    color: red;
+    position: relative;
+    font-weight: bolder;
+    letter-spacing: -2px;
+    text-shadow: 2px 2px 5px lightcoral;
+}
+
+.drop {
+    width: 5px;
+    height: 5px;
+    border-radius: 0 100% 100% 100%;
+    background-color: currentColor;
+    position: absolute;
+    top: 72%;
+    animation: drop 3s infinite both;
+
+    &:nth-child(1) {
+        left: 5%;
+    }
+
+    &:nth-child(2) {
+        left: 17%;
+        animation-delay: -0.4s;
+    }
+
+    &:nth-child(3) {
+        left: 35%;
+        animation-delay: -1.5s;
+    }
+
+    &:nth-child(4) {
+        left: 52%;
+        animation-delay: -0.8s;
+    }
+
+    &:nth-child(5) {
+        left: 71%;
+        animation-delay: -1.3s;
+    }
+
+    &:nth-child(6) {
+        left: 83%;
+        animation-delay: -1s;
+    }
+
+    &:nth-child(7) {
+        left: 96%;
+        animation-delay: -0.3s;
+    }
+}
+
+@keyframes drop {
+    0% {
+        transform: translateY(0) scaleX(0.85) rotate(45deg);
+        animation-timing-function: ease-out;
+    }
+    60% {
+        transform: translateY(100%) scaleX(0.85) rotate(45deg);
+        animation-timing-function: ease-in;
+    }
+    80%,
+    100% {
+        transform: translateY(100vh) scaleX(0.85) rotate(45deg);
+    }
+}

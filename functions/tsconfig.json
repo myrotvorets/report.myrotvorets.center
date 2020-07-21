@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "rootDir": "src",
+    "outDir": "lib",
+    "sourceMap": false,
+    "strict": true,
+    "target": "es2017"
+  },
+  "compileOnSave": true,
+}

@@ -1,0 +1,5 @@
+#error-log {
+	padding: 1rem;
+	margin: 1rem;
+	@include fb-color("error")
+}

@@ -1,0 +1,58 @@
+#report {
+	.alert {
+		margin: 0 0 2rem;
+		font-weight: bold;
+	}
+
+	.alert.info {
+		color: #FFF;
+		background: green;
+	}
+
+	label {
+		cursor: pointer;
+	}
+
+	label[for] {
+		font-weight: bold;
+		margin-top: 1rem;
+	}
+
+	label.required::after {
+		content: '*';
+		color: red;
+		font-weight: bold;
+		padding-left: .5rem;
+	}
+
+	small {
+		font-size: 1.2rem;
+		padding: .5rem 0 .7rem;
+		font-style: italic;
+	}
+
+	span.error {
+		color: $color-error;
+		font-weight: bold;
+		font-style: italic;
+		padding: .5rem 0;
+	}
+
+	input.error {
+		box-shadow: 0 0 1.5px 1px red;
+	}
+
+	#url {
+		margin-top: .5rem;
+		margin-left: 2rem;
+
+		+ span.error {
+			margin-left: 2rem;
+		}
+	}
+
+	button {
+		align-self: center;
+		margin-top: 2rem;
+	}
+}

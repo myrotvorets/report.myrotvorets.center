@@ -1,0 +1,12 @@
+.Modal .Loader {
+	display: block;
+	animation: pulse 5s linear infinite;
+	max-width: 100%;
+	max-height: 83vh;
+}
+
+@keyframes pulse {
+	0%   { transform: rotate(0deg)   scale(0.8); }
+	50%  { transform: rotate(180deg) scale(1.2); }
+	100% { transform: rotate(359deg) scale(0.8); }
+}

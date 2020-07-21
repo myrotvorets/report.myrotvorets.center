@@ -1,0 +1,93 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "project": ["./tsconfig.json"]
+    },
+    "plugins": ["@typescript-eslint", "jsx-a11y"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "standard-preact",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "plugin:jsx-a11y/recommended",
+        "plugin:prettier/recommended"
+    ],
+    "rules": {
+        "react/jsx-indent": [2, 4],
+        "jsx-quotes": ["error", "prefer-double"],
+        "react/jsx-indent-props": [2, 4],
+        "react/sort-comp": [
+            "error",
+            {
+                "order": [
+                    "static-methods",
+                    "instance-variables",
+                    "lifecycle",
+                    "/^_?on.+$/",
+                    "getters",
+                    "setters",
+                    "/^(get|set)(?!(InitialState$|DefaultProps$|ChildContext$)).+$/",
+                    "instance-methods",
+                    "everything-else",
+                    "rendering"
+                ],
+                "groups": {
+                    "lifecycle": [
+                        "displayName",
+                        "propTypes",
+                        "contextTypes",
+                        "childContextTypes",
+                        "mixins",
+                        "statics",
+                        "defaultProps",
+                        "constructor",
+                        "getDefaultProps",
+                        "getInitialState",
+                        "state",
+                        "getChildContext",
+                        "getDerivedStateFromProps",
+                        "componentWillMount",
+                        "UNSAFE_componentWillMount",
+                        "componentDidMount",
+                        "componentWillReceiveProps",
+                        "UNSAFE_componentWillReceiveProps",
+                        "shouldComponentUpdate",
+                        "componentWillUpdate",
+                        "UNSAFE_componentWillUpdate",
+                        "getSnapshotBeforeUpdate",
+                        "componentDidUpdate",
+                        "componentDidCatch",
+                        "componentWillUnmount",
+                        "componentDidCatch"
+                    ],
+                    "rendering": [
+                        "/^_?render.+$/",
+                        "render"
+                    ]
+                }
+            }
+        ],
+        "import/order": [
+            "error",
+            {
+                "groups": [["builtin", "external", "internal"]]
+            }
+        ],
+        "sort-imports": [
+            "error",
+            {
+                "ignoreCase": false,
+                "ignoreDeclarationSort": true,
+                "ignoreMemberSort": false
+            }
+        ]
+    },
+    "env": {
+        "browser": true,
+        "jest": true
+    }
+}

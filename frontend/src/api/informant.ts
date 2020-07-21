@@ -1,0 +1,99 @@
+import type { Criminal } from './myrotvorets';
+
+export interface ReportData {
+    name: string;
+    dob: string;
+    country: string;
+    address: string;
+    phone: string;
+    description: string;
+    note: string;
+}
+
+export interface GFData {
+    serverID: string;
+    accessCode: string;
+    removalCode: string;
+}
+
+const baseURL = 'https://us-central1-report-to-myrotvorets.cloudfunctions.net/api/informant/v1';
+
+export interface SuccessfulResponse {
+    success: true;
+}
+
+export interface ErrorResponse {
+    success: false;
+    status: number;
+    code: string;
+    message: string;
+}
+
+export interface ErrorResponseAuthFailed extends ErrorResponse {
+    status: 401;
+    code: 'AUTH_FAILED';
+    // Error code from Firebase
+    errcode: string;
+}
+
+export interface ErrorResponseValidationFailed extends ErrorResponse {
+    status: 422;
+    code: 'VALIDATION_FAILED';
+    fields: Record<string, string>;
+}
+
+export type InformantApiResponse =
+    | SuccessfulResponse
+    | ErrorResponse
+    | ErrorResponseAuthFailed
+    | ErrorResponseValidationFailed;
+
+const communicationError: ErrorResponse = {
+    success: false,
+    status: 500,
+    code: 'COMM_ERROR',
+    message: 'Помилка зв’язку з сервером',
+};
+
+function sendResponse(url: string, token: string, body: Record<string, string>): Promise<InformantApiResponse> {
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+    })
+        .then((response) => response.json())
+        .catch((e) => {
+            console.error(e);
+            return Promise.resolve(communicationError);
+        });
+}
+
+export function addSuspect(token: string, report: ReportData, files?: GFData): Promise<InformantApiResponse> {
+    const request = {
+        ...report,
+        gfsrv: files ? files.serverID : '',
+        gfac: files ? files.accessCode : '',
+        gfrc: files ? files.removalCode : '',
+    };
+
+    return sendResponse(`${baseURL}/report`, token, request);
+}
+
+export function updateCriminal(
+    token: string,
+    criminal: Criminal,
+    report: ReportData,
+    files?: GFData,
+): Promise<InformantApiResponse> {
+    const request = {
+        ...report,
+        gfsrv: files ? files.serverID : '',
+        gfac: files ? files.accessCode : '',
+        gfrc: files ? files.removalCode : '',
+    };
+
+    return sendResponse(`${baseURL}/report/${criminal.id}`, token, request);
+}

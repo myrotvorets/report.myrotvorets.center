@@ -1,0 +1,22 @@
+.alert {
+	@extend %block;
+	@include fb-color("error");
+	margin: $block-margin;
+	flex: 0 0 auto;
+}
+
+#error.alert {
+	font-weight: bold;
+	font-size: 2em;
+	line-height: inherit;
+
+	p {
+		font-size: .5em;
+		margin-top: 2rem;
+		text-align: center;
+
+		a {
+			color: #FFF;
+		}
+	}
+}

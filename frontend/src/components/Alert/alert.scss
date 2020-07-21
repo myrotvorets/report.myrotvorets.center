@@ -1,0 +1,38 @@
+@import "../../scss/vars";
+@import "../../scss/mixins";
+
+.alert {
+    @extend %block;
+    @include fb-color("error");
+    border-color: #B50000;
+    margin: $block-margin 0;
+    width: 100%;
+
+    a {
+        color: #FFF;
+    }
+}
+
+.alert.info {
+    color: #0B4F5B;
+    background-color: #D1ECF1;
+    border-color: #BEE5EB;
+
+    a {
+        color: #004794;
+    }
+}
+
+.alert.success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+
+    a {
+        color: #002752;
+    }
+}
+
+.block__header + .alert {
+    margin-top: 0;
+}

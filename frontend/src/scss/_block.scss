@@ -1,0 +1,18 @@
+.block {
+	@extend %block;
+	box-shadow: .5rem .5rem .5rem #666;
+}
+
+.block--centered {
+	width: 80%;
+	max-width: 1200px;
+	margin: auto;
+}
+
+.block__header {
+	@extend %block-header;
+}
+
+.block__footer {
+	@extend %block-footer;
+}
