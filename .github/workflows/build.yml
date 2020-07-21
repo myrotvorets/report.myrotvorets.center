@@ -21,6 +21,9 @@ jobs:
       with:
         node-version: ${{ matrix.node_version }}
 
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> frontend/.npmrc
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> functions/.npmrc
+
     - name: Install dependencies (frontend)
       run: cd frontend && npm ci
 
