@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-frontend:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -22,16 +22,31 @@ jobs:
         node-version: ${{ matrix.node_version }}
 
     - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> frontend/.npmrc
-    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> functions/.npmrc
 
-    - name: Install dependencies (frontend)
+    - name: Install dependencies
       run: cd frontend && npm ci
 
-    - name: Install dependencies (functions)
-      run: cd functions && npm ci
-
-    - name: Build (frontend)
+    - name: Build
       run: cd frontend && npm run build
 
-    - name: Build (functions)
+  build-backend:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: ['10', '12', '14']
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.1.0
+      with:
+        node-version: ${{ matrix.node_version }}
+
+    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> functions/.npmrc
+
+    - name: Install dependencies
+      run: cd functions && npm ci
+
+    - name: Build
       run: cd functions && npm run build
