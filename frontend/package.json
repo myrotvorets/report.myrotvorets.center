@@ -3,10 +3,12 @@
   "version": "3.0.0",
   "private": true,
   "scripts": {
+    "prebuild": "npm run lint && npm run check-types",
     "build": "webpack --mode production",
     "watch": "webpack-dev-server --watch",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "check-types": "tsc --noemit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
