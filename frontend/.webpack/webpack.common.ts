@@ -153,7 +153,10 @@ const config: webpack.Configuration = {
             module: ['/**.mjs'],
         }),
         new ForkTsCheckerWebpackPlugin({
-            async: !isProd,
+            eslint: {
+                enabled: true,
+                files: ['src/**/*.{ts,tsx}'],
+            },
         }),
         new CopyPlugin({
             patterns: [{ from: 'src/robots.txt', to: './robots.txt ' }],
