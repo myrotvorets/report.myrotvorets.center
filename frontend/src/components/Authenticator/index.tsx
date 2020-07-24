@@ -33,7 +33,14 @@ export default function Authenticator(): h.JSX.Element | null {
                 }
             }
 
-            const email = window.localStorage.getItem('email') || '';
+            // #10 - Failed to read the 'localStorage' property from 'Window': Access is denied for this document.
+            let email: string;
+            try {
+                email = window.localStorage.getItem('email') || '';
+            } catch (e) {
+                email = '';
+            }
+
             return <CodeVerifier link={link} email={email} />;
         }
     }
