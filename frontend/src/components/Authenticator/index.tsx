@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import { route } from 'preact-router';
 import CodeVerifier from '../CodeVerifier';
+import { lsGet } from '../../utils/localstorage';
 
 function isSignInWithEmailLink(link: string): boolean {
     try {
@@ -38,14 +39,7 @@ export default function Authenticator(): h.JSX.Element | null {
                 }
             }
 
-            // #10 - Failed to read the 'localStorage' property from 'Window': Access is denied for this document.
-            let email: string;
-            try {
-                email = window.localStorage.getItem('email') || '';
-            } catch (e) {
-                email = '';
-            }
-
+            const email = lsGet('email');
             return <CodeVerifier link={link} email={email} />;
         }
     }
