@@ -23,13 +23,18 @@ export default function Authenticator(): h.JSX.Element | null {
         if (isSignInWithEmailLink(link)) {
             const { searchParams } = new URL(link);
             if (searchParams.has('continueUrl')) {
-                const url = new URL(searchParams.get('continueUrl') as string);
-                if (
-                    url.hostname !== window.location.hostname &&
-                    /^(report\.myrotvorets\.(center|dev)|localhost)$/i.test(url.hostname)
-                ) {
-                    window.location.host = url.host;
-                    return null;
+                // #12: Failed to construct 'URL': Invalid URL if someone tampers with the URL
+                try {
+                    const url = new URL(searchParams.get('continueUrl') as string);
+                    if (
+                        url.hostname !== window.location.hostname &&
+                        /^(report\.myrotvorets\.(center|dev)|localhost)$/i.test(url.hostname)
+                    ) {
+                        window.location.host = url.host;
+                        return null;
+                    }
+                } catch (e) {
+                    // Do nothing
                 }
             }
 
