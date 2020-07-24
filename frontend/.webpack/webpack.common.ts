@@ -5,6 +5,16 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { HwpAttributesPlugin } from 'hwp-attributes-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
+import { execSync } from 'child_process';
+
+let version: string;
+try {
+    version = execSync('git describe --always --long', { cwd: path.resolve(path.join(__dirname, '..')) })
+        .toString()
+        .trim();
+} catch (e) {
+    version = 'development';
+}
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -138,7 +148,7 @@ const config: webpack.Configuration = {
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             'process.env.BUILD_SSR': JSON.stringify(false),
             'process.env.BUGSNAG_API_KEY': JSON.stringify('ef7411ba5af267034db13d800de8a235'),
-            'process.env.APP_VERSION': JSON.stringify('3.0.0'),
+            'process.env.APP_VERSION': JSON.stringify(version),
         }),
         new webpack.ProvidePlugin({
             h: ['preact', 'h'],
@@ -148,6 +158,9 @@ const config: webpack.Configuration = {
             minify: process.env.NODE_ENV === 'production' ? prodMinifyOptions : false,
             template: '!!ejs-webpack-loader!./src/index.ejs',
             xhtml: true,
+            templateParameters: {
+                version,
+            },
         }),
         new HwpAttributesPlugin({
             module: ['/**.mjs'],

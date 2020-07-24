@@ -2,12 +2,22 @@
 @import '../../scss/mixins';
 
 .site-footer {
-	@include fb-color("primary", true);
-	text-align: center;
-	padding: .9em;
+    @include fb-color('primary', true);
+    text-align: center;
+    padding: 0.9em;
 
-	p {
-		margin: 0;
-		font-size: 1rem;
-	}
+    p {
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    #version {
+        cursor: pointer;
+        color: #fff;
+    }
+
+    img {
+        width: 17px;
+        vertical-align: middle;
+    }
 }
