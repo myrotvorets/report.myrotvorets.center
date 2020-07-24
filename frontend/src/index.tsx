@@ -1,6 +1,5 @@
 import { h, render } from 'preact';
 import { Provider } from 'unistore/preact';
-import Bugsnag from '@bugsnag/js';
 import store from './redux/store';
 import App from './components/App';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -48,7 +47,6 @@ if (!process.env.BUILD_SSR) {
             })
             .catch((e) => {
                 console.error(e);
-                Bugsnag.notify(e);
             });
     }
 }
