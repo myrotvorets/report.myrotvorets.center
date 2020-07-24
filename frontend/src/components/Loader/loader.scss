@@ -1,8 +1,10 @@
-.Modal .Loader {
+.Modal .inner img.Loader {
 	display: block;
 	animation: pulse 5s linear infinite;
 	max-width: 100%;
 	max-height: 83vh;
+	width: auto;
+	height: auto;
 }
 
 @keyframes pulse {
