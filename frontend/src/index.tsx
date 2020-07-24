@@ -49,4 +49,37 @@ if (!process.env.BUILD_SSR) {
                 console.error(e);
             });
     }
+
+    (document.getElementById('version') as HTMLElement).addEventListener('click', () => {
+        if (self.caches) {
+            self.caches
+                .keys()
+                .then((keyList) => Promise.all(keyList.map((key) => self.caches.delete(key))))
+                .then(() => {
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker
+                            .getRegistration()
+                            .then((reg) => {
+                                if (reg) {
+                                    reg.unregister().then(() => self.location.reload(true));
+                                } else {
+                                    self.location.reload(true);
+                                }
+                            })
+                            .catch((e) => {
+                                console.error(e);
+                                self.location.reload(true);
+                            });
+                    } else {
+                        self.location.reload(true);
+                    }
+                })
+                .catch((e) => {
+                    console.error(e);
+                    self.location.reload(true);
+                });
+        } else {
+            self.location.reload(true);
+        }
+    });
 }
