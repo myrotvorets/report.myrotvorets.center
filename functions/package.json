@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^5.1.2",
-    "@myrotvorets/express-async-middleware-wrapper": "^1.0.4",
+    "@myrotvorets/express-async-middleware-wrapper": "^1.0.5",
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.7",
     "@types/node-fetch": "^2.5.7",
@@ -24,7 +24,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.6.0",
-    "fetch-retry-ts": "^1.1.8",
+    "fetch-retry-ts": "^1.1.9",
     "firebase-admin": "^9.0.0",
     "firebase-functions": "^3.8.0",
     "node-fetch": "^2.6.0",
