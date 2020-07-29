@@ -24,7 +24,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.6.0",
-    "fetch-retry-ts": "^1.1.8",
+    "fetch-retry-ts": "^1.1.9",
     "firebase-admin": "^9.0.0",
     "firebase-functions": "^3.8.0",
     "node-fetch": "^2.6.0",
