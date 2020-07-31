@@ -71,7 +71,7 @@ textarea {
 
 button, input[type="button"], input[type="reset"], input[type="submit"] {
 	@include fb-color("primary");
-	border: 1px solid $color-primary-light;;
+	border: 1px solid $color-primary-light;
 	border-radius: .5rem;
 	font-size: 1em;
 	line-height: 1.2;
