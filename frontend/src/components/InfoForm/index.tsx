@@ -34,7 +34,7 @@ interface State {
     error: string;
     criminal: Criminal | false;
     state: 'idle' | 'verifying' | 'success' | 'busy';
-    form: ReportData;
+    data: ReportData;
     status: string;
 }
 
@@ -49,7 +49,7 @@ class InfoForm extends Component<Props, State> {
             criminal,
             state: props.mode === 'update' && criminal === false ? 'verifying' : 'idle',
             status: '',
-            form: {
+            data: {
                 name: lsGet('f_name'),
                 dob: lsGet('f_dob'),
                 country: lsGet('f_country'),
@@ -85,8 +85,8 @@ class InfoForm extends Component<Props, State> {
             (prevState: Readonly<State>): Partial<State> => {
                 lsSet(`f_${name}`, value);
                 return {
-                    form: {
-                        ...prevState.form,
+                    data: {
+                        ...prevState.data,
                         [name]: value,
                     },
                 };
@@ -122,9 +122,9 @@ class InfoForm extends Component<Props, State> {
         }
     };
 
-    private _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
-        e.preventDefault();
-        const form = e.currentTarget;
+    private _onFormSubmit = (event: h.JSX.TargetedEvent<HTMLFormElement>): void => {
+        event.preventDefault();
+        const form = event.currentTarget;
         if (form.checkValidity()) {
             let token: string;
             const req: WorkerRequestGetToken = { type: W_GETTOKEN, payload: undefined };
@@ -141,11 +141,11 @@ class InfoForm extends Component<Props, State> {
                 })
                 .then(([serverID, accessCode, removalCode]) => {
                     this.setState({ status: 'Відправляємо дані на сервер…' });
-                    const { criminal, form } = this.state;
+                    const { criminal, data } = this.state;
                     const files: GFData = { serverID, accessCode, removalCode };
                     return criminal === false
-                        ? addSuspect(token, form, files)
-                        : updateCriminal(token, criminal, form, files);
+                        ? addSuspect(token, data, files)
+                        : updateCriminal(token, criminal, data, files);
                 })
                 .then((j) => {
                     if (j.success) {
@@ -201,7 +201,7 @@ class InfoForm extends Component<Props, State> {
     }
 
     private _resetLocalStorage(): void {
-        Object.keys(this.state.form).forEach((key) => lsSet(`f_${key}`, ''));
+        Object.keys(this.state.data).forEach((key) => lsSet(`f_${key}`, ''));
     }
 
     private _parseError(e: ErrorResponse | Error): string {
@@ -226,7 +226,7 @@ class InfoForm extends Component<Props, State> {
 
     public render(): ComponentChild {
         const { mode } = this.props;
-        const { criminal, error, form, state } = this.state;
+        const { criminal, error, data: form, state } = this.state;
 
         if (state === 'verifying') {
             return <Loader />;
