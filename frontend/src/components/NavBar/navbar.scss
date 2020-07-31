@@ -141,10 +141,6 @@ $menu-width: 20rem;
 		padding-left: 1rem;
 	}
 
-	.nav__menu {
-		height: 0;
-	}
-
 	.nav__menu.nav__menu--open {
 		height: auto;
 		overflow-y: auto;
