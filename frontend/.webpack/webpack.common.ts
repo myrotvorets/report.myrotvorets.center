@@ -72,7 +72,7 @@ const config: webpack.Configuration = {
                 use: [
                     {
                         loader: 'worker-loader',
-                        options: { name: '[name].[hash:5].mjs' },
+                        options: { filename: 'worker-[hash:5].mjs' },
                     },
                     {
                         loader: 'babel-loader',
