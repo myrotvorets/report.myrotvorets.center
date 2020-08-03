@@ -1,7 +1,6 @@
 import webpack from 'webpack';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { HwpAttributesPlugin } from 'hwp-attributes-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
@@ -164,12 +163,6 @@ const config: webpack.Configuration = {
         }),
         new HwpAttributesPlugin({
             module: ['/**.mjs'],
-        }),
-        new ForkTsCheckerWebpackPlugin({
-            eslint: {
-                enabled: true,
-                files: ['src/**/*.{ts,tsx}'],
-            },
         }),
         new CopyPlugin({
             patterns: [{ from: 'src/robots.txt', to: './robots.txt ' }],
