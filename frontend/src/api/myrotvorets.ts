@@ -26,7 +26,7 @@ interface ErrorResponse {
 const map = new Map<number, Criminal>();
 
 function apiCall(url: string): Promise<Criminal | Error> {
-    return fetch(`${url}}`)
+    return fetch(`${url}`)
         .then((r: Response): Promise<Criminal | ErrorResponse> => r.json())
         .then(
             (r: Criminal | ErrorResponse): Promise<Criminal | Error> => {
