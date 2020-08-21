@@ -54,7 +54,7 @@
     "extract-loader": "^5.1.0",
     "fibers": "^5.0.0",
     "file-loader": "^6.0.0",
-    "firebase": "^7.18.0",
+    "firebase": "^7.19.0",
     "fork-ts-checker-webpack-plugin": "^5.1.0",
     "glob": "^7.1.6",
     "html-webpack-inline-runtime-plugin": "^1.2.2",
