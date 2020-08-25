@@ -30,92 +30,103 @@ function suspenseWrapper<T>(Component: ComponentType<T>): (props: RenderableProp
     );
 }
 
-const HomeRoute = lazy(() =>
-    import(
-        /* webpackChunkName: "home" */
-        /* webpackPrefetch: true */
-        '../../components/Home'
-    ),
+const HomeRoute = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "home" */
+            /* webpackPrefetch: true */
+            '../../components/Home'
+        ),
 );
 
-const LoginRoute = lazy(() =>
-    import(
-        /* webpackChunkName: "login" */
-        /* webpackPrefetch: true */
-        '../../components/LoginForm'
-    ),
+const LoginRoute = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "login" */
+            /* webpackPrefetch: true */
+            '../../components/LoginForm'
+        ),
 );
 
 const AuthRoute = process.env.BUILD_SSR
     ? (): null => null
-    : lazy(() =>
-          import(
-              /* webpackChunkName: "login" */
-              /* webpackPrefetch: true */
-              '../../components/Authenticator'
-          ),
+    : lazy(
+          () =>
+              import(
+                  /* webpackChunkName: "login" */
+                  /* webpackPrefetch: true */
+                  '../../components/Authenticator'
+              ),
       );
 
 const LogoutRoute = process.env.BUILD_SSR
     ? (): null => null
-    : lazy(() =>
-          import(
-              /* webpackChunkName: "logout" */
-              /* webpackMode: "eager" */
-              '../../components/Logout'
-          ),
+    : lazy(
+          () =>
+              import(
+                  /* webpackChunkName: "logout" */
+                  /* webpackMode: "eager" */
+                  '../../components/Logout'
+              ),
       );
 
-const StartRoute = lazy(() =>
-    import(
-        /* webpackChunkName: "start" */
-        /* webpackPrefetch: true */
-        '../../components/StartForm'
-    ),
+const StartRoute = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "start" */
+            /* webpackPrefetch: true */
+            '../../components/StartForm'
+        ),
 );
 
-const CheckCriminalRoute = lazy(() =>
-    import(
-        /* webpackChunkName: "criminal" */
-        /* webpackPrefetch: true */
-        '../../components/CheckCriminalForm'
-    ),
+const CheckCriminalRoute = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "criminal" */
+            /* webpackPrefetch: true */
+            '../../components/CheckCriminalForm'
+        ),
 );
 
-const AddCriminalRoute = lazy(() =>
-    import(
-        /* webpackChunkName: "criminal" */
-        /* webpackPrefetch: true */
-        '../../components/InfoForm'
-    ),
+const AddCriminalRoute = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "criminal" */
+            /* webpackPrefetch: true */
+            '../../components/InfoForm'
+        ),
 );
 
-const AboutRoute = lazy(() =>
-    import(
-        /* webpackChunkName: "static" */
-        '../Static/About'
-    ),
+const AboutRoute = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "static" */
+            '../Static/About'
+        ),
 );
 
-const CrimesRoute = lazy(() =>
-    import(
-        /* webpackChunkName: "legal" */
-        '../Static/Crimes'
-    ),
+const CrimesRoute = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "legal" */
+            '../Static/Crimes'
+        ),
 );
 
-const GroundsRoute = lazy(() =>
-    import(
-        /* webpackChunkName: "legal" */
-        '../Static/Grounds'
-    ),
+const GroundsRoute = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "legal" */
+            '../Static/Grounds'
+        ),
 );
 
-const ComplaintsRoute = lazy(() =>
-    import(
-        /* webpackChunkName: "static" */
-        '../Static/Complaints'
-    ),
+const ComplaintsRoute = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "static" */
+            '../Static/Complaints'
+        ),
 );
 
 const FourOhFourRoute = lazy(() => import(/* webpackMode: "eager" */ '../../components/FourOhFour'));
