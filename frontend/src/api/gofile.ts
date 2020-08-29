@@ -35,7 +35,7 @@ export async function uploadFiles(server: string, files: FileList, expiry?: Date
             fd.set('ac', adminCode);
         }
 
-        const response = await fetch(`https://${server}.gofile.io/upload`, {
+        const response = await fetch(`https://${server}.gofile.io/uploadFile`, {
             method: 'POST',
             body: fd,
         });
