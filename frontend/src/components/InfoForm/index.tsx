@@ -1,5 +1,6 @@
 import { Component, ComponentChild, h } from 'preact';
 import { Link, route } from 'preact-router';
+import Bugsnag from '@bugsnag/js';
 import { withLoginCheck } from '../../hocs/withLoginCheck';
 import { Criminal, findCriminalById, isKnownCriminal } from '../../api/myrotvorets';
 import { createZip, getServerForUpload, uploadFiles } from '../../api/gofile';
@@ -194,7 +195,11 @@ class InfoForm extends Component<Props, State> {
                     this.setState({ status: 'Архівуємо файли…' });
                     return createZip(srvid, accessCode);
                 })
-                .then(() => [srvid, accessCode, removalCode]);
+                .then((): [string, string, string] => [srvid, accessCode, removalCode])
+                .catch((e: Error) => {
+                    Bugsnag.notify(e);
+                    throw e;
+                });
         }
 
         return Promise.resolve(['', '', '']);
