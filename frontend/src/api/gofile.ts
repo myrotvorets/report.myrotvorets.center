@@ -19,33 +19,47 @@ export function getServerForUpload(): Promise<string> {
         });
 }
 
-export function uploadFiles(server: string, files: FileList, expiry?: Date): Promise<[string, string]> {
-    const fd = new FormData();
+export async function uploadFiles(server: string, files: FileList, expiry?: Date): Promise<[string, string]> {
+    let adminCode: string | undefined;
+    let code: string | undefined;
     for (let i = 0; i < files.length; ++i) {
+        const fd = new FormData();
         const entry: File = files[i];
-        fd.append('filesUploaded', entry, entry.name);
-    }
+        fd.append('file', entry, entry.name);
 
-    if (expiry) {
-        fd.set('expire', expiry.getTime() + '');
-    }
+        if (expiry) {
+            fd.set('expire', expiry.getTime() + '');
+        }
 
-    return fetch(`https://${server}.gofile.io/upload`, {
-        method: 'POST',
-        body: fd,
-    })
-        .then(responseToJSON)
-        .then((j) => {
-            if ('status' in j && j.status === 'ok' && 'data' in j) {
-                return [j.data.code, j.data.removalCode];
-            }
+        if (adminCode) {
+            fd.set('ac', adminCode);
+        }
 
-            return Promise.reject(new Error(`Unexpected response from gofile: ${JSON.stringify(j)}`));
+        const response = await fetch(`https://${server}.gofile.io/upload`, {
+            method: 'POST',
+            body: fd,
         });
+
+        const json = await responseToJSON(response);
+        if ('status' in json && json.status === 'ok' && 'data' in json) {
+            if (!adminCode) {
+                adminCode = json.data.adminCode;
+                code = json.data.code;
+            }
+        } else {
+            throw new Error(`Unexpected response from gofile: ${JSON.stringify(json)}`);
+        }
+    }
+
+    if (code && adminCode) {
+        return [code, adminCode];
+    }
+
+    throw new Error('Unable to upload files to GoFile');
 }
 
 export function deleteFiles(server: string, id: string, code: string): Promise<boolean> {
-    const url = `https://${server}.gofile.io/deleteUpload?c=${id}&rc=${code}&removeAll=true`;
+    const url = `https://${server}.gofile.io/deleteUpload?c=${id}&ac=${code}&removeAll=true`;
     return fetch(url)
         .then(responseToJSON)
         .then((j) => {
