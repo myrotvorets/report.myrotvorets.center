@@ -28,7 +28,7 @@ export async function uploadFiles(server: string, files: FileList, expiry?: Date
         fd.append('file', entry, entry.name);
 
         if (expiry) {
-            fd.set('expire', expiry.getTime() + '');
+            fd.set('expire', `${expiry.getTime() / 1000}`);
         }
 
         if (adminCode) {
