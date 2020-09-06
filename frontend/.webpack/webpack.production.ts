@@ -6,7 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import glob from 'glob';
 import path from 'path';
 import { InjectManifest } from 'workbox-webpack-plugin';
-import InlineRuntimePlugin from 'html-webpack-inline-runtime-plugin';
+import { HwpInlineRuntimeChunkPlugin } from 'hwp-inline-runtime-chunk-plugin';
 import ServiceWorkerPlugin from './ServiceWorkerPlugin';
 
 import commonConfig from './webpack.common';
@@ -47,7 +47,7 @@ export default function (): webpack.Configuration {
             ],
         },
         plugins: [
-            new InlineRuntimePlugin(),
+            new HwpInlineRuntimeChunkPlugin({ removeSourceMap: true }),
             new InjectManifest({
                 swSrc: './src/sw.ts',
                 include: ['index.html', /\.mjs$/, /\.svg$/, /\.css$/, /\.png$/],
