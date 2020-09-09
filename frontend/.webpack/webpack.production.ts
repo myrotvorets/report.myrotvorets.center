@@ -31,8 +31,8 @@ export default function (): webpack.Configuration {
                             loader: 'postcss-loader',
                             options: {
                                 sourceMap: false,
-                                config: {
-                                    path: path.resolve(path.join(__dirname, '..')),
+                                postcssOptions: {
+                                    config: path.resolve(path.join(__dirname, '..')),
                                 },
                             },
                         },
