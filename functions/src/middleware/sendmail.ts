@@ -2,12 +2,27 @@ import * as functions from 'firebase-functions';
 import type { NextFunction, Request, Response } from 'express';
 import { sendMail } from '../lib/sendmail';
 import { buildMessage } from '../lib/message';
+import { AddUpdateRequestBody } from '../types';
 
-export function sendMailMiddleware(req: Request, res: Response, next: NextFunction): void {
+export function sendMailMiddleware(
+    req: Request<Record<string, string>, unknown, AddUpdateRequestBody>,
+    res: Response,
+    next: NextFunction,
+): void {
     const subject = 'В Чистилище';
     const message = buildMessage(req);
 
-    sendMail(functions.config().mail.from, req.user?.email || '', functions.config().mail.to, subject, message)
+    if (req.body.note === '[skip]') {
+        return next();
+    }
+
+    sendMail(
+        functions.config().mail.from,
+        req.user?.email || '',
+        req.body.note === 'dev' ? functions.config().mail.devto : functions.config().mail.to,
+        subject,
+        message,
+    )
         .then(() => next())
         .catch(() => {
             next({
