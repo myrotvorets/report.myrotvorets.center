@@ -67,7 +67,7 @@ const config: webpack.Configuration = {
     module: {
         rules: [
             {
-                test: /worker\.ts$/,
+                test: /-worker\.ts$/,
                 use: [
                     {
                         loader: 'worker-loader',

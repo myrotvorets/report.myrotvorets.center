@@ -7,7 +7,7 @@ import { W_AUTH_STATE_CHANGED, WorkerResponseAuthStateChanged } from '../../util
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // eslint-disable-next-line import/default
-import AuthWorker from '../../worker';
+import AuthWorker from '../../main-worker';
 
 import Header from '../Header';
 import NavBar from '../NavBar';
