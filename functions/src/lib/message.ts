@@ -38,14 +38,9 @@ export function buildMessage(req: Request<Record<string, string>, unknown, AddUp
         msg.push(`Примечание: ${req.body.note}`);
     }
 
-    if (req.body.gfac) {
-        msg.push(
-            `\nДополнительные материалы: https://gofile.io/d/${req.body.gfac} (ссылка действительна около 10 дней; код для удаления: ${req.body.gfrc})`,
-        );
-
-        if (req.storageLink) {
-            msg.push(`Копия на GStorage (ссылка действительна 30 дней): ${req.storageLink}`);
-        }
+    if (req.storageLink && req.archivePassword) {
+        msg.push(`Дополнительные материалы (ссылка действительна 45 дней): ${req.storageLink}`);
+        msg.push(`Пароль на архив: ${req.archivePassword}`);
     }
 
     const email = req.user?.email as string;

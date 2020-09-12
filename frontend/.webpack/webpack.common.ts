@@ -67,7 +67,7 @@ const config: webpack.Configuration = {
     module: {
         rules: [
             {
-                test: /-worker\.ts$/,
+                test: /worker\.ts$/,
                 use: [
                     {
                         loader: 'worker-loader',
@@ -142,7 +142,6 @@ const config: webpack.Configuration = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             'process.env.BUILD_SSR': JSON.stringify(false),

@@ -2,6 +2,7 @@
 
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/storage';
 import firebaseConfig from './config/firebase';
 import {
     W_AUTH_STATE_CHANGED,
@@ -9,7 +10,10 @@ import {
     W_SENDLINK,
     W_SIGNIN,
     W_SIGNOUT,
+    W_UPLOAD_FILE,
+    W_UPLOAD_PROGRESS,
     WorkerRequest,
+    WorkerResponse,
     WorkerResponseAuthStateChanged,
     WorkerResponseGetToken,
     WorkerResponseSendLink,
@@ -49,7 +53,7 @@ function getToken(): void {
             .then((token): void => {
                 self.postMessage({
                     type: W_GETTOKEN,
-                    payload: { success: true, token },
+                    payload: { success: true, token, uid: currentUser.uid },
                 } as WorkerResponseGetToken);
             })
             .catch((e) => {
@@ -128,7 +132,7 @@ function signOut(): void {
         })
         .catch((e) => {
             self.postMessage({
-                type: 'signout',
+                type: W_SIGNOUT,
                 payload: {
                     success: false,
                     message: e.code in errorCodes ? errorCodes[e.code] : e.message,
@@ -136,6 +140,43 @@ function signOut(): void {
                 },
             } as WorkerResponseSignOut);
         });
+}
+
+function uploadFile(uid: string, name: string, file: Blob): void {
+    const task: firebase.storage.UploadTask = firebase.storage().ref(`incoming/${uid}/${name}`).put(file);
+    task.on(
+        'state_changed',
+        (snapshot): void => {
+            const progress = snapshot.totalBytes
+                ? Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100) / 10
+                : -1;
+            self.postMessage({
+                type: W_UPLOAD_PROGRESS,
+                payload: {
+                    progress,
+                },
+            } as WorkerResponse);
+        },
+        (e: Error): void => {
+            const err = e as Error & { code?: string };
+            self.postMessage({
+                type: W_UPLOAD_FILE,
+                payload: {
+                    success: false,
+                    message: err.code && err.code in errorCodes ? errorCodes[err.code] : err.message,
+                    code: err.code,
+                },
+            } as WorkerResponse);
+        },
+        (): void => {
+            self.postMessage({
+                type: W_UPLOAD_FILE,
+                payload: {
+                    success: true,
+                },
+            } as WorkerResponse);
+        },
+    );
 }
 
 self.addEventListener('message', ({ data }: MessageEvent): void => {
@@ -153,6 +194,9 @@ self.addEventListener('message', ({ data }: MessageEvent): void => {
 
             case W_SENDLINK:
                 return sendLink(d.payload.email, d.payload.url);
+
+            case W_UPLOAD_FILE:
+                return uploadFile(d.payload.uid, d.payload.name, d.payload.file);
         }
     }
 });
