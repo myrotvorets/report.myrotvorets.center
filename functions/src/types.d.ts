@@ -6,6 +6,13 @@ declare module 'express' {
         criminal?: Criminal;
         user?: admin.auth.DecodedIdToken;
         storageLink?: string;
+        archivePassword?: string;
+    }
+}
+
+declare module 'archiver' {
+    interface CoreOptions {
+        password?: string;
     }
 }
 
@@ -17,7 +24,5 @@ export interface AddUpdateRequestBody {
     phone: string;
     description: string;
     note: string;
-    gfsrv: string;
-    gfac: string;
-    gfrc: string;
+    path: string;
 }
