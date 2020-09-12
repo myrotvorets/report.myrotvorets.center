@@ -8,7 +8,7 @@ import { fetch } from './lib/fetch';
 import { httpsAgent } from './lib/agents';
 import { commonValidationHandler, reportAddValidator, reportUpdateValidator } from './middleware/validator';
 import { fetchCriminal } from './middleware/fetchcriminal';
-import { copyFromGoFileToGoogleStorage } from './middleware/uploadtostorage';
+import { archiveFiles } from './middleware/uploadtostorage';
 import { sendMailMiddleware } from './middleware/sendmail';
 
 const app = express();
@@ -48,7 +48,7 @@ app.post(
     authMiddleware(),
     reportAddValidator,
     commonValidationHandler,
-    copyFromGoFileToGoogleStorage,
+    archiveFiles,
     sendMailMiddleware,
     (req: Request, res: Response) => res.json({ success: true }),
 );
@@ -59,7 +59,7 @@ app.post(
     reportUpdateValidator,
     commonValidationHandler,
     fetchCriminal,
-    copyFromGoFileToGoogleStorage,
+    archiveFiles,
     sendMailMiddleware,
     (req: Request, res: Response) => res.json({ success: true }),
 );

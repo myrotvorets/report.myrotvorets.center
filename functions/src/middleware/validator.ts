@@ -9,9 +9,7 @@ export const reportAddValidator = [
     body('phone', 'BAD_REQUEST').exists().trim(),
     body('description', 'BAD_REQUEST').exists().trim().isLength({ min: 10 }).withMessage('TOO_SHORT'),
     body('note', 'BAD_REQUEST').exists().trim(),
-    body('gfsrv', 'BAD_REQUEST').exists().trim(),
-    body('gfac', 'BAD_REQUEST').exists().trim(),
-    body('gfrc', 'BAD_REQUEST').exists().trim(),
+    body('path', 'BAD_REQUEST').exists().trim(),
 ];
 
 export const reportUpdateValidator = [
@@ -23,9 +21,7 @@ export const reportUpdateValidator = [
     body('phone', 'BAD_REQUEST').exists().trim(),
     body('description', 'BAD_REQUEST').exists().trim().isLength({ min: 10 }).withMessage('TOO_SHORT'),
     body('note', 'BAD_REQUEST').exists().trim(),
-    body('gfsrv', 'BAD_REQUEST').exists().trim(),
-    body('gfac', 'BAD_REQUEST').exists().trim(),
-    body('gfrc', 'BAD_REQUEST').exists().trim(),
+    body('path', 'BAD_REQUEST').exists().trim(),
 ];
 
 export function commonValidationHandler(req: Request, res: Response, next: NextFunction): void {

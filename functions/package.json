@@ -17,10 +17,13 @@
   "dependencies": {
     "@google-cloud/storage": "^5.3.0",
     "@myrotvorets/express-async-middleware-wrapper": "^1.0.17",
+    "@types/archiver": "^3.1.0",
     "@types/cors": "^2.8.7",
     "@types/express": "^4.17.7 <4.17.8 || >4.17.8",
     "@types/node-fetch": "^2.5.7",
     "@types/node-mailjet": "^3.3.3",
+    "archiver": "^5.0.2",
+    "archiver-zip-encryptable": "^1.0.7",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.6.1",
