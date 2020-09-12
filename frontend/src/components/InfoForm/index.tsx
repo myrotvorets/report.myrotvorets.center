@@ -3,7 +3,6 @@ import { Link, route } from 'preact-router';
 import Bugsnag from '@bugsnag/js';
 import { withLoginCheck } from '../../hocs/withLoginCheck';
 import { Criminal, findCriminalById, isKnownCriminal } from '../../api/myrotvorets';
-import { createZip, getServerForUpload, uploadFiles } from '../../api/gofile';
 import CriminalRecord from '../CriminalRecord';
 import Loader from '../Loader';
 import Alert from '../Alert/index';
@@ -11,9 +10,10 @@ import ModalStatus from '../ModalStatus/index';
 import { ResGetTokenPayload, W_GETTOKEN, WorkerRequestGetToken, sendAndWait } from '../../utils/worker';
 import { withWorker } from '../../hocs/withWorker';
 import { lsGet, lsSet } from '../../utils/localstorage';
-import { ErrorResponse, GFData, ReportData, addSuspect, updateCriminal } from '../../api/informant';
+import { ErrorResponse, GSData, ReportData, addSuspect, updateCriminal } from '../../api/informant';
 
 import './infoform.scss';
+import { uploadFiles } from '../../api/storage';
 
 type OwnProps =
     | {
@@ -37,6 +37,8 @@ interface State {
     state: 'idle' | 'verifying' | 'success' | 'busy';
     data: ReportData;
     status: string;
+    uploadedFileNumber: number;
+    filesToUpload: number;
 }
 
 class InfoForm extends Component<Props, State> {
@@ -50,6 +52,8 @@ class InfoForm extends Component<Props, State> {
             criminal,
             state: props.mode === 'update' && criminal === false ? 'verifying' : 'idle',
             status: '',
+            uploadedFileNumber: -1,
+            filesToUpload: -1,
             data: {
                 name: lsGet('f_name'),
                 dob: lsGet('f_dob'),
@@ -132,18 +136,20 @@ class InfoForm extends Component<Props, State> {
 
             this.setState({ state: 'busy', status: 'Проходимо аутентифікацію…' });
             sendAndWait<WorkerRequestGetToken, ResGetTokenPayload>(this.props.worker, req, W_GETTOKEN)
-                .then((r) => {
-                    if (r.success) {
-                        token = r.token;
-                        return this._uploadFiles(form);
-                    }
+                .then(
+                    (r): Promise<string> => {
+                        if (r.success) {
+                            token = r.token;
+                            return this._uploadFiles(form, r.uid);
+                        }
 
-                    return Promise.reject(new Error(r.message || r.code));
-                })
-                .then(([serverID, accessCode, removalCode]) => {
+                        return Promise.reject(new Error(r.message || r.code));
+                    },
+                )
+                .then((path) => {
                     this.setState({ status: 'Відправляємо дані на сервер…' });
                     const { criminal, data } = this.state;
-                    const files: GFData = { serverID, accessCode, removalCode };
+                    const files: GSData = { path };
                     return criminal === false
                         ? addSuspect(token, data, files)
                         : updateCriminal(token, criminal, data, files);
@@ -162,9 +168,34 @@ class InfoForm extends Component<Props, State> {
         }
     };
 
+    private _onFileUploadProgress = (e: Event): void => {
+        if (e instanceof CustomEvent) {
+            const { detail: progress } = e as CustomEvent<number>;
+            this.setState(
+                ({ uploadedFileNumber, filesToUpload }: State): Partial<State> => ({
+                    status: `Завантаження файлу ${uploadedFileNumber} із ${filesToUpload}: ${
+                        progress >= 0 ? progress.toString() : '?'
+                    }%`,
+                }),
+            );
+        }
+    };
+
+    private _onOverallUploadProgress = (e: Event): void => {
+        if (e instanceof CustomEvent) {
+            const { detail } = e as CustomEvent<number>;
+            this.setState(
+                ({ filesToUpload }: State): Partial<State> => ({
+                    uploadedFileNumber: detail,
+                    status: `Завантаження файлу ${detail} із ${filesToUpload}: 0%`,
+                }),
+            );
+        }
+    };
+
     private _verifyCriminal(): void {
         const { id } = this.props;
-        findCriminalById(+(id as 'string')).then((r) => {
+        findCriminalById(id as string).then((r) => {
             if ('id' in r) {
                 this.setState({
                     criminal: r,
@@ -176,33 +207,31 @@ class InfoForm extends Component<Props, State> {
         });
     }
 
-    private _uploadFiles(form: HTMLFormElement): Promise<[string, string, string]> {
+    private async _uploadFiles(form: HTMLFormElement, uid: string): Promise<string> {
         const f = form.elements.namedItem('files');
-        let srvid: string, accessCode: string, removalCode: string;
+
         if (f instanceof HTMLInputElement && f.files && f.files.length > 0) {
-            this.setState({ status: 'Вибираємо сервер для завантаження…' });
-            return getServerForUpload()
-                .then((server: string) => {
-                    srvid = server;
-                    const date = new Date();
-                    date.setDate(date.getDate() + 30);
-                    this.setState({ status: 'Завантажуємо файли…' });
-                    return uploadFiles(server, f.files as FileList, date);
-                })
-                .then(([code, rcode]) => {
-                    accessCode = code;
-                    removalCode = rcode;
-                    this.setState({ status: 'Архівуємо файли…' });
-                    return createZip(srvid, accessCode);
-                })
-                .then((): [string, string, string] => [srvid, accessCode, removalCode])
-                .catch((e: Error) => {
-                    Bugsnag.notify(e);
-                    throw e;
+            try {
+                this.setState({
+                    status: 'Завантаження файлів…',
+                    filesToUpload: f.files.length,
+                    uploadedFileNumber: -1,
                 });
+
+                document.addEventListener('fileuploadprogress', this._onFileUploadProgress);
+                document.addEventListener('overalluploadprogress', this._onOverallUploadProgress);
+
+                return await uploadFiles(this.props.worker as Worker, uid, f.files);
+            } catch (e) {
+                Bugsnag.notify(e);
+                throw e;
+            } finally {
+                document.removeEventListener('overalluploadprogress', this._onOverallUploadProgress);
+                document.removeEventListener('fileuploadprogress', this._onFileUploadProgress);
+            }
         }
 
-        return Promise.resolve(['', '', '']);
+        return '';
     }
 
     private _resetLocalStorage(): void {

@@ -10,10 +10,8 @@ export interface ReportData {
     note: string;
 }
 
-export interface GFData {
-    serverID: string;
-    accessCode: string;
-    removalCode: string;
+export interface GSData {
+    path: string;
 }
 
 const baseURL = 'https://us-central1-report-to-myrotvorets.cloudfunctions.net/api/informant/v1';
@@ -71,12 +69,10 @@ function sendResponse(url: string, token: string, body: Record<string, string>):
         });
 }
 
-export function addSuspect(token: string, report: ReportData, files?: GFData): Promise<InformantApiResponse> {
+export function addSuspect(token: string, report: ReportData, files?: GSData): Promise<InformantApiResponse> {
     const request = {
         ...report,
-        gfsrv: files ? files.serverID : '',
-        gfac: files ? files.accessCode : '',
-        gfrc: files ? files.removalCode : '',
+        path: files ? files.path : '',
     };
 
     return sendResponse(`${baseURL}/report`, token, request);
@@ -86,13 +82,11 @@ export function updateCriminal(
     token: string,
     criminal: Criminal,
     report: ReportData,
-    files?: GFData,
+    files?: GSData,
 ): Promise<InformantApiResponse> {
     const request = {
         ...report,
-        gfsrv: files ? files.serverID : '',
-        gfac: files ? files.accessCode : '',
-        gfrc: files ? files.removalCode : '',
+        path: files ? files.path : '',
     };
 
     return sendResponse(`${baseURL}/report/${criminal.id}`, token, request);

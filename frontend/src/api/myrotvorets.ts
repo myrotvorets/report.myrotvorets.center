@@ -23,7 +23,7 @@ interface ErrorResponse {
     message: string;
 }
 
-const map = new Map<number, Criminal>();
+const map: Record<number | string, Criminal> = {};
 
 function apiCall(url: string): Promise<Criminal | Error> {
     return fetch(`${url}`)
@@ -31,7 +31,7 @@ function apiCall(url: string): Promise<Criminal | Error> {
         .then(
             (r: Criminal | ErrorResponse): Promise<Criminal | Error> => {
                 if ('id' in r) {
-                    map.set(r.id, r);
+                    map[r.id] = r;
                     return Promise.resolve(r);
                 }
 
@@ -55,10 +55,10 @@ export function findCriminalBySlug(slug: string): Promise<Criminal | Error> {
     return apiCall(`https://api.myrotvorets.center/simplesearch/v1/byslug/${encodeURIComponent(slug)}`);
 }
 
-export function findCriminalById(id: number): Promise<Criminal | Error> {
+export function findCriminalById(id: number | string): Promise<Criminal | Error> {
     return apiCall(`https://api.myrotvorets.center/simplesearch/v1/${id}`);
 }
 
-export function isKnownCriminal(id: number): Criminal | false {
-    return map.get(id) ?? false;
+export function isKnownCriminal(id: number | string): Criminal | false {
+    return map[id] ?? false;
 }
