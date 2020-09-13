@@ -6,7 +6,8 @@
 		{
 			"src": "@ref(./assets/logo192.png)",
 			"type": "image/png",
-			"sizes": "192x192"
+			"sizes": "192x192",
+			"purpose": "any maskable"
 		},
 		{
 			"src": "@ref(./assets/logo256.png)",
