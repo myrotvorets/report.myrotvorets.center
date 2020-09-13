@@ -103,7 +103,7 @@ class InfoForm extends Component<Props, State> {
         const { files } = currentTarget;
         if (files) {
             const { length } = files;
-            if (length > 10) {
+            if (length > 15) {
                 currentTarget.value = '';
                 return this.setState({
                     error:
@@ -117,7 +117,7 @@ class InfoForm extends Component<Props, State> {
                 size += entry.size;
             }
 
-            if (size > 15728640) {
+            if (size > 20971520) {
                 currentTarget.value = '';
                 return this.setState({
                     error:
@@ -390,19 +390,13 @@ class InfoForm extends Component<Props, State> {
                     disabled={busy}
                 />
                 <p id="f_files_help" className="help">
-                    <strong style={{ color: 'red', fontSize: '2em' }}>
-                        Наразі завантаження файлів не працює, але ми це виправляємо. Вибачте за незручності. Будь ласка,
-                        скористайтеся файлообмінником.
-                    </strong>
-                    <s>
-                        Можна завантажити кілька файлів. Щоб вибрати кілька файлів, утримуйте клавіші Shift або Ctrl при
-                        виборі файлів.
-                        <br />
-                        <strong>Не завантажуйте файли великого розміру.</strong> Якщо загальний розмір файлів перевищує{' '}
-                        <strong>10 МБ</strong>, або ви хочете завантажити <strong>більше 10 файлів</strong>, будь ласка,{' '}
-                        <strong>скористайтеся файлообмінником</strong> та додайте посилання на завантажені файли в поле
-                        Опис.
-                    </s>
+                    Можна завантажити кілька файлів. Щоб вибрати кілька файлів, утримуйте клавіші Shift або Ctrl при
+                    виборі файлів.
+                    <br />
+                    <strong>Не завантажуйте файли великого розміру.</strong> Якщо загальний розмір файлів перевищує{' '}
+                    <strong>10 МБ</strong>, або ви хочете завантажити <strong>більше 10 файлів</strong>, будь ласка,{' '}
+                    <strong>скористайтеся файлообмінником</strong> та додайте посилання на завантажені файли в поле
+                    Опис.
                 </p>
 
                 <div className="button-container">
