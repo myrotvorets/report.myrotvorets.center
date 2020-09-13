@@ -26,9 +26,7 @@ export default function authMiddleware(): RequestHandler {
                     success: false,
                     status: 401,
                     code: 'AUTH_FAILED',
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                     message: e.message,
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                     errcode: e.code,
                 }),
             );

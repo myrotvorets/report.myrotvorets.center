@@ -2,7 +2,7 @@ import './lib/init';
 import * as functions from 'firebase-functions';
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
-import asyncMiddleware from '@myrotvorets/express-async-middleware-wrapper';
+import Bugsnag from '@bugsnag/js';
 import authMiddleware from './middleware/auth';
 import { fetch } from './lib/fetch';
 import { httpsAgent } from './lib/agents';
@@ -13,6 +13,8 @@ import { sendMailMiddleware } from './middleware/sendmail';
 
 const app = express();
 app.set('trust proxy', true);
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+app.use(Bugsnag.getPlugin('express')!.requestHandler);
 app.use(
     cors({
         origin: true,
@@ -23,24 +25,30 @@ app.use(
 
 app.get(
     '/informant/v1/checkemail/:email',
-    asyncMiddleware(
-        async (req: Request, res: Response): Promise<void> => {
-            const email = req.params.email;
+    (req: Request, res: Response): Promise<void> => {
+        const email = req.params.email;
 
-            const response = await fetch(`https://disposable.debounce.io/?email=${encodeURIComponent(email)}`, {
-                agent: httpsAgent,
-                headers: {
-                    Accept: 'application/json',
-                },
+        return fetch(`https://disposable.debounce.io/?email=${encodeURIComponent(email)}`, {
+            agent: httpsAgent,
+            headers: {
+                Accept: 'application/json',
+            },
+        })
+            .then((r) => r.json())
+            .then((json) => {
+                res.json({
+                    success: true,
+                    status: 'disposable' in json ? (json.disposable === 'true' ? 'DEA' : 'OK') : 'DUNNO',
+                });
+            })
+            .catch((e) => {
+                Bugsnag.notify(e);
+                res.json({
+                    success: true,
+                    status: 'DUNNO',
+                });
             });
-
-            const json = await response.json();
-            res.json({
-                success: true,
-                status: 'disposable' in json ? (json.disposable === 'true' ? 'DEA' : 'OK') : 'DUNNO',
-            });
-        },
-    ),
+    },
 );
 
 app.post(
@@ -92,5 +100,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction): void => {
 
     next(err);
 });
+
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+app.use(Bugsnag.getPlugin('express')!.errorHandler);
 
 export const api = functions.region('us-central1').https.onRequest(app);

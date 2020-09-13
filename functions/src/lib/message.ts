@@ -1,5 +1,5 @@
 import type { Request } from 'express';
-import { AddUpdateRequestBody } from '../types';
+import type { AddUpdateRequestBody } from '../types';
 
 export function buildMessage(req: Request<Record<string, string>, unknown, AddUpdateRequestBody>): string {
     const msg: string[] = [];

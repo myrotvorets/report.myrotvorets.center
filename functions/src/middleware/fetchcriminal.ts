@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
+import Bugsnag from '@bugsnag/js';
 import { fetch } from '../lib/fetch';
 import { httpsAgent } from '../lib/agents';
 
@@ -57,7 +58,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
                 });
             })
             .catch((e) => {
-                console.error(e);
+                Bugsnag.notify(e);
                 return next({
                     success: false,
                     status: 400,

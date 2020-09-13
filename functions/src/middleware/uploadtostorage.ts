@@ -3,12 +3,14 @@ import admin from 'firebase-admin';
 import archiver from 'archiver';
 import type { NextFunction, Request, Response } from 'express';
 import type { AddUpdateRequestBody } from '../types';
+import Bugsnag from '@bugsnag/js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 archiver.registerFormat('zip-encryptable', require('archiver-zip-encryptable'));
 
 const randomString = (): string => Math.random().toString(36).substring(2, 15);
 const errorHandler = (e: Error) => {
+    Bugsnag.notify(e);
     throw e;
 };
 
@@ -57,14 +59,14 @@ export async function archiveFiles(
                 req.storageLink = `https://storage.googleapis.com/${bucket.name}/${fname}`;
             }
         } catch (e) {
-            console.error(e);
+            Bugsnag.notify(e);
         } finally {
             bucket
                 .deleteFiles({
                     directory: req.body.path,
                     force: true,
                 })
-                .catch((e) => console.error(e));
+                .catch((e) => Bugsnag.notify(e));
         }
     }
 
