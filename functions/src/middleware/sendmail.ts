@@ -1,8 +1,9 @@
 import * as functions from 'firebase-functions';
 import type { NextFunction, Request, Response } from 'express';
+import Bugsnag from '@bugsnag/js';
 import { sendMail } from '../lib/sendmail';
 import { buildMessage } from '../lib/message';
-import { AddUpdateRequestBody } from '../types';
+import type { AddUpdateRequestBody } from '../types';
 
 export function sendMailMiddleware(
     req: Request<Record<string, string>, unknown, AddUpdateRequestBody>,
@@ -24,7 +25,8 @@ export function sendMailMiddleware(
         message,
     )
         .then(() => next())
-        .catch(() => {
+        .catch((e) => {
+            Bugsnag.notify(e);
             next({
                 success: false,
                 status: 500,
