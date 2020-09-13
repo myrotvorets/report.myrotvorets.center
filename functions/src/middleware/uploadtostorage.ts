@@ -25,11 +25,11 @@ export async function archiveFiles(
     if (req.body.path) {
         const now = new Date();
         const date = now.toISOString().split('T')[0];
-        const fname = `${date}/${path.basename(req.body.path)}`;
+        const fname = `${date}/${path.basename(req.body.path)}.zip`;
 
         try {
             const folder = await bucket.getFiles({
-                directory: req.body.path,
+                directory: `incoming/${req.body.path}`,
             });
 
             if (folder[0] && folder[0].length) {
@@ -61,12 +61,14 @@ export async function archiveFiles(
         } catch (e) {
             Bugsnag.notify(e);
         } finally {
-            bucket
-                .deleteFiles({
-                    directory: req.body.path,
+            try {
+                await bucket.deleteFiles({
+                    directory: `incoming/${req.body.path}`,
                     force: true,
-                })
-                .catch((e) => Bugsnag.notify(e));
+                });
+            } catch (e) {
+                Bugsnag.notify(e);
+            }
         }
     }
 
