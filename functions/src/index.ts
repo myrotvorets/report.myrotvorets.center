@@ -2,6 +2,7 @@ import './lib/init';
 import * as functions from 'firebase-functions';
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
+import Bugsnag from '@bugsnag/js';
 import authMiddleware from './middleware/auth';
 import { fetch } from './lib/fetch';
 import { httpsAgent } from './lib/agents';
@@ -9,7 +10,6 @@ import { commonValidationHandler, reportAddValidator, reportUpdateValidator } fr
 import { fetchCriminal } from './middleware/fetchcriminal';
 import { archiveFiles } from './middleware/uploadtostorage';
 import { sendMailMiddleware } from './middleware/sendmail';
-import Bugsnag from '@bugsnag/js';
 
 const app = express();
 app.set('trust proxy', true);
