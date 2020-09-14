@@ -26,3 +26,20 @@ export interface AddUpdateRequestBody {
     note: string;
     path: string;
 }
+
+export interface ReportEntry {
+    name: string;
+    dob: string;
+    country: string;
+    address: string;
+    phone: string;
+    description: string;
+    note: string;
+    path: string;
+    clink: string;
+    cname: string;
+    ips: string;
+    email: string;
+    ua: string;
+    dt: number;
+}

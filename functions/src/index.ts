@@ -1,20 +1,28 @@
 import './lib/init';
 import * as functions from 'firebase-functions';
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import Bugsnag from '@bugsnag/js';
-import authMiddleware from './middleware/auth';
-import { fetch } from './lib/fetch';
-import { httpsAgent } from './lib/agents';
-import { commonValidationHandler, reportAddValidator, reportUpdateValidator } from './middleware/validator';
-import { fetchCriminal } from './middleware/fetchcriminal';
-import { archiveFiles } from './middleware/uploadtostorage';
-import { sendMailMiddleware } from './middleware/sendmail';
+
+import type { ReportEntry } from './types';
+
+import { checkEmail } from './api/checkemail';
+import { reportNewCriminal, reportUpdateCriminal } from './api/report';
+
+import { archiveFilesAndUpload } from './lib/upload';
+import { buildMessageFromReportEntry } from './lib/message';
+import { sendMail } from './lib/sendmail';
+
+import { notFoundHandler } from './middleware/notfound';
+import { errorHandler } from './middleware/error';
 
 const app = express();
-app.set('trust proxy', true);
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-app.use(Bugsnag.getPlugin('express')!.requestHandler);
+const bsExpress = Bugsnag.getPlugin('express')!;
+app.set('trust proxy', true);
+
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+app.use(bsExpress.requestHandler);
 app.use(
     cors({
         origin: true,
@@ -23,85 +31,37 @@ app.use(
     }),
 );
 
-app.get(
-    '/informant/v1/checkemail/:email',
-    (req: Request, res: Response): Promise<void> => {
-        const email = req.params.email;
-
-        return fetch(`https://disposable.debounce.io/?email=${encodeURIComponent(email)}`, {
-            agent: httpsAgent,
-            headers: {
-                Accept: 'application/json',
-            },
-        })
-            .then((r) => r.json())
-            .then((json) => {
-                res.json({
-                    success: true,
-                    status: 'disposable' in json ? (json.disposable === 'true' ? 'DEA' : 'OK') : 'DUNNO',
-                });
-            })
-            .catch((e) => {
-                Bugsnag.notify(e);
-                res.json({
-                    success: true,
-                    status: 'DUNNO',
-                });
-            });
-    },
-);
-
-app.post(
-    '/informant/v1/report',
-    authMiddleware(),
-    reportAddValidator,
-    commonValidationHandler,
-    archiveFiles,
-    sendMailMiddleware,
-    (req: Request, res: Response) => res.json({ success: true }),
-);
-
-app.post(
-    '/informant/v1/report/:id',
-    authMiddleware(),
-    reportUpdateValidator,
-    commonValidationHandler,
-    fetchCriminal,
-    archiveFiles,
-    sendMailMiddleware,
-    (req: Request, res: Response) => res.json({ success: true }),
-);
-
-app.use((req: Request, res: Response, next: NextFunction): void => {
-    next({
-        success: false,
-        status: 404,
-        code: 'NOT_FOUND',
-        message: 'Not found',
-    });
-});
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-app.use((err: any, req: Request, res: Response, next: NextFunction): void => {
-    if (res.headersSent) {
-        return next(err);
-    }
-
-    if (err && typeof err === 'object' && 'code' in err) {
-        const status = err.status as number;
-        res.status(status);
-        if (status === 401) {
-            res.header('WWW-Authenticate', 'Bearer');
-        }
-
-        res.json(err);
-        return;
-    }
-
-    next(err);
-});
-
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-app.use(Bugsnag.getPlugin('express')!.errorHandler);
+app.get('/informant/v1/checkemail/:email', checkEmail);
+app.post('/informant/v1/report', ...reportNewCriminal);
+app.post('/informant/v1/report/:id', ...reportUpdateCriminal);
+app.use(notFoundHandler);
+app.use(errorHandler);
+app.use(bsExpress.errorHandler);
 
 export const api = functions.region('us-central1').https.onRequest(app);
+
+export const handleReport = functions.database.ref('/reports/{child}').onCreate(
+    async (snapshot: functions.database.DataSnapshot): Promise<unknown> => {
+        try {
+            const entry: ReportEntry = snapshot.val();
+            const [url, password] = await archiveFilesAndUpload(entry);
+            const message = buildMessageFromReportEntry(entry, url, password);
+
+            if (entry.note === '[skip]') {
+                return;
+            }
+
+            return sendMail(
+                functions.config().mail.from,
+                entry.email,
+                functions.config().mail[entry.note === 'dev' ? 'devto' : 'to'],
+                'В Чистилище',
+                message,
+            );
+        } catch (e) {
+            Bugsnag.notify(e);
+        }
+
+        return;
+    },
+);
