@@ -1,4 +1,6 @@
 import path from 'path';
+import crypto from 'crypto';
+import { promisify } from 'util';
 import admin from 'firebase-admin';
 import archiver from 'archiver';
 import Bugsnag from '@bugsnag/js';
@@ -7,7 +9,16 @@ import type { ReportEntry } from '../types';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 archiver.registerFormat('zip-encryptable', require('archiver-zip-encryptable'));
 
-const randomString = (): string => Math.random().toString(36).substring(2, 15);
+const randomBytes = promisify(crypto.randomBytes);
+
+const randomString = (length = 15): Promise<string> =>
+    randomBytes(2 * length).then((buf) =>
+        buf
+            .toString('base64')
+            .replace(/\+|\/|=/g, '')
+            .slice(0, length),
+    );
+
 const errorHandler = (e: Error) => {
     Bugsnag.notify(e);
     throw e;
@@ -34,7 +45,7 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<[string
 
                 fileStream.once('error', errorHandler);
 
-                result[1] = randomString();
+                result[1] = await randomString();
                 const archive = archiver.create('zip-encryptable', {
                     zlib: { level: 4 },
                     password: result[1],
