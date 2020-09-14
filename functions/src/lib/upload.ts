@@ -1,9 +1,8 @@
 import path from 'path';
 import admin from 'firebase-admin';
 import archiver from 'archiver';
-import type { NextFunction, Request, Response } from 'express';
-import type { AddUpdateRequestBody } from '../types';
 import Bugsnag from '@bugsnag/js';
+import type { ReportEntry } from '../types';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 archiver.registerFormat('zip-encryptable', require('archiver-zip-encryptable'));
@@ -16,20 +15,15 @@ const errorHandler = (e: Error) => {
 
 const bucket = admin.storage().bucket();
 
-export async function archiveFiles(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    req: Request<Record<string, any>, unknown, AddUpdateRequestBody>,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    if (req.body.path) {
-        const now = new Date();
-        const date = now.toISOString().split('T')[0];
-        const fname = `${date}/${path.basename(req.body.path)}.zip`;
+export async function archiveFilesAndUpload(entry: ReportEntry): Promise<[string, string]> {
+    const result: [string, string] = ['', ''];
+    if (entry.path) {
+        const date = new Date().toISOString().split('T')[0];
+        const fname = `${date}/${path.basename(entry.path)}.zip`;
 
         try {
             const folder = await bucket.getFiles({
-                directory: `incoming/${req.body.path}`,
+                directory: `incoming/${entry.path}`,
             });
 
             if (folder[0] && folder[0].length) {
@@ -40,10 +34,10 @@ export async function archiveFiles(
 
                 fileStream.once('error', errorHandler);
 
-                req.archivePassword = randomString();
+                result[1] = randomString();
                 const archive = archiver.create('zip-encryptable', {
                     zlib: { level: 4 },
-                    password: req.archivePassword,
+                    password: result[1],
                 });
 
                 archive.once('error', errorHandler);
@@ -56,14 +50,15 @@ export async function archiveFiles(
                 });
 
                 await archive.finalize();
-                req.storageLink = `https://storage.googleapis.com/${bucket.name}/${fname}`;
+                result[0] = `https://storage.googleapis.com/${bucket.name}/${fname}`;
             }
         } catch (e) {
             Bugsnag.notify(e);
+            return ['', ''];
         } finally {
             try {
                 await bucket.deleteFiles({
-                    directory: `incoming/${req.body.path}`,
+                    directory: `incoming/${entry.path}`,
                     force: true,
                 });
             } catch (e) {
@@ -72,5 +67,5 @@ export async function archiveFiles(
         }
     }
 
-    return next();
+    return result;
 }
