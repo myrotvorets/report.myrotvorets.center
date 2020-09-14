@@ -1,5 +1,4 @@
-import type { Request } from 'express';
-import type { AddUpdateRequestBody, ReportEntry } from '../types';
+import type { ReportEntry } from '../types';
 
 export function buildMessageFromReportEntry(entry: ReportEntry, storageLink: string, archivePassword: string): string {
     const msg: string[] = [];
