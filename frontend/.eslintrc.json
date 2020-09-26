@@ -9,7 +9,7 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "standard-preact",
+        "preact",
         "plugin:import/errors",
         "plugin:import/warnings",
         "plugin:import/typescript",
@@ -64,10 +64,7 @@
                         "componentWillUnmount",
                         "componentDidCatch"
                     ],
-                    "rendering": [
-                        "/^_?render.+$/",
-                        "render"
-                    ]
+                    "rendering": ["/^_?render.+$/", "render"]
                 }
             }
         ],
@@ -84,10 +81,22 @@
                 "ignoreDeclarationSort": true,
                 "ignoreMemberSort": false
             }
-        ]
+        ],
+        "no-console": ["warn", { "allow": ["warn", "error"] }],
+        "no-irregular-whitespace": [
+            "error",
+            {
+                "skipStrings": true,
+                "skipComments": true,
+                "skipRegExps": true,
+                "skipTemplates": true
+            }
+        ],
+        "spaced-comment": ["error", "always", { "markers": ["/"] }]
     },
     "env": {
         "browser": true,
-        "jest": true
+        "jest": true,
+        "serviceworker": true
     }
 }

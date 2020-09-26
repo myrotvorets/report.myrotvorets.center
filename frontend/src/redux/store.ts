@@ -1,4 +1,5 @@
 import createStore from 'unistore';
+import type firebase from 'firebase';
 
 export interface AppState {
     user: firebase.User | null | undefined;

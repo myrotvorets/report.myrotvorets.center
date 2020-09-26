@@ -57,7 +57,7 @@ class LoginForm extends Component<MappedProps, State> {
 
         const request: WorkerRequestSendLink = {
             type: W_SENDLINK,
-            payload: { email, url: window.location.origin + '/' },
+            payload: { email, url: `${window.location.origin}/` },
         };
 
         sendAndWait<WorkerRequestSendLink, ResSendLinkPayload>(worker, request, W_SENDLINK)

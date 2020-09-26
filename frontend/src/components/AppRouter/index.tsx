@@ -14,6 +14,7 @@ function lazy<T>(loader: () => Promise<{ default: T }> | { default: T }): T {
 
 function suspenseWrapper<T>(Component: ComponentType<T>): (props: RenderableProps<T>) => h.JSX.Element {
     if (process.env.BUILD_SSR) {
+        // eslint-disable-next-line react/display-name
         return (props: RenderableProps<T>): h.JSX.Element => (
             <main>
                 <Component {...props} />
@@ -21,6 +22,7 @@ function suspenseWrapper<T>(Component: ComponentType<T>): (props: RenderableProp
         );
     }
 
+    // eslint-disable-next-line react/display-name
     return (props: RenderableProps<T>): h.JSX.Element => (
         <main>
             <Suspense fallback={<Loader />}>

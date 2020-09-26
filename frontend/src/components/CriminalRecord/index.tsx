@@ -32,7 +32,7 @@ export default function CriminalRecord({ criminal }: Props): h.JSX.Element {
             )}
             <dt>ПІБ</dt>
             <dd>
-                <a href={criminal.link} target="_blank" rel="noopener noreferer">
+                <a href={criminal.link} target="_blank" rel="noopener noreferrer">
                     {criminal.name}
                 </a>
             </dd>

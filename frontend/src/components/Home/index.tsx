@@ -36,7 +36,7 @@ class Home extends Component<Props> {
                 <p>
                     Перед тим, як повідомити нам про обʼєкт, в діях якого містяться явні ознаки скоєння злочинів, що
                     досліджуються Центром, будь ласка, уважно прочитайте{' '}
-                    <a href="https://myrotvorets.center/contacts/" target="_blank" rel="noopener">
+                    <a href="https://myrotvorets.center/contacts/" target="_blank" rel="noopener noreferrer">
                         Про взаємодію та співпрацю з Центром «МИРОТВОРЕЦЬ»
                     </a>{' '}
                     та натиснить «Почати».

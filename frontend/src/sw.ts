@@ -1,4 +1,4 @@
-/// <reference lib="webworker" />
+/// <reference lib="webworker"/>
 
 import { cacheNames, clientsClaim, skipWaiting } from 'workbox-core';
 import { registerRoute, setCatchHandler } from 'workbox-routing';
@@ -38,9 +38,8 @@ registerRoute(
     }),
 );
 
-declare let self: ServiceWorkerGlobalScope;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const manifest = [].concat((self as any).__WB_MANIFEST || []);
+declare let self: WorkerGlobalScope;
+const manifest = self.__WB_MANIFEST;
 precacheAndRoute(manifest, {});
 
 setCatchHandler(({ request }) => {

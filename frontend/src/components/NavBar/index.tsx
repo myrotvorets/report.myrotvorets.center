@@ -3,10 +3,11 @@ import { connect } from 'unistore/preact';
 import { Link } from 'preact-router';
 import { AppState } from '../../redux/store';
 
-import './navbar.scss';
 import MenuBar from './MenuBar/index';
 import Submenu from './Submenu/index';
 import MenuItem from './MenuItem/index';
+
+import './navbar.scss';
 
 type OwnProps = unknown;
 type MappedProps = {
@@ -38,7 +39,7 @@ function NavBar(props: Props): h.JSX.Element {
                     <Link href="/about/grounds">Підстави діяльності Центру</Link>
                 </MenuItem>
                 <MenuItem>
-                    <a href="https://myrotvorets.center/contacts/" target="_blank" rel="noopener">
+                    <a href="https://myrotvorets.center/contacts/" target="_blank" rel="noopener noreferrer">
                         Про взаємодію та співпрацю з Центром
                     </a>
                 </MenuItem>
@@ -48,17 +49,17 @@ function NavBar(props: Props): h.JSX.Element {
             </Submenu>
             <Submenu title="Наші проекти">
                 <MenuItem>
-                    <a href="https://myrotvorets.center/" target="_blank" rel="noopener">
+                    <a href="https://myrotvorets.center/" target="_blank" rel="noopener noreferrer">
                         Миротворець
                     </a>
                 </MenuItem>
                 <MenuItem>
-                    <a href="https://identigraf.center/" target="_blank" rel="noopener">
+                    <a href="https://identigraf.center/" target="_blank" rel="noopener noreferrer">
                         IDentigraF
                     </a>
                 </MenuItem>
                 <MenuItem>
-                    <a href="https://myrotvorets.news/" target="_blank" rel="noopener">
+                    <a href="https://myrotvorets.news/" target="_blank" rel="noopener noreferrer">
                         Myrotvorets.NEWS
                     </a>
                 </MenuItem>

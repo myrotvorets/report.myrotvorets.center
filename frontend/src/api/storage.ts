@@ -32,7 +32,7 @@ export async function uploadFiles(worker: Worker, userID: string, files: FileLis
             const name = file.name;
             let n = name;
             while (n in names) {
-                n = randomString() + '-' + name;
+                n = `${randomString()}-${name}`;
             }
 
             names[n] = true;
