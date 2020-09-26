@@ -4,7 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import Bugsnag from '@bugsnag/js';
 
-import type { ReportEntry } from './types';
+import type { ReportEntry, RuntimeConfig } from './types';
 
 import { checkEmail } from './api/checkemail';
 import { reportNewCriminal, reportUpdateCriminal } from './api/report';
@@ -21,7 +21,6 @@ const app = express();
 const bsExpress = Bugsnag.getPlugin('express')!;
 app.set('trust proxy', true);
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 app.use(bsExpress.requestHandler);
 app.use(
     cors({
@@ -43,25 +42,24 @@ export const api = functions.region('us-central1').https.onRequest(app);
 export const handleReport = functions.database.ref('/reports/{child}').onCreate(
     async (snapshot: functions.database.DataSnapshot): Promise<unknown> => {
         try {
-            const entry: ReportEntry = snapshot.val();
+            const entry = snapshot.val() as ReportEntry;
             const [url, password] = await archiveFilesAndUpload(entry);
             const message = buildMessageFromReportEntry(entry, url, password);
 
-            if (entry.note === '[skip]') {
-                return;
+            if (entry.note !== '[skip]') {
+                const config = functions.config() as RuntimeConfig;
+                return sendMail(
+                    config.mail.from,
+                    entry.email,
+                    config.mail[entry.note === 'dev' ? 'devto' : 'to'],
+                    'В Чистилище',
+                    message,
+                );
             }
-
-            return sendMail(
-                functions.config().mail.from,
-                entry.email,
-                functions.config().mail[entry.note === 'dev' ? 'devto' : 'to'],
-                'В Чистилище',
-                message,
-            );
         } catch (e) {
             Bugsnag.notify(e);
         }
 
-        return;
+        return null;
     },
 );

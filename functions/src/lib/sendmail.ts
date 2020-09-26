@@ -1,7 +1,9 @@
 import * as functions from 'firebase-functions';
 import mailjet from 'node-mailjet';
+import type { RuntimeConfig } from '../types';
 
-const mj = mailjet.connect(functions.config().mailjet.apikey.public, functions.config().mailjet.apikey.private);
+const config = functions.config() as RuntimeConfig;
+const mj = mailjet.connect(config.mailjet.apikey.public, config.mailjet.apikey.private);
 
 export function sendMail(
     from: string,

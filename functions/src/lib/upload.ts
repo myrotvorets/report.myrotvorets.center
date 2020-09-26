@@ -15,11 +15,11 @@ const randomString = (length = 15): Promise<string> =>
     randomBytes(2 * length).then((buf) =>
         buf
             .toString('base64')
-            .replace(/\+|\/|=/g, '')
+            .replace(/\+|\/|=/gu, '')
             .slice(0, length),
     );
 
-const errorHandler = (e: Error) => {
+const errorHandler = (e: Error): never => {
     Bugsnag.notify(e);
     throw e;
 };

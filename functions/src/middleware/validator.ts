@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import { body, validationResult, ValidationError, Result, param } from 'express-validator';
+import { Result, ValidationError, body, param, validationResult } from 'express-validator';
 
 export const reportAddValidator = [
     body('name', 'BAD_REQUEST').exists().trim().isLength({ min: 5 }).withMessage('TOO_SHORT'),
@@ -36,7 +36,7 @@ export function commonValidationHandler(req: Request, res: Response, next: NextF
         fields[item.param] = item.msg as string;
     });
 
-    next({
+    return next({
         success: false,
         status: 422,
         code: 'VALIDATION_FAILED',

@@ -1,15 +1,21 @@
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import admin from 'firebase-admin';
 
+interface AuthError extends Error {
+    code: string;
+}
+
 export default function authMiddleware(): RequestHandler {
     return function (req: Request, res: Response, next: NextFunction): void {
         if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
-            return next({
+            next({
                 success: false,
                 status: 401,
                 code: 'AUTH_REQUIRED',
                 message: 'Not authorized',
             });
+
+            return;
         }
 
         const [, idToken] = req.headers.authorization.split('Bearer ');
@@ -21,7 +27,7 @@ export default function authMiddleware(): RequestHandler {
                 req.user = decoded;
                 next();
             })
-            .catch((e) =>
+            .catch((e: AuthError) =>
                 next({
                     success: false,
                     status: 401,

@@ -43,3 +43,20 @@ export interface ReportEntry {
     ua: string;
     dt: number;
 }
+
+export interface RuntimeConfig {
+    mailjet: {
+        apikey: {
+            public: string;
+            private: string;
+        };
+    };
+    mail: {
+        devto: string;
+        to: string;
+        from: string;
+    };
+    bugsnag: {
+        apikey: string;
+    };
+}

@@ -3,6 +3,10 @@ import Bugsnag from '@bugsnag/js';
 import { fetch } from '../lib/fetch';
 import { httpsAgent } from '../lib/agents';
 
+interface DebounceResponse {
+    disposable?: string;
+}
+
 export function checkEmail(req: Request, res: Response): Promise<void> {
     const email = req.params.email;
 
@@ -13,7 +17,7 @@ export function checkEmail(req: Request, res: Response): Promise<void> {
         },
     })
         .then((r) => r.json())
-        .then((json) => {
+        .then((json: DebounceResponse) => {
             res.json({
                 success: true,
                 status: 'disposable' in json ? (json.disposable === 'true' ? 'DEA' : 'OK') : 'DUNNO',

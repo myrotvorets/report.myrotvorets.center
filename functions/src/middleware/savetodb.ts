@@ -1,8 +1,7 @@
 import admin from 'firebase-admin';
 import type { NextFunction, Request, Response } from 'express';
-import type { AddUpdateRequestBody } from '../types';
 import Bugsnag from '@bugsnag/js';
-import { ReportEntry } from '../types';
+import type { AddUpdateRequestBody, ReportEntry } from '../types';
 
 const db = admin.database();
 
@@ -44,5 +43,5 @@ export async function saveToDatabase(
         });
     }
 
-    next();
+    return next();
 }
