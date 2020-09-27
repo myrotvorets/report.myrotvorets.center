@@ -23,7 +23,7 @@ class LoginForm extends Component<MappedProps, State> {
         emailValid: false,
     };
 
-    private _emailUpdateHandler = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
+    private readonly _emailUpdateHandler = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
         const { value } = currentTarget;
         this.setState({
             email: value,
@@ -31,20 +31,20 @@ class LoginForm extends Component<MappedProps, State> {
         });
     };
 
-    private _backButtonClickHandler = (): void => {
+    private readonly _backButtonClickHandler = (): void => {
         this.setState({ state: 'initial', email: '', emailValid: false });
     };
 
-    private _issuesButtonClickHandler = (): void => {
+    private readonly _issuesButtonClickHandler = (): void => {
         this.setState({ state: 'troubles' });
     };
 
-    private _retryClickHandler = (): void => {
+    private readonly _retryClickHandler = (): void => {
         const { email } = this.state;
         this._sendConfirmationLink(email);
     };
 
-    private _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
+    private readonly _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const { email } = this.state;
 
@@ -161,6 +161,9 @@ class LoginForm extends Component<MappedProps, State> {
 
             case 'link_sent':
                 return this._renderLinkSentDialog();
+
+            default:
+                return null;
         }
     }
 }

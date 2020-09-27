@@ -24,7 +24,7 @@ registerRoute(
 );
 
 registerRoute(
-    /\.(png|jpe?g|webp)$/,
+    /\.(png|jpe?g|webp)$/u,
     new StaleWhileRevalidate({
         cacheName: 'image-cache',
         plugins: [

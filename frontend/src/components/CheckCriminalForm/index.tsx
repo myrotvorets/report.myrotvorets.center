@@ -24,31 +24,36 @@ class CheckCriminalForm extends Component<unknown, State> {
         criminal: null,
     };
 
-    private _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
+    private readonly _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const form = e.currentTarget;
         if (form.checkValidity()) {
             const { stage } = this.state;
             switch (stage) {
                 case 0:
-                    return this._doStage0();
+                    this._doStage0();
+                    break;
 
                 case 1:
-                    return this._doStage1();
+                    this._doStage1();
+                    break;
+
+                default:
+                    break;
             }
         } else {
             form.reportValidity();
         }
     };
 
-    private _onUrlChanged = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
+    private readonly _onUrlChanged = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
         this.setState({
             url: currentTarget.value,
             urlValid: currentTarget.checkValidity(),
         });
     };
 
-    private _onBackButtonClicked = (): void => {
+    private readonly _onBackButtonClicked = (): void => {
         const { stage } = this.state;
         if (stage === 0) {
             route('/start');
@@ -71,10 +76,12 @@ class CheckCriminalForm extends Component<unknown, State> {
         this.setState({ busy: true });
 
         const { url } = this.state;
-        const matches = url.match(/^https?:\/\/[^/]+\/criminal\/([^/]+)/i);
+        const matches = /^https?:\/\/[^/]+\/criminal\/([^/]+)/iu.exec(url);
 
         if (matches) {
-            findCriminalBySlug(matches[1]).then((criminal: Criminal | Error) => {
+            // findCriminalBySlug() cannot fail
+            // eslint-disable-next-line no-void
+            void findCriminalBySlug(matches[1]).then((criminal: Criminal | Error) => {
                 if (criminal instanceof Error && criminal.message === 'NOT_FOUND') {
                     this.setState({
                         busy: false,

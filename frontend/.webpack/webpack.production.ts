@@ -17,7 +17,7 @@ export default function (): webpack.Configuration {
         module: {
             rules: [
                 {
-                    test: /\.s?css$/,
+                    test: /\.s?css$/u,
                     loaders: [
                         MiniCssExtractPlugin.loader,
                         {
@@ -50,11 +50,11 @@ export default function (): webpack.Configuration {
             new HwpInlineRuntimeChunkPlugin({ removeSourceMap: true }),
             new InjectManifest({
                 swSrc: './src/sw.ts',
-                include: ['index.html', /\.mjs$/, /\.svg$/, /\.css$/, /\.png$/],
+                include: ['index.html', /\.mjs$/u, /\.svg$/u, /\.css$/u, /\.png$/u],
                 excludeChunks: ['runtime'],
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                dontCacheBustURLsMatching: /\.[0-9a-f]{5}\./,
+                dontCacheBustURLsMatching: /\.[0-9a-f]{5}\./u,
             }),
             new ServiceWorkerPlugin(),
             new webpack.HashedModuleIdsPlugin(),

@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default class Alert extends Component<Props> {
-    private _ref: RefObject<HTMLDivElement> = createRef();
+    private readonly _ref: RefObject<HTMLDivElement> = createRef();
 
     public componentDidMount(): void {
         const { children, message } = this.props;

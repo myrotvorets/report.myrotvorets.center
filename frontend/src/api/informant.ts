@@ -1,3 +1,4 @@
+import Bugsnag from '@bugsnag/js';
 import type { Criminal } from './myrotvorets';
 
 export interface ReportData {
@@ -62,9 +63,9 @@ function sendResponse(url: string, token: string, body: Record<string, string>):
         },
         body: JSON.stringify(body),
     })
-        .then((response) => response.json())
+        .then((response) => response.json() as Promise<InformantApiResponse>)
         .catch((e) => {
-            console.error(e);
+            Bugsnag.notify(e);
             return Promise.resolve(communicationError);
         });
 }

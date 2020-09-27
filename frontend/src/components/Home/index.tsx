@@ -12,7 +12,7 @@ interface MappedProps {
 type Props = OwnProps & MappedProps;
 
 class Home extends Component<Props> {
-    private _formSubmitHandler = (e: Event): void => {
+    private readonly _formSubmitHandler = (e: Event): void => {
         e.preventDefault();
         const { loggedIn } = this.props;
 

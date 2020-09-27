@@ -8,7 +8,7 @@ export const W_SIGNOUT = 'signout';
 export const W_UPLOAD_FILE = 'upload';
 export const W_UPLOAD_PROGRESS = 'upload_progress';
 
-interface BaseWorkerRequest<Type, Payload> {
+export interface BaseWorkerRequest<Type, Payload> {
     type: Type;
     payload: Payload;
 }
@@ -113,7 +113,7 @@ export function sendAndWait<Request = unknown, Payload = unknown>(
 
     return new Promise<Payload>((resolve) => {
         const listener = ({ data }: MessageEvent): void => {
-            if ('type' in data && data.type === what) {
+            if ('type' in data && (data as BaseWorkerRequest<string, unknown>).type === what) {
                 worker.removeEventListener('message', listener);
                 const { payload } = data as BaseWorkerResponse<unknown, Payload>;
                 resolve(payload);

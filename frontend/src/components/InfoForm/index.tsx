@@ -42,6 +42,26 @@ interface State {
 }
 
 class InfoForm extends Component<Props, State> {
+    private static _parseError(e: ErrorResponse | Error): string {
+        if (e instanceof Error) {
+            return e.message;
+        }
+
+        switch (e.code) {
+            case 'AUTH_FAILED':
+                return 'Помилка аутентифікації. Будь ласка, увійдіть ще раз і повторіть спробу.';
+
+            case 'COMM_ERROR':
+                return 'Помилка зв’язку з сервером. Будь ласка, перевірте підключення до Інтернету і повторіть спробу.';
+
+            case 'VALIDATION_FAILED':
+                return 'Сервер відхилив запит. Переконайтеся, що дані, які ви намагаєтеся надіслати, не мають помилок.';
+
+            default:
+                return 'Невідома помилка. Будь ласка, повторіть спробу пізніше.';
+        }
+    }
+
     public constructor(props: Props) {
         super(props);
 
@@ -72,16 +92,13 @@ class InfoForm extends Component<Props, State> {
             const coerced = +id;
             if (Number.isNaN(coerced) || `${coerced}` !== `${id}` || coerced % 1 !== 0 || coerced < 0) {
                 route('/start');
-                return;
-            }
-
-            if (this.state.state === 'verifying') {
-                return this._verifyCriminal();
+            } else if (this.state.state === 'verifying') {
+                this._verifyCriminal();
             }
         }
     }
 
-    private _onInputChanged = ({
+    private readonly _onInputChanged = ({
         currentTarget,
     }: h.JSX.TargetedEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const { name, value } = currentTarget;
@@ -99,16 +116,18 @@ class InfoForm extends Component<Props, State> {
         );
     };
 
-    private _onFileChange = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): unknown => {
+    private readonly _onFileChange = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
         const { files } = currentTarget;
         if (files) {
             const { length } = files;
             if (length > 15) {
                 currentTarget.value = '';
-                return this.setState({
+                this.setState({
                     error:
                         'Ви намагаєтеся завантажити занадто багато файлів. Будь ласка, скористайтеся файлообмінником.',
                 });
+
+                return;
             }
 
             let size = 0;
@@ -119,7 +138,7 @@ class InfoForm extends Component<Props, State> {
 
             if (size > 20971520) {
                 currentTarget.value = '';
-                return this.setState({
+                this.setState({
                     error:
                         'Ви намагаєтеся завантажити занадто великі файли. Будь ласка, скористайтеся файлообмінником.',
                 });
@@ -127,7 +146,7 @@ class InfoForm extends Component<Props, State> {
         }
     };
 
-    private _onFormSubmit = (event: h.JSX.TargetedEvent<HTMLFormElement>): void => {
+    private readonly _onFormSubmit = (event: h.JSX.TargetedEvent<HTMLFormElement>): void => {
         event.preventDefault();
         const form = event.currentTarget;
         if (form.checkValidity()) {
@@ -159,16 +178,16 @@ class InfoForm extends Component<Props, State> {
                         this._resetLocalStorage();
                         this.setState({ state: 'success' });
                     } else {
-                        this.setState({ state: 'idle', error: this._parseError(j), status: '' });
+                        this.setState({ state: 'idle', error: InfoForm._parseError(j), status: '' });
                     }
                 })
-                .catch((e: Error) => this.setState({ state: 'idle', error: this._parseError(e), status: '' }));
+                .catch((e: Error) => this.setState({ state: 'idle', error: InfoForm._parseError(e), status: '' }));
         } else {
             form.reportValidity();
         }
     };
 
-    private _onFileUploadProgress = (e: Event): void => {
+    private readonly _onFileUploadProgress = (e: Event): void => {
         if (e instanceof CustomEvent) {
             const { detail: progress } = e as CustomEvent<number>;
             this.setState(
@@ -181,7 +200,7 @@ class InfoForm extends Component<Props, State> {
         }
     };
 
-    private _onOverallUploadProgress = (e: Event): void => {
+    private readonly _onOverallUploadProgress = (e: Event): void => {
         if (e instanceof CustomEvent) {
             const { detail } = e as CustomEvent<number>;
             this.setState(
@@ -195,7 +214,9 @@ class InfoForm extends Component<Props, State> {
 
     private _verifyCriminal(): void {
         const { id } = this.props;
-        findCriminalById(id as string).then((r) => {
+        // findCriminalById() never fails
+        // eslint-disable-next-line no-void
+        void findCriminalById(id as string).then((r) => {
             if ('id' in r) {
                 this.setState({
                     criminal: r,
@@ -236,26 +257,6 @@ class InfoForm extends Component<Props, State> {
 
     private _resetLocalStorage(): void {
         Object.keys(this.state.data).forEach((key) => lsSet(`f_${key}`, ''));
-    }
-
-    private _parseError(e: ErrorResponse | Error): string {
-        if (e instanceof Error) {
-            return e.message;
-        }
-
-        switch (e.code) {
-            case 'AUTH_FAILED':
-                return 'Помилка аутентифікації. Будь ласка, увійдіть ще раз і повторіть спробу.';
-
-            case 'COMM_ERROR':
-                return 'Помилка зв’язку з сервером. Будь ласка, перевірте підключення до Інтернету і повторіть спробу.';
-
-            case 'VALIDATION_FAILED':
-                return 'Сервер відхилив запит. Переконайтеся, що дані, які ви намагаєтеся надіслати, не мають помилок.';
-
-            default:
-                return 'Невідома помилка. Будь ласка, повторіть спробу пізніше.';
-        }
     }
 
     public render(): ComponentChild {

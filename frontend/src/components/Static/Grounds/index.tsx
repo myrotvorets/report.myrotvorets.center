@@ -44,7 +44,7 @@ export default function Grounds(): h.JSX.Element {
                         "
                     type="image/jpeg"
                 />
-                <img src={c295j} alt="" />
+                <img src={c295j as string} alt="" />
             </picture>
 
             <section>

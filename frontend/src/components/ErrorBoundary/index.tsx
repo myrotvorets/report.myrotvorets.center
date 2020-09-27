@@ -27,6 +27,7 @@ export default class ErrorBoundary extends Component<Props, State> {
         return { error };
     }
 
+    // eslint-disable-next-line class-methods-use-this
     public componentDidCatch(error: Error): void {
         Bugsnag.notify(error);
     }

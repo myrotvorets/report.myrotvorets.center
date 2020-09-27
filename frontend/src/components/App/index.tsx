@@ -3,7 +3,7 @@ import { ActionBinder, connect } from 'unistore/preact';
 import { ActionMap } from 'unistore';
 import { AppState } from '../../redux/store';
 import { setUser, setWorker } from '../../redux/actions';
-import { W_AUTH_STATE_CHANGED, WorkerResponseAuthStateChanged } from '../../utils/worker';
+import { BaseWorkerRequest, W_AUTH_STATE_CHANGED, WorkerResponseAuthStateChanged } from '../../utils/worker';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // eslint-disable-next-line import/default
@@ -32,13 +32,14 @@ interface State {
 }
 
 class App extends Component<Props, State> {
-    private _worker: Worker | undefined;
+    private readonly _worker: Worker | undefined;
 
     public constructor(props: Props) {
         super(props);
 
         if (window.Worker) {
             try {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
                 const worker: Worker = new AuthWorker();
                 worker.addEventListener('message', this._onWorkerMessage);
                 worker.addEventListener('error', this._onWorkerError);
@@ -67,14 +68,14 @@ class App extends Component<Props, State> {
         }
     }
 
-    private _onWorkerMessage = ({ data }: MessageEvent): void => {
-        if ('type' in data && data.type === W_AUTH_STATE_CHANGED) {
+    private readonly _onWorkerMessage = ({ data }: MessageEvent): void => {
+        if ('type' in data && (data as BaseWorkerRequest<string, unknown>).type === W_AUTH_STATE_CHANGED) {
             const { payload } = data as WorkerResponseAuthStateChanged;
             this.props.setUser(payload);
         }
     };
 
-    private _onWorkerError = (e: ErrorEvent): void => {
+    private readonly _onWorkerError = (e: ErrorEvent): void => {
         if (e.currentTarget instanceof Worker) {
             this.setState({ error: new Error('Something wrong with the worker') });
         }

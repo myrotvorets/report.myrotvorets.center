@@ -13,7 +13,7 @@ export default function (): webpack.Configuration {
         module: {
             rules: [
                 {
-                    test: /\.s?css$/,
+                    test: /\.s?css$/u,
                     use: ['style-loader', 'css-loader', 'sass-loader'],
                 },
             ],

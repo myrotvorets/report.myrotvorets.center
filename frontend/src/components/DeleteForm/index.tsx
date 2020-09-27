@@ -1,6 +1,7 @@
 import { Component, ComponentChild, h } from 'preact';
 
 export default class DeleteForm extends Component {
+    // eslint-disable-next-line class-methods-use-this
     private _renderStep1(): ComponentChild {
         return (
             <div>
@@ -42,24 +43,6 @@ export default class DeleteForm extends Component {
                 </label>
 
                 <button>Повернутись</button>
-                <button>Продовжити</button>
-            </div>
-        );
-    }
-
-    _renderStep2(): ComponentChild {
-        return (
-            <div>
-                <label className="required" htmlFor="url">
-                    Адреса запису на сайті Myrotvorets.center
-                </label>
-                <input
-                    type="url"
-                    required
-                    pattern="/^https:\//myrotvorets\.center\/criminal\/"
-                    placeholder="https://myrotvorets.center/criminal/your-name-here/"
-                    id="url"
-                />
                 <button>Продовжити</button>
             </div>
         );
