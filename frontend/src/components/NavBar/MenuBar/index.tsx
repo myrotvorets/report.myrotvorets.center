@@ -9,7 +9,7 @@ export default class MenuBar extends Component<unknown, State> {
         open: false,
     };
 
-    private _onMenuOpenClicked = (): void => {
+    private readonly _onMenuOpenClicked = (): void => {
         this.setState(
             (prevState: Readonly<State>): Partial<State> => ({
                 open: !prevState.open,
@@ -17,7 +17,7 @@ export default class MenuBar extends Component<unknown, State> {
         );
     };
 
-    private _onMouseLeaveHandler = (): void => {
+    private readonly _onMouseLeaveHandler = (): void => {
         this.setState({
             open: false,
         });

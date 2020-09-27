@@ -11,8 +11,8 @@ function getThumbnailURL({ attachments }: Criminal): string | null {
     if (attachments) {
         for (let i = 0; i < attachments.length; ++i) {
             const a = attachments[i];
-            if (a.type.slice(0, 5) === 'image') {
-                return a.url.replace(/\.([a-z]+)$/, '-150x150.$1');
+            if (a.type.startsWith('image')) {
+                return a.url.replace(/\.([a-z]+)$/u, '-150x150.$1');
             }
         }
     }

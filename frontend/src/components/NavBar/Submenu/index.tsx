@@ -13,7 +13,7 @@ export default class Submenu extends Component<Props, State> {
         open: false,
     };
 
-    private _onMouseEnterHandler = (e: h.JSX.TargetedMouseEvent<HTMLLIElement>): void => {
+    private readonly _onMouseEnterHandler = (e: h.JSX.TargetedMouseEvent<HTMLLIElement>): void => {
         const li = e.currentTarget;
         const ul = li.parentElement;
         if (
@@ -27,7 +27,7 @@ export default class Submenu extends Component<Props, State> {
         }
     };
 
-    private _onMouseLeaveHandler = (e: h.JSX.TargetedMouseEvent<HTMLLIElement>): void => {
+    private readonly _onMouseLeaveHandler = (e: h.JSX.TargetedMouseEvent<HTMLLIElement>): void => {
         const li = e.currentTarget;
         const ul = li.parentElement;
         if (
@@ -41,7 +41,7 @@ export default class Submenu extends Component<Props, State> {
         }
     };
 
-    private _onClickCaptureHandler = (e: h.JSX.TargetedMouseEvent<HTMLElement>): void => {
+    private readonly _onClickCaptureHandler = (e: h.JSX.TargetedMouseEvent<HTMLElement>): void => {
         if (e.target && (e.target as HTMLElement).closest('li') === e.currentTarget) {
             e.preventDefault();
             e.stopImmediatePropagation();

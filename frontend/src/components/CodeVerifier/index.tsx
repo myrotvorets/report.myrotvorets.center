@@ -31,13 +31,13 @@ class CodeVerifier extends Component<Props, State> {
         emailValid: this.props.email.length > 0,
     };
 
-    componentDidMount(): void {
+    public componentDidMount(): void {
         if (this.state.email) {
             this._signIn();
         }
     }
 
-    private _onEmailUpdate = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
+    private readonly _onEmailUpdate = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
         const { value } = currentTarget;
         this.setState({
             email: value,
@@ -45,7 +45,7 @@ class CodeVerifier extends Component<Props, State> {
         });
     };
 
-    private _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
+    private readonly _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
         e.preventDefault();
         this._signIn();
     };

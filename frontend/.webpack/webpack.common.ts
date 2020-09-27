@@ -67,7 +67,7 @@ const config: webpack.Configuration = {
     module: {
         rules: [
             {
-                test: /-worker\.ts$/,
+                test: /-worker\.ts$/u,
                 use: [
                     {
                         loader: 'worker-loader',
@@ -79,17 +79,17 @@ const config: webpack.Configuration = {
                 ],
             },
             {
-                test: /node_modules\/preact\/hooks\//,
+                test: /node_modules\/preact\/hooks\//u,
                 loaders: 'null-loader',
             },
             {
                 enforce: 'pre',
-                test: /\.tsx?$/,
-                exclude: /node_modules/,
+                test: /\.tsx?$/u,
+                exclude: /node_modules/u,
                 loaders: ['babel-loader'],
             },
             {
-                test: /\.svg$/,
+                test: /\.svg$/u,
                 use: [
                     {
                         loader: 'file-loader',
@@ -111,7 +111,7 @@ const config: webpack.Configuration = {
                 ],
             },
             {
-                test: /\.(png|jpe?g|webp)$/,
+                test: /\.(png|jpe?g|webp)$/u,
                 loader: 'file-loader',
                 options: {
                     name: '[name].[contenthash:5].[ext]',
@@ -119,8 +119,8 @@ const config: webpack.Configuration = {
                 },
             },
             {
-                test: /\.json$/,
-                issuer: /\.ejs$/,
+                test: /\.json$/u,
+                issuer: /\.ejs$/u,
                 type: 'javascript/auto',
                 use: [
                     {

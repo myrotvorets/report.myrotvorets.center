@@ -1,4 +1,5 @@
 import {
+    BaseWorkerRequest,
     ResUploadPayload,
     W_UPLOAD_FILE,
     W_UPLOAD_PROGRESS,
@@ -10,7 +11,7 @@ import {
 const randomString = (): string => Math.random().toString(36).substring(2, 15);
 
 function listener({ data }: MessageEvent): void {
-    if ('type' in data && data.type === W_UPLOAD_PROGRESS) {
+    if ('type' in data && (data as BaseWorkerRequest<string, unknown>).type === W_UPLOAD_PROGRESS) {
         const { payload } = data as WorkerResponseUploadProgress;
         document.dispatchEvent(new CustomEvent('fileuploadprogress', { detail: payload.progress }));
     }
@@ -45,6 +46,7 @@ export async function uploadFiles(worker: Worker, userID: string, files: FileLis
                 },
             };
 
+            // eslint-disable-next-line no-await-in-loop
             const result = await sendAndWait<WorkerRequestUpload, ResUploadPayload>(worker, req, W_UPLOAD_FILE);
             if (!result.success) {
                 const e = new Error(result.message);

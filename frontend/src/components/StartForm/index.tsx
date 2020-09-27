@@ -11,23 +11,28 @@ class StartForm extends Component<unknown, State> {
         action: '',
     };
 
-    private _onActionChanged = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
+    private readonly _onActionChanged = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
         const { value } = currentTarget;
         this.setState({
             action: value,
         });
     };
 
-    private _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): unknown => {
+    private readonly _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): unknown => {
         e.preventDefault();
         const form = e.currentTarget;
         if (form.checkValidity()) {
             switch (this.state.action) {
                 case 'add':
-                    return route('/criminal/add');
+                    route('/criminal/add');
+                    break;
 
                 case 'update':
-                    return route('/update/check');
+                    route('/update/check');
+                    break;
+
+                default:
+                    break;
             }
 
             return;

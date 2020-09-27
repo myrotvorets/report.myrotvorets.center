@@ -21,6 +21,10 @@ import {
     WorkerResponseSignOut,
 } from './utils/worker';
 
+interface FirebaseError extends Error {
+    code: string;
+}
+
 const errorCodes: Record<string, string> = {
     'auth/expired-action-code': 'Термін дії коду підтвердження минув. Будь ласка, спробуйте ще раз.',
     'auth/invalid-action-code':
@@ -56,7 +60,7 @@ function getToken(): void {
                     payload: { success: true, token, uid: currentUser.uid },
                 } as WorkerResponseGetToken);
             })
-            .catch((e) => {
+            .catch((e: FirebaseError) => {
                 self.postMessage({
                     type: W_GETTOKEN,
                     payload: {
@@ -84,7 +88,7 @@ function sendLink(email: string, url: string): void {
                 payload: { success: true },
             } as WorkerResponseSendLink);
         })
-        .catch((e) => {
+        .catch((e: FirebaseError) => {
             self.postMessage({
                 type: W_SENDLINK,
                 payload: {
@@ -106,7 +110,7 @@ function signIn(email: string, link: string): void {
                 payload: { success: true },
             } as WorkerResponseSignIn);
         })
-        .catch((e) => {
+        .catch((e: FirebaseError) => {
             self.postMessage({
                 type: W_SIGNIN,
                 payload: {
@@ -130,7 +134,7 @@ function signOut(): void {
                 },
             } as WorkerResponseSignOut);
         })
-        .catch((e) => {
+        .catch((e: FirebaseError) => {
             self.postMessage({
                 type: W_SIGNOUT,
                 payload: {
@@ -184,19 +188,27 @@ self.addEventListener('message', ({ data }: MessageEvent): void => {
         const d = data as WorkerRequest;
         switch (d.type) {
             case W_GETTOKEN:
-                return getToken();
+                getToken();
+                break;
 
             case W_SIGNIN:
-                return signIn(d.payload.email, d.payload.link);
+                signIn(d.payload.email, d.payload.link);
+                break;
 
             case W_SIGNOUT:
-                return signOut();
+                signOut();
+                break;
 
             case W_SENDLINK:
-                return sendLink(d.payload.email, d.payload.url);
+                sendLink(d.payload.email, d.payload.url);
+                break;
 
             case W_UPLOAD_FILE:
-                return uploadFile(d.payload.uid, d.payload.name, d.payload.file);
+                uploadFile(d.payload.uid, d.payload.name, d.payload.file);
+                break;
+
+            default:
+                break;
         }
     }
 });

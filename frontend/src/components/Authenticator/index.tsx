@@ -29,7 +29,7 @@ export default function Authenticator(): h.JSX.Element | null {
                     const url = new URL(searchParams.get('continueUrl') as string);
                     if (
                         url.hostname !== window.location.hostname &&
-                        /^(report\.myrotvorets\.(center|dev)|localhost)$/i.test(url.hostname)
+                        /^(report\.myrotvorets\.(center|dev)|localhost)$/iu.test(url.hostname)
                     ) {
                         window.location.host = url.host;
                         return null;

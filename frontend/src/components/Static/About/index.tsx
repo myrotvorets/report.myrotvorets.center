@@ -8,7 +8,7 @@ export default function About(): h.JSX.Element {
     return (
         <section className="static block block--centered">
             <header className="block__header">Про Центр «Миротворець»</header>
-            <img className="logo" src={logo} alt="Миротворець" />
+            <img className="logo" src={logo as string} alt="Миротворець" />
             <p>
                 <strong>Центр «Миротворець»</strong> є <em>незалежною недержавною організацією</em>, створеною групою
                 вчених, журналістів і фахівців з питань дослідження ознак злочинів проти національної безпеки України,
