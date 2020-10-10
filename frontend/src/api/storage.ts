@@ -49,8 +49,7 @@ export async function uploadFiles(worker: Worker, userID: string, files: FileLis
             // eslint-disable-next-line no-await-in-loop
             const result = await sendAndWait<WorkerRequestUpload, ResUploadPayload>(worker, req, W_UPLOAD_FILE);
             if (!result.success) {
-                const e = new Error(result.message);
-                throw e;
+                throw new Error(result.message);
             }
         }
     } finally {
