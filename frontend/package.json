@@ -24,7 +24,7 @@
     "@babel/plugin-transform-react-jsx": "^7.10.4",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
-    "@babel/preset-typescript": "^7.10.4",
+    "@babel/preset-typescript": "^7.12.1",
     "@bugsnag/js": "^7.4.0",
     "@myrotvorets/eslint-config-myrotvorets-preact-ts": "^1.1.0",
     "@types/copy-webpack-plugin": "^6.0.0",
