@@ -65,7 +65,7 @@
     "null-loader": "^4.0.1",
     "postcss": "^8.1.1",
     "postcss-loader": "^4.0.4",
-    "preact": "^10.5.4",
+    "preact": "^10.5.5",
     "preact-router": "^3.2.1",
     "prettier": "^2.1.2",
     "purgecss-webpack-plugin": "^3.0.0",
