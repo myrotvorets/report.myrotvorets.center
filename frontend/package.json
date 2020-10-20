@@ -14,7 +14,6 @@
   "keywords": [],
   "author": "Myrotvorets <support@myrotvorets.center> (https://myrotvorets.center/)",
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.12.1",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
@@ -42,7 +41,7 @@
     "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.2.1",
-    "css-loader": "^1.0.0",
+    "css-loader": "^5.0.0",
     "cssnano": "^4.1.10",
     "ejs-webpack-loader": "^2.2.2",
     "eslint": "^7.11.0",
