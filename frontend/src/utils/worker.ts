@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import type firebase from 'firebase';
 
 export const W_AUTH_STATE_CHANGED = 'auth_state_changed';
 export const W_GETTOKEN = 'get_token';
