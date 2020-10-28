@@ -1,4 +1,4 @@
-import type { User } from 'firebase/app';
+import firebase from 'firebase';
 
 export const W_AUTH_STATE_CHANGED = 'auth_state_changed';
 export const W_GETTOKEN = 'get_token';
@@ -86,7 +86,7 @@ export type WorkerRequest =
     | WorkerRequestSendLink
     | WorkerRequestUpload;
 
-export type WorkerResponseAuthStateChanged = BaseWorkerResponse<typeof W_AUTH_STATE_CHANGED, User | null>;
+export type WorkerResponseAuthStateChanged = BaseWorkerResponse<typeof W_AUTH_STATE_CHANGED, firebase.User | null>;
 export type WorkerResponseGetToken = BaseWorkerResponse<typeof W_GETTOKEN, ResGetTokenPayload>;
 export type WorkerResponseSignIn = BaseWorkerResponse<typeof W_SIGNIN, ResSignInPayload>;
 export type WorkerResponseSignOut = BaseWorkerResponse<typeof W_SIGNOUT, ResSignOutPayload>;
