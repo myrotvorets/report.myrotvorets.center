@@ -22,7 +22,7 @@
     "@babel/plugin-transform-object-assign": "^7.12.1",
     "@babel/plugin-transform-react-jsx": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
-    "@babel/preset-react": "^7.12.1",
+    "@babel/preset-react": "^7.12.5",
     "@babel/preset-typescript": "^7.12.1",
     "@bugsnag/js": "^7.5.1",
     "@myrotvorets/eslint-config-myrotvorets-preact-ts": "^1.1.6",
