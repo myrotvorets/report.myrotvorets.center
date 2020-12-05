@@ -12,6 +12,7 @@ function lazy<T>(loader: () => Promise<{ default: T }> | { default: T }): T {
     return loafing(loader as () => Promise<{ default: T }>);
 }
 
+// eslint-disable-next-line no-unused-vars
 function suspenseWrapper<T>(Component: ComponentType<T>): (props: RenderableProps<T>) => h.JSX.Element {
     if (process.env.BUILD_SSR) {
         // eslint-disable-next-line react/display-name
