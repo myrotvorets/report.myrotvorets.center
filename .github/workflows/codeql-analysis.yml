@@ -2,10 +2,17 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
+    paths:
+      - "**/*.ts"
+      - "**/package.json"
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [master]
+    branches:
+      - master
+    paths:
+      - "**/*.ts"
+      - "**/package.json"
   schedule:
     - cron: '0 8 * * 6'
 
