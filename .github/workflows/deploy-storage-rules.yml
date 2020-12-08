@@ -23,7 +23,7 @@ jobs:
         id: deployment
         with:
           token: "${{ github.token }}"
-          environment: production/database
+          environment: production/storage
 
       - name: Deploy storage rules to Firebase
         env:
