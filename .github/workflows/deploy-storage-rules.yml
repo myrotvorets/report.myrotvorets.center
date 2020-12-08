@@ -1,0 +1,47 @@
+name: Deploy Storage Rules
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "storage.rules"
+  workflow_dispatch:
+
+jobs:
+  deploy-storage-rules:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install firebase-tools
+        run: npm install -g firebase-tools
+
+      - name: Start deployment
+        uses: chrnorm/deployment-action@v1.2.0
+        id: deployment
+        with:
+          token: "${{ github.token }}"
+          environment: production/database
+
+      - name: Deploy storage rules to Firebase
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --only storage
+
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@v1.0.0
+        with:
+          token: "${{ github.token }}"
+          state: "success"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@v1.0.0
+        with:
+          token: "${{ github.token }}"
+          state: "failure"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}

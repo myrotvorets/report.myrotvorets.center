@@ -1,0 +1,45 @@
+name: Build Backend
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "functions/**"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "functions/**"
+  workflow_dispatch:
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: ['10', '12', '14']
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: ${{ matrix.node_version }}
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules-be
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.node_version }}-${{ hashFiles('backend/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: functions
+
+      - name: Build
+        run: npm run build
+        working-directory: functions

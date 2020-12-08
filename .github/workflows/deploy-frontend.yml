@@ -1,0 +1,69 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "frontend/**"
+  workflow_dispatch:
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: ['14']
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: git fetch --unshallow --tags
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: ${{ matrix.node_version }}
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules-fe
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.node_version }}-${{ hashFiles('frontend/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: frontend
+
+      - name: Start deployment
+        uses: chrnorm/deployment-action@v1.2.0
+        id: deployment
+        with:
+          token: "${{ github.token }}"
+          environment: production/hosting
+
+      - name: Deploy to Firebase hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --only hosting
+
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@v1.0.0
+        with:
+          token: "${{ github.token }}"
+          state: "success"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@v1.0.0
+        with:
+          token: "${{ github.token }}"
+          state: "failure"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
