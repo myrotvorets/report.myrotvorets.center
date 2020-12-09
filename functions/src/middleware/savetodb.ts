@@ -5,18 +5,6 @@ import type { AddUpdateRequestBody, ReportEntry } from '../types';
 
 const db = admin.database();
 
-function asyncPush(ref: admin.database.Reference, data: unknown): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-        ref.push(data, (err: Error | null) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve();
-            }
-        });
-    });
-}
-
 export async function saveToDatabase(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     req: Request<Record<string, any>, unknown, AddUpdateRequestBody>,
@@ -43,7 +31,7 @@ export async function saveToDatabase(
             dt: Date.now(),
         };
 
-        await asyncPush(db.ref('/reports'), entry);
+        await db.ref('/reports').push(entry);
     } catch (e) {
         Bugsnag.notify(e);
         return next({
