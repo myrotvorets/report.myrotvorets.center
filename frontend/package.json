@@ -53,7 +53,7 @@
     "fibers": "^5.0.0",
     "file-loader": "^6.2.0",
     "firebase": "^8.2.0",
-    "fork-ts-checker-webpack-plugin": "^6.0.7",
+    "fork-ts-checker-webpack-plugin": "^6.0.8",
     "glob": "^7.1.6",
     "html-webpack-plugin": "^4.5.0",
     "hwp-attributes-plugin": "^1.0.19",
