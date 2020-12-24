@@ -7,10 +7,10 @@ interface DebounceResponse {
     disposable?: string;
 }
 
-export function checkEmail(req: Request, res: Response): Promise<void> {
+export function checkEmail(req: Request, res: Response): void {
     const email = req.params.email;
 
-    return fetch(`https://disposable.debounce.io/?email=${encodeURIComponent(email)}`, {
+    fetch(`https://disposable.debounce.io/?email=${encodeURIComponent(email)}`, {
         agent: httpsAgent,
         headers: {
             Accept: 'application/json',

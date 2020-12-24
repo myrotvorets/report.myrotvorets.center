@@ -1,3 +1,4 @@
+import { RequestHandler } from 'express';
 import authMiddleware from '../middleware/auth';
 import { saveToDatabase } from '../middleware/savetodb';
 import { commonValidationHandler, reportAddValidator, reportUpdateValidator } from '../middleware/validator';
@@ -5,18 +6,18 @@ import { finalOK } from '../middleware/finalok';
 import { fetchCriminal } from '../middleware/fetchcriminal';
 
 export const reportNewCriminal = [
-    authMiddleware(),
+    authMiddleware,
     reportAddValidator,
     commonValidationHandler,
-    saveToDatabase,
+    saveToDatabase as RequestHandler,
     finalOK,
 ];
 
 export const reportUpdateCriminal = [
-    authMiddleware(),
+    authMiddleware,
     reportUpdateValidator,
     commonValidationHandler,
     fetchCriminal,
-    saveToDatabase,
+    saveToDatabase as RequestHandler,
     finalOK,
 ];
