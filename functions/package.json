@@ -35,7 +35,7 @@
     "node-mailjet": "^3.3.1"
   },
   "devDependencies": {
-    "@myrotvorets/eslint-config-myrotvorets-ts": "^2.2.2",
+    "@myrotvorets/eslint-config-myrotvorets-ts": "^2.2.3",
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "eslint": "^7.15.0",
     "eslint-plugin-import": "^2.22.1",
