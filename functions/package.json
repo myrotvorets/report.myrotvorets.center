@@ -27,7 +27,7 @@
     "archiver-zip-encryptable": "^1.0.7",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "express-validator": "^6.9.0",
+    "express-validator": "^6.9.2",
     "fetch-retry-ts": "^1.1.23",
     "firebase-admin": "^9.4.2",
     "firebase-functions": "^3.13.0",
