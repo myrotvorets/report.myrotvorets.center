@@ -12,7 +12,7 @@ export default function Footer(): h.JSX.Element {
             <p>
                 Версія:{' '}
                 <span id="version">
-                    {process.env.APP_VERSION} <img src={refresh as string} alt="" />
+                    {process.env.APP_VERSION} <img src={refresh as string} alt="" width={17} height={17} />
                 </span>{' '}
                 &nbsp;<a href="mailto:support@myrotvorets.center">Щось не працює?</a>
             </p>

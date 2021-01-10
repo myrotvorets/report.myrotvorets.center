@@ -29,7 +29,7 @@ if (!process.env.BUILD_SSR) {
     if (
         'serviceWorker' in navigator &&
         process.env.NODE_ENV === 'production' &&
-        !/^(127|192\.168|10)\./u.test(window.location.hostname)
+        !/^((127|192\.168|10)\.|localhost)/u.test(window.location.hostname)
     ) {
         navigator.serviceWorker
             .register('/sw.js')

@@ -1,7 +1,7 @@
 import { h } from 'preact';
+import Modal from '../Modal';
 
 import logo from '../../assets/myrotvorets.svg';
-import Modal from '../Modal';
 import './loader.scss';
 
 export default function Loader(): h.JSX.Element {
