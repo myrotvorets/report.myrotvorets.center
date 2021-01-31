@@ -7,7 +7,6 @@ import glob from 'glob';
 import path from 'path';
 import { InjectManifest } from 'workbox-webpack-plugin';
 import { HwpInlineRuntimeChunkPlugin } from 'hwp-inline-runtime-chunk-plugin';
-import ServiceWorkerPlugin from './ServiceWorkerPlugin';
 
 import commonConfig from './webpack.common';
 
@@ -18,7 +17,7 @@ export default function (): webpack.Configuration {
             rules: [
                 {
                     test: /\.s?css$/u,
-                    loaders: [
+                    use: [
                         MiniCssExtractPlugin.loader,
                         {
                             loader: 'css-loader',
@@ -50,14 +49,11 @@ export default function (): webpack.Configuration {
             new HwpInlineRuntimeChunkPlugin({ removeSourceMap: true }),
             new InjectManifest({
                 swSrc: './src/sw.ts',
-                include: ['index.html', /\.mjs$/u, /\.svg$/u, /\.css$/u, /\.png$/u],
+                compileSrc: true,
+                include: ['index.html', /\.m?js$/u, /\.svg$/u, /\.css$/u, /\.png$/u],
                 excludeChunks: ['runtime'],
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 dontCacheBustURLsMatching: /\.[0-9a-f]{5}\./u,
             }),
-            new ServiceWorkerPlugin(),
-            new webpack.HashedModuleIdsPlugin(),
             new webpack.optimize.ModuleConcatenationPlugin(),
             new MiniCssExtractPlugin({
                 filename: '[name].[contenthash:5].css',
@@ -71,19 +67,19 @@ export default function (): webpack.Configuration {
         ],
         optimization: {
             runtimeChunk: 'single',
-            moduleIds: 'hashed',
+            moduleIds: 'deterministic',
             minimizer: [
                 new TerserPlugin({
                     terserOptions: {
                         output: {
                             comments: false,
-                            ecma: 8,
+                            ecma: 2017,
                             safari10: true,
                         },
                         sourceMap: true,
                         mangle: true,
                         compress: {
-                            ecma: 8,
+                            ecma: 2017,
                             module: true,
                             keep_fargs: false,
                             pure_getters: true,

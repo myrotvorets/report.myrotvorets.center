@@ -17,31 +17,13 @@ export default function Grounds(): h.JSX.Element {
 
             <picture>
                 <source
-                    srcSet={`
-                        ${c295w} 295w,
-                        ${c632w} 632w,
-                        ${c875w} 875w,
-                        ${c922w} 922w`}
-                    sizes="
-                        (max-width: 414px) 295px,
-                        (max-width: 768px) 632px,
-                        (max-width: 1024px) 875px,
-                        922px
-                        "
+                    srcSet={`${c295w} 295w, ${c632w} 632w, ${c875w} 875w, ${c922w} 922w`}
+                    sizes="(max-width: 414px) 295px, (max-width: 768px) 632px, (max-width: 1024px) 875px, 922px"
                     type="image/webp"
                 />
                 <source
-                    srcSet={`
-                        ${c295j} 295w,
-                        ${c632j} 632w,
-                        ${c875j} 875w,
-                        ${c922j} 922w`}
-                    sizes="
-                        (max-width: 414px) 295px,
-                        (max-width: 768px) 632px,
-                        (max-width: 1024px) 875px,
-                        922px
-                        "
+                    srcSet={`${c295j} 295w, ${c632j} 632w, ${c875j} 875w, ${c922j} 922w`}
+                    sizes="(max-width: 414px) 295px, (max-width: 768px) 632px, (max-width: 1024px) 875px, 922px"
                     type="image/jpeg"
                 />
                 <img src={c295j as string} alt="" />

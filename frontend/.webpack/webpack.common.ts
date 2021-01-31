@@ -1,7 +1,6 @@
 import webpack from 'webpack';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { HwpAttributesPlugin } from 'hwp-attributes-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import { execSync } from 'child_process';
@@ -39,12 +38,12 @@ const config: webpack.Configuration = {
         path: path.resolve(__dirname, '../dist'),
         filename: '[name].[contenthash:5].mjs',
         chunkFilename: '[name].[chunkhash:5].mjs',
+        assetModuleFilename: '[name].[contenthash:5][ext]',
         publicPath: '/',
-        jsonpFunction: 'wjp',
-        jsonpScriptType: 'module',
+        scriptType: 'module',
         crossOriginLoading: 'anonymous',
     },
-    devtool: isProd ? 'source-map' : 'cheap-eval-source-map',
+    devtool: isProd ? 'source-map' : 'eval-cheap-source-map',
     devServer: {
         headers: {
             'Access-Control-Allow-Origin': '*',
@@ -71,7 +70,7 @@ const config: webpack.Configuration = {
                 use: [
                     {
                         loader: 'worker-loader',
-                        options: { filename: 'worker-[hash:5].mjs' },
+                        options: { filename: 'worker-[contenthash:5].mjs' },
                     },
                     {
                         loader: 'babel-loader',
@@ -79,25 +78,20 @@ const config: webpack.Configuration = {
                 ],
             },
             {
-                test: /node_modules\/preact\/hooks\//u,
-                loaders: 'null-loader',
-            },
-            {
                 enforce: 'pre',
                 test: /\.tsx?$/u,
                 exclude: /node_modules/u,
-                loaders: ['babel-loader'],
+                use: ['babel-loader'],
             },
             {
                 test: /\.svg$/u,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[contenthash:5].[ext]',
-                            esModule: false,
-                        },
+                type: 'asset',
+                parser: {
+                    dataUrlCondition: {
+                        maxSize: 1024,
                     },
+                },
+                use: [
                     {
                         loader: 'svgo-loader',
                         options: {
@@ -111,7 +105,9 @@ const config: webpack.Configuration = {
                 ],
             },
             {
-                test: /\.(png|jpe?g|webp)$/u,
+                test: /\.png$/u,
+                issuer: /\.json$/u,
+                type: 'javascript/auto',
                 loader: 'file-loader',
                 options: {
                     name: '[name].[contenthash:5].[ext]',
@@ -119,29 +115,18 @@ const config: webpack.Configuration = {
                 },
             },
             {
+                test: /\.(png|jpe?g|webp)$/u,
+                type: 'asset/resource',
+            },
+            {
                 test: /\.json$/u,
                 issuer: /\.ejs$/u,
-                type: 'javascript/auto',
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[contenthash:5].[ext]',
-                            esModule: false,
-                        },
-                    },
-                    {
-                        loader: 'extract-loader',
-                    },
-                    {
-                        loader: 'ref-loader',
-                    },
-                ],
+                type: 'asset/resource',
+                use: ['extract-loader', 'ref-loader'],
             },
         ],
     },
     plugins: [
-        new CleanWebpackPlugin(),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             'process.env.BUILD_SSR': JSON.stringify(false),
