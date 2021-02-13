@@ -47,3 +47,25 @@ declare module 'unistore/preact' {
         Child: ComponentConstructor<T & I & ActionBinder<K, A>, S> | AnyComponent<T & I & ActionBinder<K, A>, S>,
     ) => ComponentConstructor<T | (T & I & ActionBinder<K, A>), S>;
 }
+
+type ConnectionType = 'bluetooth' | 'cellular' | 'ethernet' | 'mixed' | 'none' | 'other' | 'unknown' | 'wifi' | 'wimax';
+type EffectiveConnectionType = '2g' | '3g' | '4g' | 'slow-2g';
+
+interface NetworkInformation extends EventTarget {
+    readonly type?: ConnectionType;
+    readonly effectiveType?: EffectiveConnectionType;
+    readonly downlinkMax?: number;
+    readonly downlink?: number;
+    readonly rtt?: number;
+    readonly saveData?: boolean;
+    onchange?: EventListener;
+}
+
+declare interface NavigatorNetworkInformation {
+    readonly connection?: NetworkInformation;
+    readonly mozConnection?: NetworkInformation;
+    readonly webkitConnection?: NetworkInformation;
+}
+
+declare interface Navigator extends NavigatorNetworkInformation {}
+declare interface WorkerNavigator extends NavigatorNetworkInformation {}
