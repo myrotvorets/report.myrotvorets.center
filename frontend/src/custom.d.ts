@@ -67,5 +67,7 @@ declare interface NavigatorNetworkInformation {
     readonly webkitConnection?: NetworkInformation;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 declare interface Navigator extends NavigatorNetworkInformation {}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 declare interface WorkerNavigator extends NavigatorNetworkInformation {}
