@@ -78,7 +78,7 @@
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.7.2",
-    "workbox-cacheable-response": "^6.1.0",
+    "workbox-cacheable-response": "^6.1.1",
     "workbox-core": "^6.1.0",
     "workbox-expiration": "^6.1.0",
     "workbox-precaching": "^6.1.0",
