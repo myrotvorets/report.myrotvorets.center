@@ -5,7 +5,8 @@ import { HwpAttributesPlugin } from 'hwp-attributes-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import { execSync } from 'child_process';
 
-let version: string;
+export const BugsnagAPIKey = 'ef7411ba5af267034db13d800de8a235';
+export let version: string;
 try {
     version = execSync('git describe --always --long', { cwd: path.resolve(path.join(__dirname, '..')) })
         .toString()
@@ -130,7 +131,7 @@ const config: webpack.Configuration = {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             'process.env.BUILD_SSR': JSON.stringify(false),
-            'process.env.BUGSNAG_API_KEY': JSON.stringify('ef7411ba5af267034db13d800de8a235'),
+            'process.env.BUGSNAG_API_KEY': JSON.stringify(BugsnagAPIKey),
             'process.env.APP_VERSION': JSON.stringify(version),
         }),
         new webpack.ProvidePlugin({

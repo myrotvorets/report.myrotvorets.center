@@ -7,8 +7,9 @@ import glob from 'glob';
 import path from 'path';
 import { InjectManifest } from 'workbox-webpack-plugin';
 import { HwpInlineRuntimeChunkPlugin } from 'hwp-inline-runtime-chunk-plugin';
+import { BugsnagSourceMapUploaderPlugin } from 'webpack-bugsnag-plugins';
 
-import commonConfig from './webpack.common';
+import commonConfig, { BugsnagAPIKey, version } from './webpack.common';
 
 export default function (): webpack.Configuration {
     return merge(commonConfig, {
@@ -63,6 +64,10 @@ export default function (): webpack.Configuration {
                 paths: glob.sync(`${path.join(__dirname, '../src')}/**/*`, {
                     nodir: true,
                 }),
+            }),
+            new BugsnagSourceMapUploaderPlugin({
+                apiKey: BugsnagAPIKey,
+                appVersion: version,
             }),
         ],
         optimization: {
