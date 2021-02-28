@@ -68,6 +68,7 @@ export default function (): webpack.Configuration {
             new BugsnagSourceMapUploaderPlugin({
                 apiKey: BugsnagAPIKey,
                 appVersion: version,
+                overwrite: true,
             }),
         ],
         optimization: {
