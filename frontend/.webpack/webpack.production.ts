@@ -7,7 +7,7 @@ import glob from 'glob';
 import path from 'path';
 import { InjectManifest } from 'workbox-webpack-plugin';
 import { HwpInlineRuntimeChunkPlugin } from 'hwp-inline-runtime-chunk-plugin';
-import { BugsnagSourceMapUploaderPlugin } from 'webpack-bugsnag-plugins';
+import { BugsnagBuildReporterPlugin, BugsnagSourceMapUploaderPlugin } from 'webpack-bugsnag-plugins';
 
 import commonConfig, { BugsnagAPIKey, version } from './webpack.common';
 
@@ -47,7 +47,7 @@ export default function (): webpack.Configuration {
             ],
         },
         plugins: [
-            new HwpInlineRuntimeChunkPlugin({ removeSourceMap: true }),
+            new HwpInlineRuntimeChunkPlugin({ removeSourceMap: false }),
             new InjectManifest({
                 swSrc: './src/sw.ts',
                 compileSrc: true,
@@ -55,7 +55,6 @@ export default function (): webpack.Configuration {
                 excludeChunks: ['runtime'],
                 dontCacheBustURLsMatching: /\.[0-9a-f]{5}\./u,
             }),
-            new webpack.optimize.ModuleConcatenationPlugin(),
             new MiniCssExtractPlugin({
                 filename: '[name].[contenthash:5].css',
                 chunkFilename: '[name].[contenthash:5].css',
@@ -65,12 +64,26 @@ export default function (): webpack.Configuration {
                     nodir: true,
                 }),
             }),
-            new BugsnagSourceMapUploaderPlugin({
-                apiKey: BugsnagAPIKey,
-                appVersion: version,
-                overwrite: true,
-            }),
-        ],
+            process.env.CI
+                ? new BugsnagSourceMapUploaderPlugin({
+                      apiKey: BugsnagAPIKey,
+                      appVersion: version,
+                      overwrite: true,
+                  })
+                : null,
+            process.env.CI && process.env.GITHUB_SHA
+                ? new BugsnagBuildReporterPlugin({
+                      apiKey: BugsnagAPIKey,
+                      appVersion: version,
+                      releaseStage: 'production',
+                      sourceControl: {
+                          provider: 'github',
+                          repository: `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}`,
+                          revision: process.env.GITHUB_SHA,
+                      },
+                  })
+                : null,
+        ].filter(Boolean),
         optimization: {
             runtimeChunk: 'single',
             moduleIds: 'deterministic',
