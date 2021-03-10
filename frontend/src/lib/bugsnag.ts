@@ -24,6 +24,19 @@ export function startBugsnag(): void {
                     saveData: connection.saveData ?? false,
                 });
             }
+
+            if (e.unhandled) {
+                for (const error of e.errors) {
+                    if (error instanceof TypeError && error.message.indexOf('_avast_submit') !== -1) {
+                        alert(
+                            'It looks like you are using the Avast! browser extension. It is known to break the form submission. Please disable it, reload the page and then try again',
+                        );
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         },
     });
 }

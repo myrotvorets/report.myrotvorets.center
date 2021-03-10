@@ -1,4 +1,4 @@
-import { Component, ComponentChild, h } from 'preact';
+import { Component, ComponentChild, Fragment, h } from 'preact';
 import '../Alert/alert.scss';
 import Bugsnag from '@bugsnag/js';
 
@@ -33,6 +33,26 @@ export default class ErrorBoundary extends Component<Props, State> {
         Bugsnag.notify(error);
     }
 
+    private _renderReason(): ComponentChild {
+        const { error } = this.state;
+
+        if (error instanceof TypeError && error.message.indexOf('_avast_submit') !== -1) {
+            return (
+                <Fragment>
+                    <p>
+                        Схоже, що ви використовуєте розширення браузера Avast. Воно втручається в роботу сайту та
+                        заважає відправленню даних.
+                    </p>
+                    <p>Спробуйте відключити це розширення, потім оновіть сторінку та спробуйте ще раз.</p>
+                </Fragment>
+            );
+        }
+
+        return (
+            <p>Наша команда вже повідомлена про цей інцидент. Ми докладаємо всіх зусиль, щоб виправити цю проблему.</p>
+        );
+    }
+
     public render(): ComponentChild {
         const { error } = this.state;
         if (error) {
@@ -53,10 +73,7 @@ export default class ErrorBoundary extends Component<Props, State> {
                                 😭😭😭
                             </span>
                         </p>
-                        <p>
-                            Наша команда вже повідомлена про цей інцидент. Ми докладаємо всіх зусиль, щоб виправити цю
-                            проблему.
-                        </p>
+                        {this._renderReason()}
                         <hr />
                         <details>
                             <summary>Технічні деталі</summary>
