@@ -7,6 +7,7 @@ import glob from 'glob';
 import path from 'path';
 import { InjectManifest } from 'workbox-webpack-plugin';
 import { HwpInlineRuntimeChunkPlugin } from 'hwp-inline-runtime-chunk-plugin';
+import { SubresourceIntegrityPlugin } from 'webpack-subresource-integrity';
 import { BugsnagBuildReporterPlugin, BugsnagSourceMapUploaderPlugin } from 'webpack-bugsnag-plugins';
 
 import commonConfig, { BugsnagAPIKey, version } from './webpack.common';
@@ -48,6 +49,9 @@ export default function (): webpack.Configuration {
         },
         plugins: [
             new HwpInlineRuntimeChunkPlugin({ removeSourceMap: false }),
+            new SubresourceIntegrityPlugin({
+                hashFuncNames: ['sha384'],
+            }),
             new InjectManifest({
                 swSrc: './src/sw.ts',
                 compileSrc: true,
