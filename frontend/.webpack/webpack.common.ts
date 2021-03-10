@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { HwpAttributesPlugin } from 'hwp-attributes-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import { execSync } from 'child_process';
+import { extendDefaultPlugins } from 'svgo';
 
 export const BugsnagAPIKey = 'ef7411ba5af267034db13d800de8a235';
 export let version: string;
@@ -96,11 +97,13 @@ const config: webpack.Configuration = {
                     {
                         loader: 'svgo-loader',
                         options: {
-                            plugins: [
+                            multipass: true,
+                            plugins: extendDefaultPlugins([
                                 {
-                                    removeEmptyContainers: false,
+                                    name: 'removeEmptyContainers',
+                                    active: false,
                                 },
-                            ],
+                            ]),
                         },
                     },
                 ],
