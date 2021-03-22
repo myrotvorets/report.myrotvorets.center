@@ -64,7 +64,7 @@
     "preact": "^10.5.12",
     "preact-router": "^3.2.1",
     "prettier": "^2.2.1",
-    "purgecss-webpack-plugin": "^4.0.0",
+    "purgecss-webpack-plugin": "^4.0.3",
     "ref-loader": "^1.0.3",
     "sass": "^1.32.6",
     "sass-loader": "^11.0.0",
