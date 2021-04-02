@@ -24,7 +24,7 @@
     "@types/node-fetch": "^2.5.8",
     "@types/node-mailjet": "^3.3.3",
     "archiver": "^5.2.0",
-    "archiver-zip-encryptable": "^1.0.7",
+    "archiver-zip-encryptable": "^1.0.8",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.9.2",
