@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - "database.rules.json"
+      - ".github/workflows/deploy-database-rules.yml"
   workflow_dispatch:
 
 jobs:

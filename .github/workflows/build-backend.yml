@@ -6,6 +6,7 @@ on:
       - "**"
     paths:
       - "functions/**"
+      - ".github/workflows/build-backend.yml"
   workflow_dispatch:
 
 jobs:
