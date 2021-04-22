@@ -24,10 +24,10 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
         .verifyIdToken(idToken)
         .then((decoded) => {
             req.user = decoded;
-            next();
+            return setImmediate(next);
         })
         .catch((e: AuthError) =>
-            next({
+            setImmediate(next, {
                 success: false,
                 status: 401,
                 code: 'AUTH_FAILED',

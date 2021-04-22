@@ -28,27 +28,25 @@ const map: Record<number | string, Criminal> = {};
 function apiCall(url: string): Promise<Criminal | Error> {
     return fetch(`${url}`)
         .then((r: Response): Promise<Criminal | ErrorResponse> => r.json())
-        .then(
-            (r: Criminal | ErrorResponse): Promise<Criminal | Error> => {
-                if ('id' in r) {
-                    map[r.id] = r;
-                    return Promise.resolve(r);
-                }
+        .then((r: Criminal | ErrorResponse): Criminal | Error => {
+            if ('id' in r) {
+                map[r.id] = r;
+                return r;
+            }
 
-                if (r.statusCode === 404) {
-                    return Promise.resolve(new Error('NOT_FOUND'));
-                }
+            if (r.statusCode === 404) {
+                return new Error('NOT_FOUND');
+            }
 
-                if ('message' in r) {
-                    const e = new Error('API_ERROR');
-                    e.message = r.message;
-                    return Promise.resolve(e);
-                }
+            if ('message' in r) {
+                const e = new Error('API_ERROR');
+                e.message = r.message;
+                return e;
+            }
 
-                return Promise.resolve(new Error('UNKNOWN_ERROR'));
-            },
-        )
-        .catch((e: Error) => Promise.resolve(e));
+            return new Error('UNKNOWN_ERROR');
+        })
+        .catch((e: Error) => e);
 }
 
 export function findCriminalBySlug(slug: string): Promise<Criminal | Error> {

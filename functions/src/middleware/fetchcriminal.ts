@@ -38,11 +38,11 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
             .then((r: Criminal | ErrorResponse) => {
                 if ('id' in r) {
                     req.criminal = r;
-                    return next();
+                    return setImmediate(next);
                 }
 
                 if (r.statusCode === 404) {
-                    return next({
+                    return setImmediate(next, {
                         success: false,
                         status: 400,
                         code: 'RECORD_NOT_FOUND',
@@ -50,7 +50,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
                     });
                 }
 
-                return next({
+                return setImmediate(next, {
                     success: false,
                     status: 400,
                     code: 'COMM_ERROR',
@@ -59,7 +59,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
             })
             .catch((e) => {
                 Bugsnag.notify(e);
-                return next({
+                return setImmediate(next, {
                     success: false,
                     status: 400,
                     code: 'COMM_ERROR',

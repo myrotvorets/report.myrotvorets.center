@@ -18,7 +18,7 @@ export function setUser(state: AppState, user: firebase.User | null): Partial<Ap
 export function logOutUser(state: AppState): Promise<Partial<AppState>> {
     const { worker } = state;
     if (!worker) {
-        return Promise.reject(new Error('Unknown error'));
+        throw new Error('Unknown error');
     }
 
     const request: WorkerRequestSignOut = {
@@ -31,10 +31,10 @@ export function logOutUser(state: AppState): Promise<Partial<AppState>> {
             .then((r) => {
                 if (r.success) {
                     store.setState({ user: null });
-                    resolve({ user: null });
-                } else {
-                    reject(new Error(r.message || r.code));
+                    return resolve({ user: null });
                 }
+
+                return reject(new Error(r.message || r.code));
             })
             .catch(reject);
     });

@@ -83,25 +83,27 @@ class CheckCriminalForm extends Component<unknown, State> {
             // eslint-disable-next-line no-void
             void findCriminalBySlug(matches[1]).then((criminal: Criminal | Error) => {
                 if (criminal instanceof Error && criminal.message === 'NOT_FOUND') {
-                    this.setState({
+                    return this.setState({
                         busy: false,
                         criminal: null,
                         error: 'Запис не знайдено',
                     });
-                } else if ('id' in criminal) {
-                    this.setState({
+                }
+
+                if ('id' in criminal) {
+                    return this.setState({
                         busy: false,
                         criminal,
                         error: '',
                         stage: 1,
                     });
-                } else {
-                    this.setState({
-                        busy: false,
-                        criminal: null,
-                        error: 'Виникла несподівана помилка. Будь ласка, спробуйте ще раз пізніше.',
-                    });
                 }
+
+                return this.setState({
+                    busy: false,
+                    criminal: null,
+                    error: 'Виникла несподівана помилка. Будь ласка, спробуйте ще раз пізніше.',
+                });
             });
         } else {
             // Should not happen, but if it does, someone is playing with the code

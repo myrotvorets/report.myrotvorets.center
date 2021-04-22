@@ -66,7 +66,7 @@ function sendResponse(url: string, token: string, body: Record<string, string>):
         .then((response) => response.json() as Promise<InformantApiResponse>)
         .catch((e) => {
             Bugsnag.notify(e);
-            return Promise.resolve(communicationError);
+            return communicationError;
         });
 }
 

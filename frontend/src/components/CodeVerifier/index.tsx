@@ -65,13 +65,13 @@ class CodeVerifier extends Component<Props, State> {
             .then((r) => {
                 if (r.success) {
                     window.localStorage.removeItem('email');
-                    route('/start');
-                } else {
-                    this.setState({
-                        busy: false,
-                        error: r.message || r.code,
-                    });
+                    return route('/start');
                 }
+
+                return this.setState({
+                    busy: false,
+                    error: r.message || r.code,
+                });
             })
             .catch((e: Error) => this.setState({ busy: false, error: e.message }));
     }

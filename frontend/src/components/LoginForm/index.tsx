@@ -62,12 +62,15 @@ class LoginForm extends Component<MappedProps, State> {
 
         sendAndWait<WorkerRequestSendLink, ResSendLinkPayload>(worker, request, W_SENDLINK)
             .then((r) => {
+                let state: Partial<State>;
                 if (r.success) {
                     window.localStorage.setItem('email', email);
-                    this.setState({ state: 'link_sent' });
+                    state = { state: 'link_sent' };
                 } else {
-                    this.setState({ error: r.message || r.code, state: 'initial' });
+                    state = { error: r.message || r.code, state: 'initial' };
                 }
+
+                return this.setState(state);
             })
             .catch((e: Error) => this.setState({ error: e.message, state: 'initial' }));
     }

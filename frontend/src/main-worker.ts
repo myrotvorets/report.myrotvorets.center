@@ -54,12 +54,12 @@ function getToken(): void {
     if (currentUser) {
         currentUser
             .getIdToken()
-            .then((token): void => {
+            .then((token) =>
                 self.postMessage({
                     type: W_GETTOKEN,
                     payload: { success: true, token, uid: currentUser.uid },
-                } as WorkerResponseGetToken);
-            })
+                } as WorkerResponseGetToken),
+            )
             .catch((e: FirebaseError) => {
                 self.postMessage({
                     type: W_GETTOKEN,
@@ -82,12 +82,12 @@ function sendLink(email: string, url: string): void {
     firebase
         .auth()
         .sendSignInLinkToEmail(email, { handleCodeInApp: true, url })
-        .then((): void => {
+        .then(() =>
             self.postMessage({
                 type: W_SENDLINK,
                 payload: { success: true },
-            } as WorkerResponseSendLink);
-        })
+            } as WorkerResponseSendLink),
+        )
         .catch((e: FirebaseError) => {
             self.postMessage({
                 type: W_SENDLINK,
@@ -104,12 +104,12 @@ function signIn(email: string, link: string): void {
     firebase
         .auth()
         .signInWithEmailLink(email, link)
-        .then((): void => {
+        .then(() =>
             self.postMessage({
                 type: W_SIGNIN,
                 payload: { success: true },
-            } as WorkerResponseSignIn);
-        })
+            } as WorkerResponseSignIn),
+        )
         .catch((e: FirebaseError) => {
             self.postMessage({
                 type: W_SIGNIN,
@@ -126,14 +126,14 @@ function signOut(): void {
     firebase
         .auth()
         .signOut()
-        .then(() => {
+        .then(() =>
             self.postMessage({
                 type: W_SIGNOUT,
                 payload: {
                     success: true,
                 },
-            } as WorkerResponseSignOut);
-        })
+            } as WorkerResponseSignOut),
+        )
         .catch((e: FirebaseError) => {
             self.postMessage({
                 type: W_SIGNOUT,

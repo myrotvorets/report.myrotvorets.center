@@ -162,7 +162,8 @@ class InfoForm extends Component<Props, State> {
                             return this._uploadFiles(form, r.uid);
                         }
 
-                        return Promise.reject(new Error(r.message || r.code));
+                        const s = r.message || r.code;
+                        throw new Error(s);
                     },
                 )
                 .then((path) => {
@@ -176,10 +177,10 @@ class InfoForm extends Component<Props, State> {
                 .then((j) => {
                     if (j.success) {
                         this._resetLocalStorage();
-                        this.setState({ state: 'success' });
-                    } else {
-                        this.setState({ state: 'idle', error: InfoForm._parseError(j), status: '' });
+                        return this.setState({ state: 'success' });
                     }
+
+                    return this.setState({ state: 'idle', error: InfoForm._parseError(j), status: '' });
                 })
                 .catch((e: Error) => this.setState({ state: 'idle', error: InfoForm._parseError(e), status: '' }));
         } else {
@@ -218,13 +219,13 @@ class InfoForm extends Component<Props, State> {
         // eslint-disable-next-line no-void
         void findCriminalById(id as string).then((r) => {
             if ('id' in r) {
-                this.setState({
+                return this.setState({
                     criminal: r,
                     state: 'idle',
                 });
-            } else {
-                route('/start');
             }
+
+            return route('/start');
         });
     }
 

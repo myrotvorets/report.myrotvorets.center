@@ -17,12 +17,12 @@ export function checkEmail(req: Request, res: Response): void {
         },
     })
         .then((r) => r.json())
-        .then((json: DebounceResponse) => {
+        .then((json: DebounceResponse) =>
             res.json({
                 success: true,
                 status: 'disposable' in json ? (json.disposable === 'true' ? 'DEA' : 'OK') : 'DUNNO',
-            });
-        })
+            }),
+        )
         .catch((e) => {
             Bugsnag.notify(e);
             res.json({

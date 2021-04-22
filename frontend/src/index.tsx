@@ -33,18 +33,19 @@ if (!process.env.BUILD_SSR) {
     ) {
         navigator.serviceWorker
             .register('/sw.js')
-            .then((reg) => {
+            .then((reg) =>
                 reg.addEventListener('updatefound', () => {
                     const installingWorker = reg.installing;
                     if (installingWorker) {
                         installingWorker.addEventListener('statechange', () => {
                             if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // eslint-disable-next-line promise/no-nesting
                                 reg.update().catch((e) => console.error(e));
                             }
                         });
                     }
-                });
-            })
+                }),
+            )
             .catch((e) => {
                 console.error(e);
             });
@@ -57,24 +58,27 @@ if (!process.env.BUILD_SSR) {
                 .then((keyList) => Promise.all(keyList.map((key) => self.caches.delete(key))))
                 .then(() => {
                     if ('serviceWorker' in navigator) {
-                        navigator.serviceWorker
+                        // eslint-disable-next-line promise/no-nesting
+                        return navigator.serviceWorker
                             .getRegistration()
                             .then((reg) => {
                                 if (reg) {
-                                    reg.unregister()
+                                    // eslint-disable-next-line promise/no-nesting
+                                    return reg
+                                        .unregister()
                                         .then(() => self.location.reload())
                                         .catch((e) => console.error(e));
-                                } else {
-                                    self.location.reload();
                                 }
+
+                                return self.location.reload();
                             })
                             .catch((e) => {
                                 console.error(e);
                                 self.location.reload();
                             });
-                    } else {
-                        self.location.reload();
                     }
+
+                    return self.location.reload();
                 })
                 .catch((e) => {
                     console.error(e);
