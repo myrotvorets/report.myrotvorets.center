@@ -6,9 +6,11 @@
     "extends": [
         "@myrotvorets/myrotvorets-preact-ts"
     ],
+    "rules": {
+        "jest/no-deprecated-functions": "off"
+    },
     "env": {
         "browser": true,
-        "jest": true,
         "serviceworker": true
     }
 }
