@@ -143,7 +143,7 @@ const config: webpack.Configuration = {
         }),
         new HtmlWebpackPlugin({
             minify: process.env.NODE_ENV === 'production' ? prodMinifyOptions : false,
-            template: '!!ejs-webpack-loader!./src/index.ejs',
+            template: '!!ejs-compiled-loader!./src/index.ejs',
             xhtml: true,
             templateParameters: {
                 version,
