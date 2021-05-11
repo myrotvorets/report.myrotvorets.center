@@ -103,17 +103,15 @@ class InfoForm extends Component<Props, State> {
     }: h.JSX.TargetedEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const { name, value } = currentTarget;
 
-        this.setState(
-            (prevState: Readonly<State>): Partial<State> => {
-                lsSet(`f_${name}`, value);
-                return {
-                    data: {
-                        ...prevState.data,
-                        [name]: value,
-                    },
-                };
-            },
-        );
+        this.setState((prevState: Readonly<State>): Partial<State> => {
+            lsSet(`f_${name}`, value);
+            return {
+                data: {
+                    ...prevState.data,
+                    [name]: value,
+                },
+            };
+        });
     };
 
     private readonly _onFileChange = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
@@ -123,8 +121,7 @@ class InfoForm extends Component<Props, State> {
             if (length > 15) {
                 currentTarget.value = '';
                 this.setState({
-                    error:
-                        'Ви намагаєтеся завантажити занадто багато файлів. Будь ласка, скористайтеся файлообмінником.',
+                    error: 'Ви намагаєтеся завантажити занадто багато файлів. Будь ласка, скористайтеся файлообмінником.',
                 });
 
                 return;
@@ -139,8 +136,7 @@ class InfoForm extends Component<Props, State> {
             if (size > 20971520) {
                 currentTarget.value = '';
                 this.setState({
-                    error:
-                        'Ви намагаєтеся завантажити занадто великі файли. Будь ласка, скористайтеся файлообмінником.',
+                    error: 'Ви намагаєтеся завантажити занадто великі файли. Будь ласка, скористайтеся файлообмінником.',
                 });
             }
         }
@@ -155,17 +151,15 @@ class InfoForm extends Component<Props, State> {
 
             this.setState({ state: 'busy', status: 'Проходимо аутентифікацію…' });
             sendAndWait<WorkerRequestGetToken, ResGetTokenPayload>(this.props.worker, req, W_GETTOKEN)
-                .then(
-                    (r): Promise<string> => {
-                        if (r.success) {
-                            token = r.token;
-                            return this._uploadFiles(form, r.uid);
-                        }
+                .then((r): Promise<string> => {
+                    if (r.success) {
+                        token = r.token;
+                        return this._uploadFiles(form, r.uid);
+                    }
 
-                        const s = r.message || r.code;
-                        throw new Error(s);
-                    },
-                )
+                    const s = r.message || r.code;
+                    throw new Error(s);
+                })
                 .then((path) => {
                     this.setState({ status: 'Відправляємо дані на сервер…' });
                     const { criminal, data } = this.state;

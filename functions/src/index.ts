@@ -39,8 +39,9 @@ app.use(bsExpress.errorHandler);
 
 export const api = functions.region('us-central1').https.onRequest(app);
 
-export const handleReport = functions.database.ref('/reports/{child}').onCreate(
-    async (snapshot: functions.database.DataSnapshot): Promise<unknown> => {
+export const handleReport = functions.database
+    .ref('/reports/{child}')
+    .onCreate(async (snapshot: functions.database.DataSnapshot): Promise<unknown> => {
         try {
             const entry = snapshot.val() as ReportEntry;
             const [url, password] = await archiveFilesAndUpload(entry);
@@ -61,5 +62,4 @@ export const handleReport = functions.database.ref('/reports/{child}').onCreate(
         }
 
         return null;
-    },
-);
+    });
