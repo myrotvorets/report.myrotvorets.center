@@ -1,5 +1,5 @@
-import type { Request, Response } from 'express';
 import Bugsnag from '@bugsnag/js';
+import type { Request, Response } from 'express';
 import { fetch } from '../lib/fetch';
 import { httpsAgent } from '../lib/agents';
 

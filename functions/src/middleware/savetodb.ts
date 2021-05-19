@@ -1,6 +1,6 @@
 import admin from 'firebase-admin';
-import type { NextFunction, Request, Response } from 'express';
 import Bugsnag from '@bugsnag/js';
+import type { NextFunction, Request, Response } from 'express';
 import type { AddUpdateRequestBody, ReportEntry } from '../types';
 
 const db = admin.database();

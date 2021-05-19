@@ -1,5 +1,5 @@
-import type { NextFunction, Request, Response } from 'express';
 import admin from 'firebase-admin';
+import type { NextFunction, Request, Response } from 'express';
 
 interface AuthError extends Error {
     code: string;

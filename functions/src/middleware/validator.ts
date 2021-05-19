@@ -1,5 +1,5 @@
-import type { NextFunction, Request, Response } from 'express';
 import { Result, ValidationError, body, param, validationResult } from 'express-validator';
+import type { NextFunction, Request, Response } from 'express';
 
 export const reportAddValidator = [
     body('name', 'BAD_REQUEST').exists().trim().isLength({ min: 5 }).withMessage('TOO_SHORT'),
