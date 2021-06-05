@@ -40,7 +40,7 @@ class App extends Component<Props, State> {
         if (window.Worker) {
             try {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-                const worker: Worker = new AuthWorker();
+                const worker: Worker = new AuthWorker(); // lgtm[js/call-to-non-callable]
                 worker.addEventListener('message', this._onWorkerMessage);
                 worker.addEventListener('error', this._onWorkerError);
                 this.props.setWorker(worker);
