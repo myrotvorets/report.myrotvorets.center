@@ -9,8 +9,7 @@ interface Props {
 
 function getThumbnailURL({ attachments }: Criminal): string | null {
     if (attachments) {
-        for (let i = 0; i < attachments.length; ++i) {
-            const a = attachments[i];
+        for (const a of attachments) {
             if (a.type.startsWith('image')) {
                 return a.url.replace(/\.([a-z]+)$/u, '-150x150.$1');
             }
