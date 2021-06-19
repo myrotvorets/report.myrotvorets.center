@@ -6,7 +6,7 @@
                     "type": "Delete"
                 },
                 "condition": {
-                    "age": 40
+                    "age": 35
                 }
             }
         ]
