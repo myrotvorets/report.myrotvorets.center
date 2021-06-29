@@ -24,7 +24,7 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
     "@babel/preset-typescript": "^7.12.13",
-    "@bugsnag/js": "^7.6.0",
+    "@bugsnag/js": "^7.10.4",
     "@myrotvorets/eslint-config-myrotvorets-preact-ts": "^2.2.3",
     "@types/copy-webpack-plugin": "^8.0.0",
     "@types/glob": "^7.1.3",
