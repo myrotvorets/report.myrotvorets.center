@@ -35,7 +35,7 @@
             left: $block-inner-padding;
             font-size: $font-size-base;
             line-height: 1;
-            top: (3rem - $font-size-base) / 2;
+            top: (3rem - $font-size-base) * 0.5;
         }
 
         h2 { display: none; }
