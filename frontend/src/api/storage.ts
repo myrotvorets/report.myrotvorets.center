@@ -1,4 +1,3 @@
-import Bugsnag from '@bugsnag/js';
 import {
     BaseWorkerRequest,
     ResUploadPayload,
@@ -21,9 +20,6 @@ function listener({ data }: MessageEvent): void {
 export async function uploadFiles(worker: Worker, userID: string, files: FileList): Promise<string> {
     const rnd = randomString();
     const uid = `${userID}/${rnd}`;
-    if (uid.indexOf('..') !== -1) {
-        Bugsnag.notify(new Error(`Weird UID: ${uid}`));
-    }
 
     try {
         worker.addEventListener('message', listener);
@@ -35,12 +31,6 @@ export async function uploadFiles(worker: Worker, userID: string, files: FileLis
 
             const file = files[i];
             const name = file.name;
-
-            if (name.indexOf('..') !== -1) {
-                Bugsnag.notify(
-                    new Error(`Attempt to upload a file with double dots: ${[...files].map((s) => s.name).toString()}`),
-                );
-            }
 
             let n = name.replace(/\.{2,}/gu, '.');
             while (n in names) {
