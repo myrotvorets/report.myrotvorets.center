@@ -16,7 +16,7 @@ function suspenseWrapper<T>(Component: ComponentType<T>): (props: RenderableProp
     if (process.env.BUILD_SSR) {
         // eslint-disable-next-line react/display-name
         return (props: RenderableProps<T>): h.JSX.Element => (
-            <main>
+            <main id="content">
                 <Component {...props} />
             </main>
         );
@@ -24,7 +24,7 @@ function suspenseWrapper<T>(Component: ComponentType<T>): (props: RenderableProp
 
     // eslint-disable-next-line react/display-name
     return (props: RenderableProps<T>): h.JSX.Element => (
-        <main>
+        <main id="content">
             <Suspense fallback={<Loader />}>
                 <Component {...props} />
             </Suspense>

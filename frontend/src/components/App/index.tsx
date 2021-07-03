@@ -84,6 +84,9 @@ class App extends Component<Props, State> {
     public render(): ComponentChild {
         return (
             <Fragment>
+                <a href="#content" className="skip-main">
+                    Перейти до змісту
+                </a>
                 <Header />
                 <NavBar />
                 <ErrorBoundary error={this.state.error}>{this._worker && <AppRouter />}</ErrorBoundary>

@@ -57,7 +57,7 @@ export default class ErrorBoundary extends Component<Props, State> {
         const { error } = this.state;
         if (error) {
             return (
-                <main>
+                <main id="content">
                     <div className="alert">
                         <p>
                             Програма закривається.
