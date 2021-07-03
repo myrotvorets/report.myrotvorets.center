@@ -24,7 +24,7 @@ export async function uploadFiles(worker: Worker, userID: string, files: FileLis
     try {
         worker.addEventListener('message', listener);
 
-        const names: Record<string, boolean> = {};
+        const names = new Set<string>();
 
         for (let i = 0; i < files.length; ++i) {
             document.dispatchEvent(new CustomEvent('overalluploadprogress', { detail: i + 1 }));
@@ -33,11 +33,11 @@ export async function uploadFiles(worker: Worker, userID: string, files: FileLis
             const name = file.name;
 
             let n = name.replace(/\.{2,}/gu, '.');
-            while (n in names) {
+            while (names.has(n)) {
                 n = `${randomString()}-${name}`;
             }
 
-            names[n] = true;
+            names.add(n);
             const req: WorkerRequestUpload = {
                 type: W_UPLOAD_FILE,
                 payload: {

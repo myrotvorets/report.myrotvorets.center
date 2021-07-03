@@ -23,14 +23,14 @@ interface ErrorResponse {
     message: string;
 }
 
-const map: Record<number | string, Criminal> = {};
+const map = new Map<number | string, Criminal>();
 
 function apiCall(url: string): Promise<Criminal | Error> {
     return fetch(`${url}`)
         .then((r: Response): Promise<Criminal | ErrorResponse> => r.json())
         .then((r: Criminal | ErrorResponse): Criminal | Error => {
             if ('id' in r) {
-                map[r.id] = r;
+                map.set(r.id, r);
                 return r;
             }
 
@@ -58,5 +58,5 @@ export function findCriminalById(id: number | string): Promise<Criminal | Error>
 }
 
 export function isKnownCriminal(id: number | string): Criminal | false {
-    return map[id] ?? false;
+    return map.get(id) || false;
 }
