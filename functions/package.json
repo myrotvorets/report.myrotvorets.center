@@ -22,7 +22,7 @@
     "@types/cors": "^2.8.9",
     "@types/express": "^4.17.11",
     "@types/node-fetch": "^2.5.10",
-    "@types/node-mailjet": "^3.3.3",
+    "@types/node-mailjet": "^3.3.7",
     "archiver": "^5.2.0",
     "archiver-zip-encryptable": "^1.0.7",
     "cors": "^2.8.5",
