@@ -42,7 +42,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
                 }
 
                 if (r.statusCode === 404) {
-                    return setImmediate(next, {
+                    return setImmediate<Record<string, unknown>[]>(next, {
                         success: false,
                         status: 400,
                         code: 'RECORD_NOT_FOUND',
@@ -50,7 +50,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
                     });
                 }
 
-                return setImmediate(next, {
+                return setImmediate<Record<string, unknown>[]>(next, {
                     success: false,
                     status: 400,
                     code: 'COMM_ERROR',
@@ -59,7 +59,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
             })
             .catch((e) => {
                 Bugsnag.notify(e);
-                return setImmediate(next, {
+                return setImmediate<Record<string, unknown>[]>(next, {
                     success: false,
                     status: 400,
                     code: 'COMM_ERROR',

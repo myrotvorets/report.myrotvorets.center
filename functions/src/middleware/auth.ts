@@ -27,7 +27,7 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
             return setImmediate(next);
         })
         .catch((e: AuthError) =>
-            setImmediate(next, {
+            setImmediate<Record<string, unknown>[]>(next, {
                 success: false,
                 status: 401,
                 code: 'AUTH_FAILED',
