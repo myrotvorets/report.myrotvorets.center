@@ -33,6 +33,12 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
         const id = req.params.id;
         fetch(`https://api.myrotvorets.center/simplesearch/v1/${id}`, {
             agent: httpsAgent,
+            headers: {
+                'User-Agent': 'Report.Myrtovorets.Center Verification Bot',
+                Accept: 'application/json',
+                'X-Originating-IP': req.ip,
+                'X-Originating-User-Agent': req.headers['user-agent'] || '-',
+            },
         })
             .then((r) => r.json())
             .then((r: Criminal | ErrorResponse) => {
