@@ -36,7 +36,7 @@ function createHeaders(req: Request): Record<string, string> {
     }
 
     for (const h in headers) {
-        if (/^(access-control|content-|x-|authorization|cookie|proxy-|sec-|transfer-|www-)/gu.test(h)) {
+        if (/^(access-control|content-|x-|authorization|cookie|proxy-|sec-|transfer-|www-|host)/gu.test(h)) {
             delete headers[h];
         }
 
@@ -46,6 +46,8 @@ function createHeaders(req: Request): Record<string, string> {
     }
 
     headers['x-forwarded-for'] = ips.join(', ');
+    // eslint-disable-next-line no-console
+    console.log(headers);
     return headers as Record<string, string>;
 }
 
