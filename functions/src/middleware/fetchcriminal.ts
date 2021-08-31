@@ -30,14 +30,19 @@ interface ErrorResponse {
 
 export function fetchCriminal(req: Request, res: Response, next: NextFunction): void {
     if (req.params.id) {
+        const ips = [...req.ips];
+        if (!ips.length) {
+            ips.push(req.ip);
+        }
+
         const id = req.params.id;
         fetch(`https://api.myrotvorets.center/simplesearch/v1/${id}`, {
             agent: httpsAgent,
             headers: {
                 'User-Agent': 'Report.Myrtovorets.Center Verification Bot',
                 Accept: 'application/json',
-                'X-Originating-IP': req.ip,
-                'X-Originating-User-Agent': req.headers['user-agent'] || '-',
+                'X-Forwarded-For': ips.join(', '),
+                'X-Forwarded-User-Agent': req.headers['user-agent'] || '',
             },
         })
             .then((r) => r.json())
