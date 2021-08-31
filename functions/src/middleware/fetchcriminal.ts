@@ -50,6 +50,8 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
                     });
                 }
 
+                Bugsnag.notify(new Error(`${r.error} ${r.message} ${r.statusCode}`));
+
                 return setImmediate<Record<string, unknown>[]>(next, {
                     success: false,
                     status: 400,
