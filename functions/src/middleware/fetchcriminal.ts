@@ -28,35 +28,17 @@ interface ErrorResponse {
     message: string;
 }
 
-function createHeaders(req: Request): Record<string, string> {
-    const headers = { ...req.headers };
-    const ips = [...req.ips];
-    if (!ips.length) {
-        ips.push(req.ip);
-    }
-
-    for (const h in headers) {
-        if (/^(access-control|content-|x-|authorization|cookie|proxy-|sec-|transfer-|www-|host)/gu.test(h)) {
-            delete headers[h];
-        }
-
-        if (typeof headers[h] !== 'string') {
-            delete headers[h];
-        }
-    }
-
-    headers['x-forwarded-for'] = ips.join(', ');
-    // eslint-disable-next-line no-console
-    console.log(headers);
-    return headers as Record<string, string>;
-}
-
 export function fetchCriminal(req: Request, res: Response, next: NextFunction): void {
     if (req.params.id) {
         const id = req.params.id;
         fetch(`https://api.myrotvorets.center/simplesearch/v1/${id}`, {
             agent: httpsAgent,
-            headers: createHeaders(req),
+            headers: {
+                'User-Agent': 'Report.Myrtovorets.Center Verification Bot',
+                Accept: 'application/json',
+                'X-Originating-IP': req.ip,
+                'X-Originating-User-Agent': req.headers['user-agent'] || '-',
+            },
         })
             .then((r) => r.json())
             .then((r: Criminal | ErrorResponse) => {
