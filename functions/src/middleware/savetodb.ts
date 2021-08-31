@@ -33,7 +33,7 @@ export async function saveToDatabase(
 
         await db.ref('/reports').push(entry);
     } catch (e) {
-        Bugsnag.notify(e);
+        Bugsnag.notify(e as Error);
         return next({
             success: false,
             status: 500,

@@ -64,7 +64,7 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<[string
                 result[0] = `https://storage.googleapis.com/${bucket.name}/${fname}`;
             }
         } catch (e) {
-            Bugsnag.notify(e);
+            Bugsnag.notify(e as Error);
             return ['', ''];
         } finally {
             try {
@@ -73,7 +73,7 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<[string
                     force: true,
                 });
             } catch (e) {
-                Bugsnag.notify(e);
+                Bugsnag.notify(e as Error);
             }
         }
     }

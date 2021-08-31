@@ -58,7 +58,7 @@ export const handleReport = functions.database
                 );
             }
         } catch (e) {
-            Bugsnag.notify(e);
+            Bugsnag.notify(e as Error);
         }
 
         return null;
