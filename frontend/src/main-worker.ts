@@ -11,7 +11,6 @@ import {
     signInWithEmailLink,
 } from '@firebase/auth';
 import { UploadTask, getStorage, ref, uploadBytesResumable } from '@firebase/storage';
-import Bugsnag from '@bugsnag/js';
 import firebaseConfig from './config/firebase';
 import {
     W_AUTH_STATE_CHANGED,
@@ -29,13 +28,6 @@ import {
     WorkerResponseSignIn,
     WorkerResponseSignOut,
 } from './utils/worker';
-
-Bugsnag.start({
-    apiKey: process.env.BUGSNAG_API_KEY || '',
-    appVersion: process.env.APP_VERSION,
-    appType: 'worker',
-    releaseStage: process.env.NODE_ENV || 'development',
-});
 
 interface FirebaseError extends Error {
     code: string;
