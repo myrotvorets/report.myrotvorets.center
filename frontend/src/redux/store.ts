@@ -1,8 +1,8 @@
 import createStore from 'unistore';
-import type firebase from 'firebase';
+import type { User } from 'firebase/auth';
 
 export interface AppState {
-    user: firebase.User | null | undefined;
+    user: User | null | undefined;
     worker?: Worker;
 }
 

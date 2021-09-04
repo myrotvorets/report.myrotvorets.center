@@ -1,8 +1,15 @@
 /// <reference lib="webworker" />
 
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/storage';
+import { initializeApp } from 'firebase/app';
+import {
+    User,
+    signOut as fbSignOut,
+    getAuth,
+    onAuthStateChanged,
+    sendSignInLinkToEmail,
+    signInWithEmailLink,
+} from 'firebase/auth';
+import { UploadTask, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import firebaseConfig from './config/firebase';
 import {
     W_AUTH_STATE_CHANGED,
@@ -39,18 +46,20 @@ const errorCodes: Record<string, string> = {
         'Внутрішня помилка (auth/unauthorized-continue-uri). Будь ласка, повідомте про це support@myrotvorets.center',
 };
 
-firebase.initializeApp(firebaseConfig);
-firebase.auth().languageCode = 'uk';
+initializeApp(firebaseConfig);
+
+const auth = getAuth();
+auth.languageCode = 'uk';
 
 /* const _unsub = */
-firebase.auth().onAuthStateChanged((user: firebase.User | null): void => {
+onAuthStateChanged(auth, (user: User | null): void => {
     const payload = user === null ? null : user.toJSON();
 
     self.postMessage({ type: W_AUTH_STATE_CHANGED, payload } as WorkerResponseAuthStateChanged);
 });
 
 function getToken(): void {
-    const { currentUser } = firebase.auth();
+    const { currentUser } = getAuth();
     if (currentUser) {
         currentUser
             .getIdToken()
@@ -79,9 +88,7 @@ function getToken(): void {
 }
 
 function sendLink(email: string, url: string): void {
-    firebase
-        .auth()
-        .sendSignInLinkToEmail(email, { handleCodeInApp: true, url })
+    sendSignInLinkToEmail(getAuth(), email, { handleCodeInApp: true, url })
         .then(() =>
             self.postMessage({
                 type: W_SENDLINK,
@@ -101,9 +108,7 @@ function sendLink(email: string, url: string): void {
 }
 
 function signIn(email: string, link: string): void {
-    firebase
-        .auth()
-        .signInWithEmailLink(email, link)
+    signInWithEmailLink(getAuth(), email, link)
         .then(() =>
             self.postMessage({
                 type: W_SIGNIN,
@@ -123,9 +128,7 @@ function signIn(email: string, link: string): void {
 }
 
 function signOut(): void {
-    firebase
-        .auth()
-        .signOut()
+    fbSignOut(getAuth())
         .then(() =>
             self.postMessage({
                 type: W_SIGNOUT,
@@ -147,7 +150,7 @@ function signOut(): void {
 }
 
 function uploadFile(uid: string, name: string, file: Blob): void {
-    const task: firebase.storage.UploadTask = firebase.storage().ref(`incoming/${uid}/${name}`).put(file);
+    const task: UploadTask = uploadBytesResumable(ref(getStorage(), `incoming/${uid}/${name}`), file);
     task.on(
         'state_changed',
         (snapshot): void => {

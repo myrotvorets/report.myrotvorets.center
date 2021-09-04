@@ -4,7 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { HwpAttributesPlugin } from 'hwp-attributes-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import { execSync } from 'child_process';
-import { extendDefaultPlugins } from 'svgo';
+import { OptimizeOptions } from 'svgo';
 
 export const BugsnagAPIKey = 'ef7411ba5af267034db13d800de8a235';
 export let version: string;
@@ -39,7 +39,7 @@ const config: webpack.Configuration = {
         globalObject: 'self',
         path: path.resolve(__dirname, '../dist'),
         filename: '[name].[contenthash:5].mjs',
-        chunkFilename: '[name].[chunkhash:5].mjs',
+        chunkFilename: '[name].[contenthash:5].mjs',
         assetModuleFilename: '[name].[contenthash:5][ext]',
         publicPath: '/',
         scriptType: 'module',
@@ -50,12 +50,9 @@ const config: webpack.Configuration = {
         headers: {
             'Access-Control-Allow-Origin': '*',
         },
-        contentBase: path.resolve(__dirname, '../dist'),
         compress: true,
         port: 8080,
         historyApiFallback: true,
-        writeToDisk: true,
-        disableHostCheck: true,
     },
     resolve: {
         extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx'],
@@ -98,13 +95,17 @@ const config: webpack.Configuration = {
                         loader: 'svgo-loader',
                         options: {
                             multipass: true,
-                            plugins: extendDefaultPlugins([
+                            plugins: [
                                 {
-                                    name: 'removeEmptyContainers',
-                                    active: false,
+                                    name: 'preset-default',
+                                    params: {
+                                        overrides: {
+                                            removeEmptyContainers: false,
+                                        },
+                                    },
                                 },
-                            ]),
-                        },
+                            ],
+                        } as OptimizeOptions,
                     },
                 ],
             },
