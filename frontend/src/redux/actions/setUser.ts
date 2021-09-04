@@ -1,4 +1,4 @@
-import type { User } from 'firebase/auth';
+import type { User } from '@firebase/auth';
 import Bugsnag from '@bugsnag/js';
 import store, { AppState } from '../store';
 import { ResSignOutPayload, W_SIGNOUT, WorkerRequestSignOut, sendAndWait } from '../../utils/worker';

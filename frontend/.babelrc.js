@@ -1,13 +1,13 @@
 module.exports = function(api) {
   api.cache(() => [process.env.NODE_ENV || 'development', process.env.BUILD_SSR || 'false'].join(':'));
 
-  const config = {
+  return {
     "presets": [
       "@babel/preset-typescript",
       [
         "@babel/env",
         {
-          "modules": false,
+          "modules": "auto",
           "loose": true,
           "bugfixes": true,
           "targets": {
@@ -27,6 +27,4 @@ module.exports = function(api) {
       ["@babel/plugin-proposal-numeric-separator"]
     ].filter(Boolean)
   };
-
-  return config;
 }

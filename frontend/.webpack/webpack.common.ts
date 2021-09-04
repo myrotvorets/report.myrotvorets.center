@@ -44,6 +44,7 @@ const config: webpack.Configuration = {
         publicPath: '/',
         scriptType: 'module',
         crossOriginLoading: 'anonymous',
+        pathinfo: false,
     },
     devtool: isProd ? 'source-map' : 'eval-cheap-source-map',
     devServer: {
@@ -145,6 +146,12 @@ const config: webpack.Configuration = {
             patterns: [{ from: 'src/robots.txt', to: './robots.txt ' }],
         }),
     ],
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+            minSize: 10240,
+        },
+    },
 };
 
 export default config;

@@ -1,4 +1,4 @@
-import type { User } from 'firebase/auth';
+import type { User } from '@firebase/auth';
 
 export const W_AUTH_STATE_CHANGED = 'auth_state_changed';
 export const W_GETTOKEN = 'get_token';
