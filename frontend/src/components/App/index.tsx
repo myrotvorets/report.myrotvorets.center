@@ -35,7 +35,9 @@ class App extends Component<Props, State> {
 
         if (self.Worker) {
             try {
-                const worker = new Worker(new URL('../../main-worker', import.meta.url));
+                const worker = new Worker(
+                    new URL(/* webpackChunkName: "worker" */ '../../main-worker', import.meta.url),
+                );
                 worker.addEventListener('message', this._onWorkerMessage);
                 worker.addEventListener('error', this._onWorkerError);
                 this.props.setWorker(worker);
