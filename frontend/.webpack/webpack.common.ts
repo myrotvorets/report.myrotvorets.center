@@ -51,7 +51,7 @@ const config: webpack.Configuration = {
             'Access-Control-Allow-Origin': '*',
         },
         compress: true,
-        port: 8080,
+        port: 8081,
         historyApiFallback: true,
     },
     resolve: {
@@ -64,18 +64,6 @@ const config: webpack.Configuration = {
     },
     module: {
         rules: [
-            {
-                test: /-worker\.ts$/u,
-                use: [
-                    {
-                        loader: 'worker-loader',
-                        options: { filename: 'worker-[contenthash:5].mjs' },
-                    },
-                    {
-                        loader: 'babel-loader',
-                    },
-                ],
-            },
             {
                 enforce: 'pre',
                 test: /\.tsx?$/u,

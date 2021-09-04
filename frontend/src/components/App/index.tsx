@@ -4,10 +4,6 @@ import { ActionMap } from 'unistore';
 import { AppState } from '../../redux/store';
 import { setUser, setWorker } from '../../redux/actions';
 import { BaseWorkerRequest, W_AUTH_STATE_CHANGED, WorkerResponseAuthStateChanged } from '../../utils/worker';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-// eslint-disable-next-line import/default
-import AuthWorker from '../../main-worker';
 
 import Header from '../Header';
 import NavBar from '../NavBar';
@@ -37,10 +33,9 @@ class App extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
 
-        if (window.Worker) {
+        if (self.Worker) {
             try {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-                const worker: Worker = new AuthWorker(); // lgtm[js/call-to-non-callable]
+                const worker = new Worker(new URL('../../main-worker', import.meta.url));
                 worker.addEventListener('message', this._onWorkerMessage);
                 worker.addEventListener('error', this._onWorkerError);
                 this.props.setWorker(worker);

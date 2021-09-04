@@ -1,10 +1,11 @@
 /// <reference lib="webworker" />
 
-import { initializeApp } from 'firebase/app';
+import { getApp, initializeApp } from 'firebase/app';
 import {
     User,
     signOut as fbSignOut,
-    getAuth,
+    indexedDBLocalPersistence,
+    initializeAuth,
     onAuthStateChanged,
     sendSignInLinkToEmail,
     signInWithEmailLink,
@@ -47,8 +48,7 @@ const errorCodes: Record<string, string> = {
 };
 
 initializeApp(firebaseConfig);
-
-const auth = getAuth();
+const auth = initializeAuth(getApp(), { persistence: indexedDBLocalPersistence });
 auth.languageCode = 'uk';
 
 /* const _unsub = */
@@ -59,7 +59,7 @@ onAuthStateChanged(auth, (user: User | null): void => {
 });
 
 function getToken(): void {
-    const { currentUser } = getAuth();
+    const { currentUser } = auth;
     if (currentUser) {
         currentUser
             .getIdToken()
@@ -88,7 +88,7 @@ function getToken(): void {
 }
 
 function sendLink(email: string, url: string): void {
-    sendSignInLinkToEmail(getAuth(), email, { handleCodeInApp: true, url })
+    sendSignInLinkToEmail(auth, email, { handleCodeInApp: true, url })
         .then(() =>
             self.postMessage({
                 type: W_SENDLINK,
@@ -108,7 +108,7 @@ function sendLink(email: string, url: string): void {
 }
 
 function signIn(email: string, link: string): void {
-    signInWithEmailLink(getAuth(), email, link)
+    signInWithEmailLink(auth, email, link)
         .then(() =>
             self.postMessage({
                 type: W_SIGNIN,
@@ -128,7 +128,7 @@ function signIn(email: string, link: string): void {
 }
 
 function signOut(): void {
-    fbSignOut(getAuth())
+    fbSignOut(auth)
         .then(() =>
             self.postMessage({
                 type: W_SIGNOUT,

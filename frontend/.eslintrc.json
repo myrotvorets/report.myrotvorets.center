@@ -12,5 +12,13 @@
     "env": {
         "browser": true,
         "serviceworker": true
-    }
+    },
+    "overrides": [
+        {
+            "files": ["webpack.config.ts", ".webpack/*.ts"],
+            "parserOptions": {
+                "project": ["./tsconfig-webpack.json"]
+            }
+        }
+    ]
 }

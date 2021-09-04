@@ -239,7 +239,7 @@ class InfoForm extends Component<Props, State> {
 
                 return await uploadFiles(this.props.worker as Worker, uid, f.files);
             } catch (e) {
-                Bugsnag.notify(e);
+                Bugsnag.notify(e as Error);
                 throw e;
             } finally {
                 document.removeEventListener('overalluploadprogress', this._onOverallUploadProgress);
