@@ -1,9 +1,9 @@
-import firebase from 'firebase/app';
+import type { User } from 'firebase/auth';
 import Bugsnag from '@bugsnag/js';
 import store, { AppState } from '../store';
 import { ResSignOutPayload, W_SIGNOUT, WorkerRequestSignOut, sendAndWait } from '../../utils/worker';
 
-export function setUser(state: AppState, user: firebase.User | null): Partial<AppState> {
+export function setUser(state: AppState, user: User | null): Partial<AppState> {
     if (user) {
         Bugsnag.setUser(user.uid, user.email ?? undefined);
     } else {
