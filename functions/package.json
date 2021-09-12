@@ -15,8 +15,8 @@
     "node": "14"
   },
   "dependencies": {
-    "@bugsnag/js": "^7.9.2",
-    "@bugsnag/plugin-express": "^7.9.2",
+    "@bugsnag/js": "7.11.0",
+    "@bugsnag/plugin-express": "7.11.0",
     "@google-cloud/storage": "^5.7.4",
     "@types/archiver": "^5.1.0",
     "@types/cors": "^2.8.9",
