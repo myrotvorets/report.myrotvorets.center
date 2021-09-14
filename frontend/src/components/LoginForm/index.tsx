@@ -99,11 +99,11 @@ class LoginForm extends Component<MappedProps, State> {
                     required
                     value={email}
                     onBlur={this._emailUpdateHandler}
-                    aria-invalid={emailValid ? 'false' : 'true'}
-                    aria-describedby={emailValid ? undefined : 'email-error'}
+                    aria-invalid={emailValid && email ? 'false' : 'true'}
+                    aria-describedby={emailValid && email ? undefined : 'email-error'}
                     ref={this._ref}
                 />
-                <div id="email-error">Невірна адреса електронної пошти.</div>
+                {!emailValid && !email && <div id="email-error">Невірна адреса електронної пошти.</div>}
 
                 <div className="button-container">
                     <button type="submit" aria-disabled={state === 'sending' || !emailValid ? 'true' : 'false'}>
