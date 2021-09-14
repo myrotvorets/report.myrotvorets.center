@@ -8,7 +8,7 @@ interface State {
     email: string;
     error: string;
     state: 'initial' | 'sending' | 'link_sent' | 'troubles';
-    emailValid: boolean;
+    emailValid: boolean | undefined;
 }
 
 interface MappedProps {
@@ -20,7 +20,7 @@ class LoginForm extends Component<MappedProps, State> {
         email: '',
         error: '',
         state: 'initial',
-        emailValid: false,
+        emailValid: undefined,
     };
 
     private readonly _ref: RefObject<HTMLInputElement> = createRef();
@@ -99,11 +99,11 @@ class LoginForm extends Component<MappedProps, State> {
                     required
                     value={email}
                     onBlur={this._emailUpdateHandler}
-                    aria-invalid={emailValid && email ? 'false' : 'true'}
-                    aria-describedby={emailValid && email ? undefined : 'email-error'}
+                    aria-invalid={emailValid !== undefined ? `${!emailValid}` : undefined}
+                    aria-describedby={emailValid !== false ? undefined : 'email-error'}
                     ref={this._ref}
                 />
-                {!emailValid && !email && <div id="email-error">Невірна адреса електронної пошти.</div>}
+                {emailValid === false && <div id="email-error">Невірна адреса електронної пошти.</div>}
 
                 <div className="button-container">
                     <button type="submit" aria-disabled={state === 'sending' || !emailValid ? 'true' : 'false'}>
