@@ -46,9 +46,11 @@ class LoginForm extends Component<MappedProps, State> {
 
     private readonly _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        const { email } = this.state;
+        const { state, email, emailValid } = this.state;
 
-        this._sendConfirmationLink(email);
+        if (state !== 'sending' && emailValid) {
+            this._sendConfirmationLink(email);
+        }
     };
 
     private _sendConfirmationLink(email: string): void {
@@ -83,12 +85,21 @@ class LoginForm extends Component<MappedProps, State> {
                 <Alert message={error} />
 
                 <label htmlFor="email" className="required">
-                    Електронна адреса:
+                    Електронна адреса <span className="sr-only">(обов'язкове поле)</span>:
                 </label>
-                <input type="email" id="email" required value={email} onChange={this._emailUpdateHandler} />
+                <input
+                    type="email"
+                    id="email"
+                    required
+                    value={email}
+                    onBlur={this._emailUpdateHandler}
+                    aria-invalid={emailValid ? 'false' : 'true'}
+                    aria-describedby={emailValid ? undefined : 'email-error'}
+                />
+                <div id="email-error">Невірна адреса електронної пошти.</div>
 
                 <div className="button-container">
-                    <button type="submit" disabled={state === 'sending' || !emailValid}>
+                    <button type="submit" aria-disabled={state === 'sending' || !emailValid ? 'true' : 'false'}>
                         {state !== 'sending' ? 'Далі…' : 'Відправлення посилання…'}
                     </button>
                 </div>

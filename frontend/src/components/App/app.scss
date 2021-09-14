@@ -313,7 +313,7 @@ label {
         align-items: center;
         margin: .25em 0;
         font-weight: normal;
-    
+
         input {
             width: .9em;
             height: .9em;
@@ -335,4 +335,21 @@ code {
     margin-top: -.5em;
     font-style: italic;
     font-size: $font-size-l;
+}
+
+[aria-disabled="true"] {
+    cursor: not-allowed;
+}
+
+.sr-only {
+    border: 0 !important;
+    clip: rect(1px, 1px, 1px, 1px) !important;
+    clip-path: inset(50%) !important;
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+    white-space: nowrap !important;
 }
