@@ -1,4 +1,4 @@
-import { Component, ComponentChild, h } from 'preact';
+import { Component, ComponentChild, RefObject, createRef, h } from 'preact';
 import Alert from '../Alert';
 import { withVisitorCheck } from '../../hocs/withLoginCheck';
 import { withWorker } from '../../hocs/withWorker';
@@ -22,6 +22,12 @@ class LoginForm extends Component<MappedProps, State> {
         state: 'initial',
         emailValid: false,
     };
+
+    private readonly _ref: RefObject<HTMLInputElement> = createRef();
+
+    public componentDidMount(): void {
+        this._ref.current?.focus();
+    }
 
     private readonly _emailUpdateHandler = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
         const { value } = currentTarget;
@@ -95,6 +101,7 @@ class LoginForm extends Component<MappedProps, State> {
                     onBlur={this._emailUpdateHandler}
                     aria-invalid={emailValid ? 'false' : 'true'}
                     aria-describedby={emailValid ? undefined : 'email-error'}
+                    ref={this._ref}
                 />
                 <div id="email-error">Невірна адреса електронної пошти.</div>
 
