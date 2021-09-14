@@ -98,7 +98,7 @@ class LoginForm extends Component<MappedProps, State> {
                     id="email"
                     required
                     value={email}
-                    onBlur={this._emailUpdateHandler}
+                    onChangeCapture={this._emailUpdateHandler}
                     aria-invalid={emailValid !== undefined ? `${!emailValid}` : undefined}
                     aria-describedby={emailValid !== false ? undefined : 'email-error'}
                     ref={this._ref}
