@@ -91,7 +91,7 @@ class LoginForm extends Component<MappedProps, State> {
                 <Alert message={error} />
 
                 <label htmlFor="email" className="required">
-                    Електронна адреса <span className="sr-only">(обов'язкове поле)</span>:
+                    Електронна адреса<span className="sr-only"> (обов'язкове поле)</span>:
                 </label>
                 <input
                     type="email"
