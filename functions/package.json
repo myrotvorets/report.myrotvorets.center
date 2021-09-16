@@ -30,7 +30,7 @@
     "express-validator": "^6.9.2",
     "fetch-retry-ts": "^1.1.23",
     "firebase-admin": "^9.4.2",
-    "firebase-functions": "^3.13.1",
+    "firebase-functions": "^3.15.6",
     "node-fetch": "^2.6.1",
     "node-mailjet": "^3.3.1"
   },
