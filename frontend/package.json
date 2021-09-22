@@ -54,7 +54,7 @@
     "hwp-inline-runtime-chunk-plugin": "^2.0.0",
     "mini-css-extract-plugin": "^2.0.0",
     "minimatch": "^3.0.4",
-    "postcss": "^8.2.5",
+    "postcss": "^8.3.7",
     "postcss-loader": "^6.1.0",
     "preact": "^10.5.12",
     "preact-router": "^3.2.1",
