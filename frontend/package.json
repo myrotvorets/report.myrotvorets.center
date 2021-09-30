@@ -42,7 +42,7 @@
     "ejs-compiled-loader": "^3.1.0",
     "eslint": "^7.19.0",
     "eslint-formatter-gha": "^1.2.0",
-    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-jest": "^24.5.0",
     "extract-loader": "^5.1.0",
     "fibers": "^5.0.0",
     "file-loader": "^6.2.0",
