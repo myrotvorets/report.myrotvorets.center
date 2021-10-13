@@ -9,7 +9,6 @@ interface State {
 }
 
 export default class Submenu extends Component<Props, State> {
-    private readonly _ref: RefObject<HTMLLIElement> = createRef();
     public state: Readonly<State> = {
         open: false,
     };
@@ -82,6 +81,8 @@ export default class Submenu extends Component<Props, State> {
             this.setState({ open: false });
         }
     };
+
+    private readonly _ref: RefObject<HTMLLIElement> = createRef();
 
     public render(): ComponentChild {
         const { children, title } = this.props;

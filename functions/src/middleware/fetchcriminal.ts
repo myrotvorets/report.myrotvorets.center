@@ -70,7 +70,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
                     message: 'Error communicating with the upstream server',
                 });
             })
-            .catch((e) => {
+            .catch((e: Error) => {
                 Bugsnag.notify(e);
                 return setImmediate<Record<string, unknown>[]>(next, {
                     success: false,

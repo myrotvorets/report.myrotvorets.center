@@ -6,18 +6,13 @@ import archiver from 'archiver';
 import Bugsnag from '@bugsnag/js';
 import type { ReportEntry } from '../types';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-argument
 archiver.registerFormat('zip-encryptable', require('archiver-zip-encryptable'));
 
 const randomBytes = promisify(crypto.randomBytes);
 
 const randomString = (length = 15): Promise<string> =>
-    randomBytes(2 * length).then((buf) =>
-        buf
-            .toString('base64')
-            .replace(/\+|\/|=/gu, '')
-            .slice(0, length),
-    );
+    randomBytes(2 * length).then((buf) => buf.toString('base64').replace(/[+/=]/gu, '').slice(0, length));
 
 const errorHandler = (e: Error): never => {
     Bugsnag.notify(e);

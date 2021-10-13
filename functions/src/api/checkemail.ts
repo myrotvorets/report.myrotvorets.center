@@ -23,7 +23,7 @@ export function checkEmail(req: Request, res: Response): void {
                 status: 'disposable' in json ? (json.disposable === 'true' ? 'DEA' : 'OK') : 'DUNNO',
             }),
         )
-        .catch((e) => {
+        .catch((e: Error) => {
             Bugsnag.notify(e);
             res.json({
                 success: true,

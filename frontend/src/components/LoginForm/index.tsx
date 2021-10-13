@@ -23,11 +23,20 @@ class LoginForm extends Component<MappedProps, State> {
         emailValid: undefined,
     };
 
-    private readonly _ref: RefObject<HTMLInputElement> = createRef();
-
     public componentDidMount(): void {
         this._ref.current?.focus();
     }
+
+    private readonly _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
+        e.preventDefault();
+        const { state, email, emailValid } = this.state;
+
+        if (state !== 'sending' && emailValid) {
+            this._sendConfirmationLink(email);
+        }
+    };
+
+    private readonly _ref: RefObject<HTMLInputElement> = createRef();
 
     private readonly _emailUpdateHandler = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
         const { value } = currentTarget;
@@ -48,15 +57,6 @@ class LoginForm extends Component<MappedProps, State> {
     private readonly _retryClickHandler = (): void => {
         const { email } = this.state;
         this._sendConfirmationLink(email);
-    };
-
-    private readonly _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
-        e.preventDefault();
-        const { state, email, emailValid } = this.state;
-
-        if (state !== 'sending' && emailValid) {
-            this._sendConfirmationLink(email);
-        }
     };
 
     private _sendConfirmationLink(email: string): void {
