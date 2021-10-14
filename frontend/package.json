@@ -53,7 +53,7 @@
     "mini-css-extract-plugin": "^2.0.0",
     "minimatch": "^3.0.4",
     "postcss": "^8.2.5",
-    "postcss-loader": "^6.1.0",
+    "postcss-loader": "^6.2.0",
     "preact": "^10.5.12",
     "preact-router": "^3.2.1",
     "prettier": "^2.2.1",
