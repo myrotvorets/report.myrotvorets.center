@@ -85,7 +85,7 @@
   },
   "description": "Frontend of https://report.myrotvorets.center/",
   "dependencies": {
-    "@types/webpack-bugsnag-plugins": "^1.4.2",
+    "@types/webpack-bugsnag-plugins": "^1.4.3",
     "@types/webpack-dev-server": "^4.1.0"
   }
 }
