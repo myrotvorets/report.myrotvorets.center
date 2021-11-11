@@ -23,6 +23,8 @@ class LoginForm extends Component<MappedProps, State> {
         emailValid: undefined,
     };
 
+    private readonly _ref: RefObject<HTMLInputElement> = createRef();
+
     public componentDidMount(): void {
         this._ref.current?.focus();
     }
@@ -35,8 +37,6 @@ class LoginForm extends Component<MappedProps, State> {
             this._sendConfirmationLink(email);
         }
     };
-
-    private readonly _ref: RefObject<HTMLInputElement> = createRef();
 
     private readonly _emailUpdateHandler = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
         const { value } = currentTarget;

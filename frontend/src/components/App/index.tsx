@@ -28,6 +28,8 @@ interface State {
 }
 
 class App extends Component<Props, State> {
+    private readonly _worker: Worker | undefined;
+
     public constructor(props: Props) {
         super(props);
 
@@ -75,8 +77,6 @@ class App extends Component<Props, State> {
             this.setState({ error: new Error('Something wrong with the worker') });
         }
     };
-
-    private readonly _worker: Worker | undefined;
 
     public render(): ComponentChild {
         return (

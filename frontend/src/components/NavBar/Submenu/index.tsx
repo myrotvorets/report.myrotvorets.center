@@ -13,6 +13,8 @@ export default class Submenu extends Component<Props, State> {
         open: false,
     };
 
+    private readonly _ref: RefObject<HTMLLIElement> = createRef();
+
     public componentDidMount(): void {
         document.addEventListener('focusin', this._onFocusInHandler);
     }
@@ -81,8 +83,6 @@ export default class Submenu extends Component<Props, State> {
             this.setState({ open: false });
         }
     };
-
-    private readonly _ref: RefObject<HTMLLIElement> = createRef();
 
     public render(): ComponentChild {
         const { children, title } = this.props;

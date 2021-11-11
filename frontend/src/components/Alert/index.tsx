@@ -8,6 +8,8 @@ interface Props {
 }
 
 export default class Alert extends Component<Props> {
+    private readonly _ref: RefObject<HTMLDivElement> = createRef();
+
     public componentDidMount(): void {
         const { children, message } = this.props;
         if ((message || children) && this._ref.current) {
@@ -22,8 +24,6 @@ export default class Alert extends Component<Props> {
             this._ref.current.scrollIntoView(true);
         }
     }
-
-    private readonly _ref: RefObject<HTMLDivElement> = createRef();
 
     public render(): ComponentChild {
         const { children, className, message } = this.props;
