@@ -54,7 +54,7 @@
     "minimatch": "^3.0.4",
     "postcss": "^8.2.5",
     "postcss-loader": "^6.1.0",
-    "preact": "^10.5.12",
+    "preact": "^10.6.0",
     "preact-router": "^3.2.1",
     "purgecss-webpack-plugin": "^4.0.0",
     "ref-loader": "^1.0.3",
