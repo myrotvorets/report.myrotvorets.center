@@ -1,22 +1,6 @@
 {
-  "extends": [
-    "config:base",
-    ":preserveSemverRanges",
-    ":separateMultipleMajorReleases",
-    ":combinePatchMinorReleases",
-    ":rebaseStalePrs",
-    ":prConcurrentLimitNone",
-    ":disableRateLimiting",
-    ":automergeMinor",
-    ":automergePr",
-    ":automergeRequireAllStatusChecks",
-    ":automergeLinters",
-    ":automergeTesters",
-    ":automergeTypes",
-    ":enableVulnerabilityAlerts",
-    ":widenPeerDependencies",
-    ":semanticCommits",
-    ":npm",
-    ":docker"
-  ]
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "local>myrotvorets/.github:renovate-config"
+    ]
 }
