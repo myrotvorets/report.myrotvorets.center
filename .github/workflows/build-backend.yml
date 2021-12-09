@@ -13,13 +13,6 @@ jobs:
   build-backend:
     name: Build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node_version:
-          - "12"
-          - "14"
-          - "16"
-
     steps:
       - name: Check out the source code
         uses: actions/checkout@v2.4.0
@@ -27,18 +20,8 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.5.0
         with:
-          node-version: ${{ matrix.node_version }}
-
-      - name: Update npm
-        run: npm i -g npm@latest
-
-      - name: Cache node modules
-        uses: actions/cache@v2.1.7
-        env:
-          cache-name: cache-node-modules-be
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.node_version }}-${{ hashFiles('backend/package-lock.json') }}
+          node-version: '16'
+          cache: npm
 
       - name: Install dependencies
         run: npm ci --ignore-scripts
