@@ -49,7 +49,7 @@ export const handleReport = functions.database
 
             if (entry.note !== '[skip]') {
                 const config = functions.config() as RuntimeConfig;
-                return sendMail(
+                return await sendMail(
                     config.mail.from,
                     entry.email,
                     config.mail[entry.note === 'dev' ? 'devto' : 'to'],

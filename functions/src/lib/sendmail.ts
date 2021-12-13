@@ -1,9 +1,27 @@
 import * as functions from 'firebase-functions';
-import mailjet from 'node-mailjet';
+import { fetch } from 'fetch-h2';
 import type { RuntimeConfig } from '../types';
 
 const config = functions.config() as RuntimeConfig;
-const mj = mailjet.connect(config.mailjet.apikey.public, config.mailjet.apikey.private);
+
+interface To {
+    readonly Email: string;
+    readonly MessageUUID: string;
+    readonly MessageID: number;
+    readonly MessageHref: string;
+}
+
+interface Message {
+    readonly Status: string;
+    readonly CustomID: string;
+    readonly To: ReadonlyArray<To>;
+    readonly Cc: ReadonlyArray<To>;
+    readonly Bcc: ReadonlyArray<To>;
+}
+
+interface MailjetResponseData {
+    readonly Messages: ReadonlyArray<Message>;
+}
 
 export function sendMail(
     from: string,
@@ -11,8 +29,8 @@ export function sendMail(
     to: string,
     subject: string,
     body: string,
-): Promise<mailjet.Email.PostResponse> {
-    return mj.post('send', { version: 'v3.1' }).request({
+): Promise<MailjetResponseData> {
+    const postBody = {
         Messages: [
             {
                 From: {
@@ -30,5 +48,22 @@ export function sendMail(
                 TextPart: body,
             },
         ],
+    };
+
+    const auth = Buffer.from(`${config.mailjet.apikey.public}:${config.mailjet.apikey.private}`).toString('base64');
+
+    return fetch('https://api.mailjet.com/v3.1/send', {
+        method: 'POST',
+        body: JSON.stringify(postBody),
+        headers: {
+            'Content-Type': 'application/json; charset=utf=8',
+            Authorization: `Basic ${auth}`,
+        },
+    }).then((r) => {
+        if (!r.ok) {
+            throw new Error(`HTTP Error ${r.status}`);
+        }
+
+        return r.json() as Promise<MailjetResponseData>;
     });
 }
