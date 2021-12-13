@@ -1,7 +1,6 @@
 import Bugsnag from '@bugsnag/js';
 import type { NextFunction, Request, Response } from 'express';
 import { fetch } from '../lib/fetch';
-import { httpsAgent } from '../lib/agents';
 
 export interface Attachment {
     aid: number;
@@ -37,7 +36,6 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
 
         const id = req.params.id;
         fetch(`https://api.myrotvorets.center/simplesearch/v1/${id}`, {
-            agent: httpsAgent,
             headers: {
                 'User-Agent': 'Report.Myrtovorets.Center Verification Bot',
                 Accept: 'application/json',

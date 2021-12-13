@@ -1,7 +1,6 @@
 import Bugsnag from '@bugsnag/js';
 import type { Request, Response } from 'express';
 import { fetch } from '../lib/fetch';
-import { httpsAgent } from '../lib/agents';
 
 interface DebounceResponse {
     disposable?: string;
@@ -11,7 +10,6 @@ export function checkEmail(req: Request, res: Response): void {
     const email = req.params.email;
 
     fetch(`https://disposable.debounce.io/?email=${encodeURIComponent(email)}`, {
-        agent: httpsAgent,
         headers: {
             Accept: 'application/json',
         },
