@@ -2,6 +2,7 @@ import webpack from 'webpack';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { HwpAttributesPlugin } from 'hwp-attributes-plugin';
+// eslint-disable-next-line import/default
 import CopyPlugin from 'copy-webpack-plugin';
 import { execSync } from 'child_process';
 import { OptimizeOptions } from 'svgo';
