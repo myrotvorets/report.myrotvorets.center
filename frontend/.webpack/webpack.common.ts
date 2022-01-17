@@ -1,4 +1,5 @@
 import webpack from 'webpack';
+import webpackDevServer from 'webpack-dev-server';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { HwpAttributesPlugin } from 'hwp-attributes-plugin';
@@ -30,7 +31,8 @@ const prodMinifyOptions: HtmlWebpackPlugin.MinifyOptions = {
     html5: true,
 };
 
-const config: webpack.Configuration = {
+// See https://github.com/webpack/webpack/issues/15131#issuecomment-1008827305
+const config: webpack.Configuration & { devServer: webpackDevServer.Configuration } = {
     context: path.resolve(__dirname, '..'),
     node: false,
     entry: {
