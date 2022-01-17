@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the source code
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # renovate: tag=v2.4.0
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.5.1
+        uses: actions/setup-node@1f8c6b94b26d0feae1e387ca63ccbdc44d27b561 # renovate: tag=v2.5.1
         with:
           node-version: '16'
           cache: npm
@@ -38,7 +38,7 @@ jobs:
         working-directory: functions
 
       - name: Start deployment
-        uses: chrnorm/deployment-action@v1.2.0
+        uses: chrnorm/deployment-action@0a0479c8ab41cd336ddc266342ca0a1c54727a72 # renovate: tag=v1.2.0
         id: deployment
         with:
           token: "${{ github.token }}"
@@ -51,7 +51,7 @@ jobs:
 
       - name: Update deployment status (success)
         if: success()
-        uses: chrnorm/deployment-status@v1.0.0
+        uses: chrnorm/deployment-status@598d987f3a8dec3817b995f810e6de7c06c92106 # renovate: tag=v1.0.0
         with:
           token: "${{ github.token }}"
           state: "success"
@@ -59,7 +59,7 @@ jobs:
 
       - name: Update deployment status (failure)
         if: failure()
-        uses: chrnorm/deployment-status@v1.0.0
+        uses: chrnorm/deployment-status@598d987f3a8dec3817b995f810e6de7c06c92106 # renovate: tag=v1.0.0
         with:
           token: "${{ github.token }}"
           state: "failure"
