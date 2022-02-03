@@ -18,13 +18,6 @@ export default function (): webpack.Configuration {
                 },
             ],
         },
-        plugins: [
-            new ForkTsCheckerWebpackPlugin({
-                eslint: {
-                    enabled: true,
-                    files: ['src/**/*.{ts,tsx}'],
-                },
-            }),
-        ],
+        plugins: [new ForkTsCheckerWebpackPlugin()],
     } as webpack.Configuration);
 }
