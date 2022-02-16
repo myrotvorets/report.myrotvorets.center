@@ -50,7 +50,7 @@
     "hwp-attributes-plugin": "^2.0.0",
     "hwp-inline-runtime-chunk-plugin": "^2.0.0",
     "mini-css-extract-plugin": "^2.0.0",
-    "minimatch": "^4.0.0",
+    "minimatch": "^5.0.0",
     "postcss": "^8.2.5",
     "postcss-loader": "^6.1.0",
     "preact": "^10.5.12",
