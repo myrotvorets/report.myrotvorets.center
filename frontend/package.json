@@ -51,7 +51,7 @@
     "mini-css-extract-plugin": "^2.0.0",
     "minimatch": "^5.0.0",
     "postcss": "^8.2.5",
-    "postcss-loader": "^6.1.0",
+    "postcss-loader": "^7.0.0",
     "preact": "^10.5.12",
     "preact-router": "^4.0.0",
     "purgecss-webpack-plugin": "^4.0.0",
