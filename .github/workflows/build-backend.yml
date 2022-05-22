@@ -9,6 +9,9 @@ on:
       - ".github/workflows/build-backend.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build-backend:
     name: Build

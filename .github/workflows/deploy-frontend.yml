@@ -9,10 +9,16 @@ on:
       - ".github/workflows/deploy-frontend.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   deploy-frontend:
     name: Deploy
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
     steps:
       - name: Check out the source code
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
@@ -62,7 +68,7 @@ jobs:
         with:
           token: "${{ github.token }}"
           state: "success"
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
 
       - name: Update deployment status (failure)
         if: failure()
@@ -70,4 +76,4 @@ jobs:
         with:
           token: "${{ github.token }}"
           state: "failure"
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
