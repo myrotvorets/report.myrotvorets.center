@@ -1,3 +1,7 @@
+/* eslint-disable jest/expect-expect */
+/* eslint-disable jest/valid-title */
+/* eslint-disable jest/no-disabled-tests */
+/* eslint-disable jest/no-export */
 import { h, render } from 'preact';
 import { Provider } from 'unistore/preact';
 import store from './redux/store';
