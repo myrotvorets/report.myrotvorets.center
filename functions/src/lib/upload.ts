@@ -29,7 +29,7 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<[string
 
         try {
             const folder = await bucket.getFiles({
-                directory: `incoming/${entry.path}`,
+                prefix: `incoming/${entry.path}`,
             });
 
             if (folder[0] && folder[0].length) {
@@ -64,7 +64,7 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<[string
         } finally {
             try {
                 await bucket.deleteFiles({
-                    directory: `incoming/${entry.path}`,
+                    prefix: `incoming/${entry.path}`,
                     force: true,
                 });
             } catch (e) {
