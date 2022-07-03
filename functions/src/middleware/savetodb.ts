@@ -8,7 +8,7 @@ const db = admin.database();
 export async function saveToDatabase(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     req: Request<Record<string, any>, unknown, AddUpdateRequestBody>,
-    res: Response,
+    _res: Response,
     next: NextFunction,
 ): Promise<void> {
     try {
