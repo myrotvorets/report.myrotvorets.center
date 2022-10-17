@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
-import PurgecssPlugin from 'purgecss-webpack-plugin';
+import { PurgeCSSPlugin } from 'purgecss-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import glob from 'glob';
 import path from 'path';
@@ -63,10 +63,12 @@ export default function (): webpack.Configuration {
                 filename: '[name].[contenthash:5].css',
                 chunkFilename: '[name].[contenthash:5].css',
             }),
-            new PurgecssPlugin({
+            new PurgeCSSPlugin({
                 paths: glob.sync(`${path.join(__dirname, '../src')}/**/*`, {
                     nodir: true,
                 }),
+                blocklist: [],
+                safelist: [],
             }),
             process.env.CI
                 ? new BugsnagSourceMapUploaderPlugin({
