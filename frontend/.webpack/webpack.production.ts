@@ -1,9 +1,9 @@
-import webpack from 'webpack';
+import { Configuration as WebpackConfiguration } from 'webpack';
 import { merge } from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
 import { PurgeCSSPlugin } from 'purgecss-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import glob from 'glob';
+import { sync as globSync } from 'glob';
 import path from 'path';
 import { InjectManifest } from 'workbox-webpack-plugin';
 import { HwpInlineRuntimeChunkPlugin } from 'hwp-inline-runtime-chunk-plugin';
@@ -12,7 +12,7 @@ import { BugsnagBuildReporterPlugin, BugsnagSourceMapUploaderPlugin } from 'webp
 
 import commonConfig, { BugsnagAPIKey, version } from './webpack.common';
 
-export default function (): webpack.Configuration {
+export default function (): WebpackConfiguration {
     return merge(commonConfig, {
         mode: 'production',
         module: {
@@ -64,7 +64,7 @@ export default function (): webpack.Configuration {
                 chunkFilename: '[name].[contenthash:5].css',
             }),
             new PurgeCSSPlugin({
-                paths: glob.sync(`${path.join(__dirname, '../src')}/**/*`, {
+                paths: globSync(`${path.join(__dirname, '../src')}/**/*`, {
                     nodir: true,
                 }),
                 blocklist: [],
@@ -124,5 +124,5 @@ export default function (): webpack.Configuration {
             ],
             minimize: true,
         },
-    } as webpack.Configuration);
+    } as WebpackConfiguration);
 }

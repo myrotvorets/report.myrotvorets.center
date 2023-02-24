@@ -1,10 +1,10 @@
-import webpack from 'webpack';
+import { Configuration } from 'webpack';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { merge } from 'webpack-merge';
 
 import commonConfig from './webpack.common';
 
-export default function (): webpack.Configuration {
+export default function (): Configuration {
     return merge(commonConfig, {
         mode: 'development',
         performance: {
@@ -19,5 +19,5 @@ export default function (): webpack.Configuration {
             ],
         },
         plugins: [new ForkTsCheckerWebpackPlugin()],
-    } as webpack.Configuration);
+    } as Configuration);
 }

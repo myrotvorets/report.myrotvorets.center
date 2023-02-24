@@ -1,4 +1,4 @@
-import webpack from 'webpack';
+import { DefinePlugin, ProvidePlugin, Configuration as WebpackConfiguration } from 'webpack';
 import webpackDevServer from 'webpack-dev-server';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -6,7 +6,7 @@ import { HwpAttributesPlugin } from 'hwp-attributes-plugin';
 // eslint-disable-next-line import/default
 import CopyPlugin from 'copy-webpack-plugin';
 import { execSync } from 'child_process';
-import { OptimizeOptions } from 'svgo';
+import { Config as SVGOConfig } from 'svgo';
 
 export const BugsnagAPIKey = 'ef7411ba5af267034db13d800de8a235';
 export let version: string;
@@ -32,7 +32,7 @@ const prodMinifyOptions: HtmlWebpackPlugin.MinifyOptions = {
 };
 
 // See https://github.com/webpack/webpack/issues/15131#issuecomment-1008827305
-const config: webpack.Configuration & { devServer: webpackDevServer.Configuration } = {
+const config: WebpackConfiguration & { devServer: webpackDevServer.Configuration } = {
     context: path.resolve(__dirname, '..'),
     node: false,
     entry: {
@@ -97,7 +97,7 @@ const config: webpack.Configuration & { devServer: webpackDevServer.Configuratio
                                     },
                                 },
                             ],
-                        } as OptimizeOptions,
+                        } as SVGOConfig,
                     },
                 ],
             },
@@ -124,13 +124,13 @@ const config: webpack.Configuration & { devServer: webpackDevServer.Configuratio
         ],
     },
     plugins: [
-        new webpack.DefinePlugin({
+        new DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             'process.env.BUILD_SSR': JSON.stringify(false),
             'process.env.BUGSNAG_API_KEY': JSON.stringify(BugsnagAPIKey),
             'process.env.APP_VERSION': JSON.stringify(version),
         }),
-        new webpack.ProvidePlugin({
+        new ProvidePlugin({
             h: ['preact', 'h'],
             Fragment: ['preact', 'Fragment'],
         }),
