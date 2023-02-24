@@ -30,7 +30,7 @@
     "@types/minimatch": "^5.0.0",
     "@types/node": ">= 12",
     "@types/svgo": "^3.0.0",
-    "@types/workbox-webpack-plugin": "^5.1.5",
+    "@types/workbox-webpack-plugin": "^6.0.0",
     "autoprefixer": "^10.2.4",
     "babel-loader": "^9.0.0",
     "copy-webpack-plugin": "^11.0.0",
