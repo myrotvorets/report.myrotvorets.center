@@ -30,10 +30,10 @@ export function commonValidationHandler(req: Request, res: Response, next: NextF
         return next();
     }
 
-    const list: ValidationError[] = errors.array();
+    const list: Record<string, ValidationError> = errors.mapped();
     const fields: Record<string, string> = {};
-    list.forEach((item) => {
-        fields[item.param] = item.msg as string;
+    Object.keys(list).forEach((key) => {
+        fields[key] = list[key].msg as string;
     });
 
     return next({
