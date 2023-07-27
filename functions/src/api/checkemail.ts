@@ -14,7 +14,7 @@ export function checkEmail(req: Request, res: Response): void {
             Accept: 'application/json',
         },
     })
-        .then((r) => r.json())
+        .then((r) => r.json() as Promise<DebounceResponse>)
         .then((json: DebounceResponse) =>
             res.json({
                 success: true,

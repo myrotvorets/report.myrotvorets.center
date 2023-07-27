@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { fetch } from 'fetch-h2';
+import { fetch } from '@adobe/fetch';
 import type { RuntimeConfig } from '../types';
 
 const config = functions.config() as RuntimeConfig;
