@@ -1,4 +1,4 @@
-import { fetch as origFetch } from 'fetch-h2';
+import { fetch as origFetch } from '@adobe/fetch';
 import fetchBuilder from 'fetch-retry-ts';
 
 export const fetch = fetchBuilder(origFetch, {

@@ -43,7 +43,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
                 'X-Forwarded-User-Agent': req.headers['user-agent'] || '',
             },
         })
-            .then((r) => r.json())
+            .then((r) => r.json() as Promise<Criminal | ErrorResponse>)
             .then((r: Criminal | ErrorResponse) => {
                 if ('id' in r) {
                     req.criminal = r;
