@@ -22,9 +22,9 @@ module.exports = function(api) {
         "pragmaFrag": "Fragment"
       }],
       process.env.BUILD_SSR ? ["babel-plugin-dynamic-import-node-sync"] : null,
-      ["@babel/plugin-proposal-class-properties", { "loose": true }],
-      ["@babel/plugin-proposal-optional-chaining", { "loose": true }],
-      ["@babel/plugin-proposal-numeric-separator"]
+      ["@babel/plugin-transform-class-properties", { "loose": true }],
+      ["@babel/plugin-transform-optional-chaining", { "loose": true }],
+      ["@babel/plugin-transform-numeric-separator"]
     ].filter(Boolean)
   };
 }
