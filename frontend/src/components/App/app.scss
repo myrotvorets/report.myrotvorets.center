@@ -153,7 +153,7 @@ input[type="reset"],
 input[type="submit"] {
     @include fb-color("primary");
     border: 1px solid $color-primary-light;
-    border-radius: 0.5rem;
+    border-radius: #{$border-radius};
     font-size: 1em;
     line-height: 1.2;
     outline: none;
@@ -213,7 +213,7 @@ label input {
 
 .block {
     @extend %block;
-    box-shadow: 1rem 1rem 0.5rem #666;
+    box-shadow: 0 .5rem 1rem rgba(#000, .15);
 }
 
 .block--centered {

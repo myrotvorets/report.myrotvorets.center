@@ -48,7 +48,7 @@
         white-space: nowrap;
         background-color: $color-background;
         border: 1px solid $color-primary-light;
-        border-radius: .25rem;
+        border-radius: #{$border-radius};
     }
 
     > .form-control {

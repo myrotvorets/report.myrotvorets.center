@@ -1,6 +1,6 @@
 .block {
 	@extend %block;
-	box-shadow: .5rem .5rem .5rem #666;
+	box-shadow: 0 .5rem 1rem rgba(#000, .15);
 }
 
 .block--centered {
