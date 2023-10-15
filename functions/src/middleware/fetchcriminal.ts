@@ -40,7 +40,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
                 'User-Agent': 'Report.Myrtovorets.Center Verification Bot',
                 Accept: 'application/json',
                 'X-Forwarded-For': ips.join(', '),
-                'X-Forwarded-User-Agent': req.headers['user-agent'] || '',
+                'X-Forwarded-User-Agent': req.headers['user-agent'] ?? '',
             },
         })
             .then((r) => r.json() as Promise<Criminal | ErrorResponse>)

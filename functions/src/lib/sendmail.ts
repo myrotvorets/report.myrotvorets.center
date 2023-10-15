@@ -14,13 +14,13 @@ interface To {
 interface Message {
     readonly Status: string;
     readonly CustomID: string;
-    readonly To: ReadonlyArray<To>;
-    readonly Cc: ReadonlyArray<To>;
-    readonly Bcc: ReadonlyArray<To>;
+    readonly To: readonly To[];
+    readonly Cc: readonly To[];
+    readonly Bcc: readonly To[];
 }
 
 interface MailjetResponseData {
-    readonly Messages: ReadonlyArray<Message>;
+    readonly Messages: readonly Message[];
 }
 
 export function sendMail(
