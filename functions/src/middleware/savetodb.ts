@@ -27,20 +27,21 @@ export async function saveToDatabase(
             cname,
             ips: ips.join(', '),
             email: req.user?.email ?? '',
-            ua: req.headers['user-agent'] || '',
+            ua: req.headers['user-agent'] ?? '',
             dt: Date.now(),
         };
 
         await db.ref('/reports').push(entry);
     } catch (e) {
         Bugsnag.notify(e as Error);
-        return next({
+        next({
             success: false,
             status: 500,
             code: 'INTERNAL_ERROR',
             message: 'Unable to save the record',
         });
+        return;
     }
 
-    return next();
+    next();
 }

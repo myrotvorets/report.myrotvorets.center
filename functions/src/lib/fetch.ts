@@ -1,5 +1,5 @@
 import { fetch as origFetch } from '@adobe/fetch';
-import fetchBuilder from 'fetch-retry-ts';
+import { fetchBuilder } from 'fetch-retry-ts';
 
 export const fetch = fetchBuilder(origFetch, {
     retries: 3,

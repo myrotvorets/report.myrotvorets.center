@@ -32,7 +32,7 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<[string
                 prefix: `incoming/${entry.path}`,
             });
 
-            if (folder[0] && folder[0].length) {
+            if (folder[0].length) {
                 const fileStream = bucket.file(fname).createWriteStream({
                     public: true,
                     resumable: false,

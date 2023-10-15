@@ -27,7 +27,8 @@ export const reportUpdateValidator = [
 export function commonValidationHandler(req: Request, res: Response, next: NextFunction): void {
     const errors: Result<ValidationError> = validationResult(req);
     if (errors.isEmpty()) {
-        return next();
+        next();
+        return;
     }
 
     const list: Record<string, ValidationError> = errors.mapped();
@@ -36,7 +37,7 @@ export function commonValidationHandler(req: Request, res: Response, next: NextF
         fields[key] = list[key].msg as string;
     });
 
-    return next({
+    next({
         success: false,
         status: 422,
         code: 'VALIDATION_FAILED',
