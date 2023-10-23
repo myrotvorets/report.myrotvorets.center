@@ -58,5 +58,5 @@ export function findCriminalById(id: number | string): Promise<Criminal | Error>
 }
 
 export function isKnownCriminal(id: number | string): Criminal | false {
-    return map.get(id) || false;
+    return map.get(id) ?? false;
 }

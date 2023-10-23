@@ -78,7 +78,7 @@ class LoginForm extends Component<MappedProps, State> {
                     state = { error: r.message || r.code, state: 'initial' };
                 }
 
-                return this.setState(state);
+                this.setState(state);
             })
             .catch((e: Error) => this.setState({ error: e.message, state: 'initial' }));
     }

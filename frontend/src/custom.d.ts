@@ -30,6 +30,7 @@ declare module 'unistore/preact' {
         ? I
         : never;
 
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     type MakeBoundAction<K, A extends (...args: any) => Promise<Partial<K>> | Partial<K> | void> = (
         ...args: TupleTail<Parameters<A>, ReturnType<A>>
     ) => ReturnType<A>;

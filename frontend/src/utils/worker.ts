@@ -50,11 +50,11 @@ export type ResGetTokenPayload =
           code: string;
       };
 
-export type ReqUploadPayload = {
+export interface ReqUploadPayload {
     uid: string;
     name: string;
     file: Blob;
-};
+}
 
 export type ResUploadPayload =
     | {
@@ -66,9 +66,9 @@ export type ResUploadPayload =
           code: string;
       };
 
-export type ResUploadProgressPayload = {
+export interface ResUploadProgressPayload {
     progress: number;
-};
+}
 
 export type ResSendLinkPayload = ResSignInPayload;
 export type ResSignOutPayload = ResSignInPayload;

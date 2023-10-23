@@ -36,7 +36,7 @@ export default class ErrorBoundary extends Component<Props, State> {
     private _renderReason(): ComponentChild {
         const { error } = this.state;
 
-        if (error instanceof TypeError && error.message.indexOf('_avast_submit') !== -1) {
+        if (error instanceof TypeError && error.message.includes('_avast_submit')) {
             return (
                 <Fragment>
                     <p>

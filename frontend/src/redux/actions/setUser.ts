@@ -31,10 +31,10 @@ export function logOutUser(state: AppState): Promise<Partial<AppState>> {
             .then((r) => {
                 if (r.success) {
                     store.setState({ user: null });
-                    return resolve({ user: null });
+                    resolve({ user: null });
+                } else {
+                    reject(new Error(r.message || r.code));
                 }
-
-                return reject(new Error(r.message || r.code));
             })
             .catch(reject);
     });

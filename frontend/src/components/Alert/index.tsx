@@ -12,6 +12,7 @@ export default class Alert extends Component<Props> {
 
     public componentDidMount(): void {
         const { children, message } = this.props;
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         if ((message || children) && this._ref.current) {
             this._ref.current.scrollIntoView(true);
         }
@@ -20,6 +21,7 @@ export default class Alert extends Component<Props> {
     public componentDidUpdate(prevProps: Readonly<Props>): void {
         const { children, message } = this.props;
         const { message: prevMessage } = prevProps;
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         if ((message || children) && !prevMessage && this._ref.current) {
             this._ref.current.scrollIntoView(true);
         }
@@ -32,8 +34,8 @@ export default class Alert extends Component<Props> {
         }
 
         return (
-            <div className={`alert ${className || ''}`} role="alert" ref={this._ref}>
-                {message ? message : children}
+            <div className={`alert ${className ?? ''}`} role="alert" ref={this._ref}>
+                {message ?? children}
             </div>
         );
     }
