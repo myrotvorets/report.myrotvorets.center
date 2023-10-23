@@ -13,7 +13,7 @@ export async function saveToDatabase(
 ): Promise<void> {
     try {
         const ips = req.ips;
-        if (!ips.length) {
+        if (!ips.length && req.ip) {
             ips.push(req.ip);
         }
 

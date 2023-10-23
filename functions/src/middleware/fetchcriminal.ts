@@ -30,7 +30,7 @@ interface ErrorResponse {
 export function fetchCriminal(req: Request, res: Response, next: NextFunction): void {
     if (req.params.id) {
         const ips = [...req.ips];
-        if (!ips.length) {
+        if (!ips.length && req.ip) {
             ips.push(req.ip);
         }
 
