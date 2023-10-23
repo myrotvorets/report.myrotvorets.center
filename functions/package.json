@@ -15,7 +15,7 @@
     "node": "18"
   },
   "dependencies": {
-    "@adobe/fetch": "^3.6.4",
+    "@adobe/fetch": "^4.0.0",
     "@bugsnag/js": "^7.9.2",
     "@bugsnag/plugin-express": "^7.9.2",
     "@types/archiver": "^5.1.0",
