@@ -46,7 +46,7 @@ registerRoute(
 setCatchHandler(async (options) => {
     const { destination } = options.request;
     if (destination === 'document') {
-        return (await matchPrecache('/index.html')) || Response.error();
+        return (await matchPrecache('/index.html')) ?? Response.error();
     }
 
     return Response.error();

@@ -9,12 +9,11 @@ import MenuItem from './MenuItem/index';
 
 import './navbar.scss';
 
-type OwnProps = unknown;
-type MappedProps = {
+interface MappedProps {
     loggedIn: boolean;
-};
+}
 
-type Props = OwnProps & MappedProps;
+type Props = MappedProps;
 
 function NavBar(props: Props): h.JSX.Element {
     const { loggedIn } = props;
@@ -79,4 +78,4 @@ function mapStateToProps(state: AppState): MappedProps {
     };
 }
 
-export default connect<OwnProps, unknown, AppState, MappedProps>(mapStateToProps)(NavBar);
+export default connect<unknown, unknown, AppState, MappedProps>(mapStateToProps)(NavBar);

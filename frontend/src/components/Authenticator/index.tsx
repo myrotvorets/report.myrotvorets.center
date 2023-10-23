@@ -30,7 +30,7 @@ export default function Authenticator(): h.JSX.Element | null {
             if (searchParams.has('continueUrl')) {
                 // #12: Failed to construct 'URL': Invalid URL if someone tampers with the URL
                 try {
-                    const url = new URL(searchParams.get('continueUrl') as string);
+                    const url = new URL(searchParams.get('continueUrl')!);
                     if (
                         url.hostname !== window.location.hostname &&
                         /^(report\.myrotvorets\.(center|dev)|localhost)$/iu.test(url.hostname)

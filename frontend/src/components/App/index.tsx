@@ -13,15 +13,12 @@ import Footer from '../Footer';
 
 import './app.scss';
 
-type OwnProps = unknown;
-type MappedProps = unknown;
-
 interface ActionProps extends ActionMap<AppState> {
     setUser: typeof setUser;
     setWorker: typeof setWorker;
 }
 
-type Props = OwnProps & MappedProps & ActionBinder<AppState, ActionProps>;
+type Props = ActionBinder<AppState, ActionProps>;
 
 interface State {
     error?: Error;
@@ -33,6 +30,7 @@ class App extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (self.Worker) {
             try {
                 const worker = new Worker(
@@ -49,7 +47,8 @@ class App extends Component<Props, State> {
     }
 
     public componentDidMount(): void {
-        if (!window.Worker) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (!self.Worker) {
             throw new Error('Unsupported browser');
         }
 
@@ -93,4 +92,4 @@ class App extends Component<Props, State> {
     }
 }
 
-export default connect<OwnProps, unknown, AppState, MappedProps, ActionProps>(() => ({}), { setUser, setWorker })(App);
+export default connect<unknown, unknown, AppState, unknown, ActionProps>(() => ({}), { setUser, setWorker })(App);

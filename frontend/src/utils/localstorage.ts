@@ -1,8 +1,8 @@
 export function lsGet(key: string): string {
     // #10 - Failed to read the 'localStorage' property from 'Window': Access is denied for this document.
     try {
-        return self.localStorage.getItem(key) || '';
-    } catch (e) {
+        return self.localStorage.getItem(key) ?? '';
+    } catch {
         return '';
     }
 }
@@ -14,7 +14,7 @@ export function lsSet(key: string, value: string): void {
         } else {
             self.localStorage.removeItem(key);
         }
-    } catch (e) {
+    } catch {
         // Do nothing
     }
 }

@@ -171,10 +171,11 @@ class InfoForm extends Component<Props, State> {
                 .then((j) => {
                     if (j.success) {
                         this._resetLocalStorage();
-                        return this.setState({ state: 'success' });
+                        this.setState({ state: 'success' });
+                        return;
                     }
 
-                    return this.setState({ state: 'idle', error: InfoForm._parseError(j), status: '' });
+                    this.setState({ state: 'idle', error: InfoForm._parseError(j), status: '' });
                 })
                 .catch((e: Error) => this.setState({ state: 'idle', error: InfoForm._parseError(e), status: '' }));
         } else {
@@ -211,15 +212,15 @@ class InfoForm extends Component<Props, State> {
         const { id } = this.props;
         // findCriminalById() never fails
         // eslint-disable-next-line no-void
-        void findCriminalById(id as string).then((r) => {
+        void findCriminalById(id!).then((r) => {
             if ('id' in r) {
-                return this.setState({
+                this.setState({
                     criminal: r,
                     state: 'idle',
                 });
+            } else {
+                route('/start');
             }
-
-            return route('/start');
         });
     }
 
@@ -237,7 +238,7 @@ class InfoForm extends Component<Props, State> {
                 document.addEventListener('fileuploadprogress', this._onFileUploadProgress);
                 document.addEventListener('overalluploadprogress', this._onOverallUploadProgress);
 
-                return await uploadFiles(this.props.worker as Worker, uid, f.files);
+                return await uploadFiles(this.props.worker!, uid, f.files);
             } catch (e) {
                 Bugsnag.notify(e as Error);
                 throw e;
