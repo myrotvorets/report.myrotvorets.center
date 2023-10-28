@@ -43,7 +43,7 @@
     "fork-ts-checker-webpack-plugin": "^9.0.0",
     "glob": "^10.3.10",
     "html-webpack-plugin": "^5.5.3",
-    "hwp-attributes-plugin": "^2.1.0",
+    "hwp-attributes-plugin": "^2.1.1",
     "hwp-inline-runtime-chunk-plugin": "^2.0.3",
     "mini-css-extract-plugin": "^2.7.6",
     "minimatch": "^9.0.3",
