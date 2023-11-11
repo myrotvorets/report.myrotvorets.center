@@ -34,7 +34,6 @@ export function buildMessageFromReportEntry(entry: ReportEntry, storageLink: str
 
     if (storageLink) {
         msg.push(`Дополнительные материалы (ссылка действительна 45 дней): ${storageLink}`);
-        msg.push(`Пароль на архив: ${archivePassword}`);
     }
 
     const email = entry.email;
