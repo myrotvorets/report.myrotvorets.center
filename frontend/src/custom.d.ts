@@ -27,8 +27,8 @@ declare module 'unistore/preact' {
     type TupleTail<T extends any[], R> = T['length'] extends 0
         ? never
         : ((...tail: T) => R) extends (head: any, ...tail: infer I) => R
-        ? I
-        : never;
+          ? I
+          : never;
 
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     type MakeBoundAction<K, A extends (...args: any) => Promise<Partial<K>> | Partial<K> | void> = (
