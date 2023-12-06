@@ -42,7 +42,7 @@
     "file-loader": "^6.2.0",
     "fork-ts-checker-webpack-plugin": "^9.0.2",
     "glob": "^10.3.10",
-    "html-webpack-plugin": "^5.5.3",
+    "html-webpack-plugin": "^5.5.4",
     "hwp-attributes-plugin": "^2.1.1",
     "hwp-inline-runtime-chunk-plugin": "^2.0.4",
     "mini-css-extract-plugin": "^2.7.6",
