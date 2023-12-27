@@ -27,7 +27,7 @@ export default class ErrorBoundary extends Component<Props, State> {
         return { error };
     }
 
-    // eslint-disable-next-line class-methods-use-this
+    // eslint-disable-next-line @typescript-eslint/class-methods-use-this
     public componentDidCatch(error: Error): void {
         console.error(error);
         Bugsnag.notify(error);
@@ -67,12 +67,7 @@ export default class ErrorBoundary extends Component<Props, State> {
                             Ти запросив занадто багато.
                         </p>
                         <hr />
-                        <p>
-                            А насправді сталася несподівана помилка{' '}
-                            <span role="img" aria-label="Плачучий настрій">
-                                😭😭😭
-                            </span>
-                        </p>
+                        <p>А насправді сталася несподівана помилка 😭😭😭</p>
                         {this._renderReason()}
                         <hr />
                         <details>

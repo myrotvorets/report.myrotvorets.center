@@ -90,7 +90,7 @@ class InfoForm extends Component<Props, State> {
         if (this.props.mode === 'update') {
             const id = this.props.id;
             const coerced = +id;
-            if (Number.isNaN(coerced) || `${coerced}` !== `${id}` || coerced % 1 !== 0 || coerced < 0) {
+            if (Number.isNaN(coerced) || `${coerced}` !== id || coerced % 1 !== 0 || coerced < 0) {
                 route('/start');
             } else if (this.state.state === 'verifying') {
                 this._verifyCriminal();
