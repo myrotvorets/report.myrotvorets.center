@@ -40,7 +40,7 @@ class LogoutRoute extends Component<Props, State> {
         }
     }
 
-    // eslint-disable-next-line class-methods-use-this
+    // eslint-disable-next-line @typescript-eslint/class-methods-use-this
     public render(): ComponentChild {
         return <Loader />;
     }
