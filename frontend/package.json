@@ -47,7 +47,7 @@
     "hwp-inline-runtime-chunk-plugin": "^2.0.4",
     "mini-css-extract-plugin": "^2.7.6",
     "minimatch": "^9.0.3",
-    "postcss": "^8.4.32",
+    "postcss": "^8.4.33",
     "postcss-loader": "^7.3.4",
     "purgecss-webpack-plugin": "^5.0.0",
     "ref-loader": "^1.0.3",
