@@ -1,15 +1,8 @@
 import path from 'path';
-import crypto from 'crypto';
-import { promisify } from 'util';
 import admin from 'firebase-admin';
 import { create as createArchive } from 'archiver';
 import Bugsnag from '@bugsnag/js';
 import type { ReportEntry } from '../types';
-
-const randomBytes = promisify(crypto.randomBytes);
-
-const randomString = (length = 15): Promise<string> =>
-    randomBytes(2 * length).then((buf) => buf.toString('base64').replace(/[+/=]/gu, '').slice(0, length));
 
 const errorHandler = (e: Error): never => {
     Bugsnag.notify(e);
@@ -18,8 +11,7 @@ const errorHandler = (e: Error): never => {
 
 const bucket = admin.storage().bucket();
 
-export async function archiveFilesAndUpload(entry: ReportEntry): Promise<[string, string]> {
-    const result: [string, string] = ['', ''];
+export async function archiveFilesAndUpload(entry: ReportEntry): Promise<string> {
     if (entry.path) {
         const date = new Date().toISOString().split('T')[0];
         const fname = `${date}/${path.basename(entry.path)}.zip`;
@@ -37,7 +29,6 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<[string
 
                 fileStream.once('error', errorHandler);
 
-                result[1] = await randomString();
                 const archive = createArchive('zip', {
                     zlib: { level: 4 },
                 });
@@ -52,11 +43,11 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<[string
                 });
 
                 await archive.finalize();
-                result[0] = `https://storage.googleapis.com/${bucket.name}/${fname}`;
+                return `https://storage.googleapis.com/${bucket.name}/${fname}`;
             }
         } catch (e) {
             Bugsnag.notify(e as Error);
-            return ['', ''];
+            return '';
         } finally {
             try {
                 await bucket.deleteFiles({
@@ -69,5 +60,5 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<[string
         }
     }
 
-    return result;
+    return '';
 }
