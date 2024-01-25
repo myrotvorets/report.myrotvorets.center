@@ -44,8 +44,8 @@ export const handleReport = functions.database
     .onCreate(async (snapshot: functions.database.DataSnapshot): Promise<unknown> => {
         try {
             const entry = snapshot.val() as ReportEntry;
-            const [url, password] = await archiveFilesAndUpload(entry);
-            const message = buildMessageFromReportEntry(entry, url, password);
+            const url = await archiveFilesAndUpload(entry);
+            const message = buildMessageFromReportEntry(entry, url);
 
             if (entry.note !== '[skip]') {
                 const config = functions.config() as RuntimeConfig;

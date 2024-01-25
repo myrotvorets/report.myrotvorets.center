@@ -1,6 +1,6 @@
 import type { ReportEntry } from '../types';
 
-export function buildMessageFromReportEntry(entry: ReportEntry, storageLink: string, archivePassword: string): string {
+export function buildMessageFromReportEntry(entry: ReportEntry, storageLink: string): string {
     const msg: string[] = [];
     if (entry.clink) {
         msg.push(`Обновление информации о записи ${entry.clink} (${entry.cname})\n`);
