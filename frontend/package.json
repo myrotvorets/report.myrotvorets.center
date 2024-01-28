@@ -28,7 +28,7 @@
     "@myrotvorets/eslint-config-myrotvorets-preact-ts": "^2.7.1",
     "@types/glob": "^8.1.0",
     "@types/minimatch": "^5.1.2",
-    "@types/node": ">= 20.11.8",
+    "@types/node": ">= 20.11.9",
     "@types/webpack-bugsnag-plugins": "^1.4.5",
     "autoprefixer": "^10.4.17",
     "babel-loader": "^9.1.3",
