@@ -21,8 +21,8 @@ export function checkEmail(req: Request, res: Response): void {
                 status: 'disposable' in json ? (json.disposable === 'true' ? 'DEA' : 'OK') : 'DUNNO',
             }),
         )
-        .catch((e: Error) => {
-            Bugsnag.notify(e);
+        .catch((e: unknown) => {
+            Bugsnag.notify(e as Error);
             res.json({
                 success: true,
                 status: 'DUNNO',

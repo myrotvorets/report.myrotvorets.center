@@ -6,7 +6,7 @@ interface AuthError extends Error {
 }
 
 export default function authMiddleware(req: Request, res: Response, next: NextFunction): void {
-    if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
+    if (!req.headers.authorization?.startsWith('Bearer ')) {
         next({
             success: false,
             status: 401,
@@ -26,13 +26,14 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
             req.user = decoded;
             return setImmediate(next);
         })
-        .catch((e: AuthError) =>
+        .catch((err: unknown) => {
+            const e = err as AuthError;
             setImmediate<Record<string, unknown>[]>(next, {
                 success: false,
                 status: 401,
                 code: 'AUTH_FAILED',
                 message: e.message,
                 errcode: e.code,
-            }),
-        );
+            });
+        });
 }
