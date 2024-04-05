@@ -177,7 +177,9 @@ class InfoForm extends Component<Props, State> {
 
                     this.setState({ state: 'idle', error: InfoForm._parseError(j), status: '' });
                 })
-                .catch((e: Error) => this.setState({ state: 'idle', error: InfoForm._parseError(e), status: '' }));
+                .catch((e: unknown) =>
+                    this.setState({ state: 'idle', error: InfoForm._parseError(e as Error), status: '' }),
+                );
         } else {
             form.reportValidity();
         }

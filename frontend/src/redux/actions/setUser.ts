@@ -36,6 +36,7 @@ export function logOutUser(state: AppState): Promise<Partial<AppState>> {
                     reject(new Error(r.message || r.code));
                 }
             })
+            // eslint-disable-next-line @typescript-eslint/use-unknown-in-catch-callback-variable
             .catch(reject);
     });
 }

@@ -80,7 +80,7 @@ class LoginForm extends Component<MappedProps, State> {
 
                 this.setState(state);
             })
-            .catch((e: Error) => this.setState({ error: e.message, state: 'initial' }));
+            .catch((e: unknown) => this.setState({ error: (e as Error).message, state: 'initial' }));
     }
 
     private _renderLoginForm(): ComponentChild {

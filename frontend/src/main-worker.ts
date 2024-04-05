@@ -69,7 +69,8 @@ function getToken(): void {
                     payload: { success: true, token, uid: currentUser.uid },
                 } as WorkerResponseGetToken),
             )
-            .catch((e: FirebaseError) => {
+            .catch((err: unknown) => {
+                const e = err as FirebaseError;
                 self.postMessage({
                     type: W_GETTOKEN,
                     payload: {
@@ -95,7 +96,8 @@ function sendLink(email: string, url: string): void {
                 payload: { success: true },
             } as WorkerResponseSendLink),
         )
-        .catch((e: FirebaseError) => {
+        .catch((err: unknown) => {
+            const e = err as FirebaseError;
             self.postMessage({
                 type: W_SENDLINK,
                 payload: {
@@ -115,7 +117,8 @@ function signIn(email: string, link: string): void {
                 payload: { success: true },
             } as WorkerResponseSignIn),
         )
-        .catch((e: FirebaseError) => {
+        .catch((err: unknown) => {
+            const e = err as FirebaseError;
             self.postMessage({
                 type: W_SIGNIN,
                 payload: {
@@ -137,7 +140,8 @@ function signOut(): void {
                 },
             } as WorkerResponseSignOut),
         )
-        .catch((e: FirebaseError) => {
+        .catch((err: unknown) => {
+            const e = err as FirebaseError;
             self.postMessage({
                 type: W_SIGNOUT,
                 payload: {

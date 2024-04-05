@@ -46,7 +46,7 @@ function apiCall(url: string): Promise<Criminal | Error> {
 
             return new Error('UNKNOWN_ERROR');
         })
-        .catch((e: Error) => e);
+        .catch((e: unknown) => (e instanceof Error ? e : new Error('UNKNOWN_ERROR')));
 }
 
 export function findCriminalBySlug(slug: string): Promise<Criminal | Error> {

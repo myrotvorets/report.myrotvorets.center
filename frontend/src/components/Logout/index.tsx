@@ -24,7 +24,7 @@ interface State {
 class LogoutRoute extends Component<Props, State> {
     public componentDidMount(): void {
         if (this.props.loggedIn) {
-            this.props.logOutUser().catch((error: Error) => this.setState({ error }));
+            this.props.logOutUser().catch((error: unknown) => this.setState({ error: error as Error }));
         } else {
             route('/');
         }

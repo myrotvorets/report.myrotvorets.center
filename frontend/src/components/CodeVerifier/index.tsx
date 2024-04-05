@@ -73,7 +73,7 @@ class CodeVerifier extends Component<Props, State> {
                     });
                 }
             })
-            .catch((e: Error) => this.setState({ busy: false, error: e.message }));
+            .catch((e: unknown) => this.setState({ busy: false, error: (e as Error).message }));
     }
 
     public render(): ComponentChild {
