@@ -21,7 +21,7 @@ jobs:
       deployments: write
     steps:
       - name: Check out the source code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@86f86b36ef15e6570752e7175f451a512eac206b # v2.1.1
 
       - name: Install firebase-tools
         run: sudo npm install -g firebase-tools
