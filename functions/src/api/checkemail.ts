@@ -18,6 +18,7 @@ export function checkEmail(req: Request, res: Response): void {
         .then((json: DebounceResponse) =>
             res.json({
                 success: true,
+                // eslint-disable-next-line sonarjs/no-nested-conditional
                 status: 'disposable' in json ? (json.disposable === 'true' ? 'DEA' : 'OK') : 'DUNNO',
             }),
         )
