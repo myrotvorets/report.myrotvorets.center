@@ -16,7 +16,7 @@ function isSignInWithEmailLink(link: string): boolean {
             searchParams.has('mode') &&
             searchParams.get('mode') === 'signIn'
         );
-    } catch (e) {
+    } catch {
         return false;
     }
 }
@@ -38,7 +38,7 @@ export default function Authenticator(): h.JSX.Element | null {
                         window.location.host = url.host;
                         return null;
                     }
-                } catch (e) {
+                } catch {
                     // Do nothing
                 }
             }

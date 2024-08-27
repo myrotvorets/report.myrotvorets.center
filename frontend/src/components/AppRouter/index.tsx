@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { ComponentType, RenderableProps, h } from 'preact';
 import { Suspense, lazy as loafing } from 'preact/compat';
 import { Route, Router } from 'preact-router';
@@ -136,9 +135,9 @@ const FourOhFourRoute = lazy(() => import(/* webpackMode: "eager" */ '../../comp
 export default function AppRouter(): h.JSX.Element {
     return (
         <Router>
-            <Route path="/" component={suspenseWrapper<{}>(HomeRoute)} />
+            <Route path="/" component={suspenseWrapper<object>(HomeRoute)} />
             <Route path="/login" component={suspenseWrapper(LoginRoute)} />
-            <Route path="/logout" component={suspenseWrapper<{}>(LogoutRoute)} />
+            <Route path="/logout" component={suspenseWrapper<object>(LogoutRoute)} />
             <Route path="/auth" component={suspenseWrapper(AuthRoute)} />
             <Route path="/start" component={suspenseWrapper(StartRoute)} />
             <Route path="/update/check" component={suspenseWrapper(CheckCriminalRoute)} />

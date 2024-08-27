@@ -19,7 +19,7 @@ function getThumbnailURL({ attachments }: Criminal): string | null {
     return null;
 }
 
-export default function CriminalRecord({ criminal }: Props): h.JSX.Element {
+export default function CriminalRecord({ criminal }: Readonly<Props>): h.JSX.Element {
     const thumbnail = getThumbnailURL(criminal);
 
     return (
@@ -60,7 +60,8 @@ export default function CriminalRecord({ criminal }: Props): h.JSX.Element {
                         <span className="drop" />
                         <span className="drop" />
                     </span>
-                ) : criminal.country ? (
+                ) : // eslint-disable-next-line sonarjs/no-nested-conditional
+                criminal.country ? (
                     criminal.country
                 ) : (
                     'Н/Д'

@@ -11,10 +11,11 @@ import { Config as SVGOConfig } from 'svgo';
 export const BugsnagAPIKey = 'ef7411ba5af267034db13d800de8a235';
 export let version: string;
 try {
+    // eslint-disable-next-line sonarjs/no-os-command-from-path
     version = execSync('git describe --always --long', { cwd: path.resolve(path.join(__dirname, '..')) })
         .toString()
         .trim();
-} catch (e) {
+} catch {
     version = 'development';
 }
 

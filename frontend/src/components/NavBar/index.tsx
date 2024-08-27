@@ -15,7 +15,7 @@ interface MappedProps {
 
 type Props = MappedProps;
 
-function NavBar(props: Props): h.JSX.Element {
+function NavBar(props: Readonly<Props>): h.JSX.Element {
     const { loggedIn } = props;
     return (
         <MenuBar>

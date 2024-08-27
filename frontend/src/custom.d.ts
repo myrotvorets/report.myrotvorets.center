@@ -45,6 +45,7 @@ declare module 'unistore/preact' {
         mapStateToProps: string | string[] | StateMapper<T, K, I>,
         actions: ActionCreator<K> | A,
     ): (
+        // eslint-disable-next-line sonarjs/use-type-alias
         Child: ComponentConstructor<T & I & ActionBinder<K, A>, S> | AnyComponent<T & I & ActionBinder<K, A>, S>,
     ) => ComponentConstructor<T | (T & I & ActionBinder<K, A>), S>;
 }
@@ -68,7 +69,7 @@ declare interface NavigatorNetworkInformation {
     readonly webkitConnection?: NetworkInformation;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 declare interface Navigator extends NavigatorNetworkInformation {}
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 declare interface WorkerNavigator extends NavigatorNetworkInformation {}
