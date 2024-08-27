@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { ComponentConstructor, ComponentType, h } from 'preact';
 import { connect } from 'unistore/preact';
 import { route } from 'preact-router';

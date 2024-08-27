@@ -7,7 +7,9 @@
         "@myrotvorets/myrotvorets-preact-ts"
     ],
     "rules": {
-        "jest/no-deprecated-functions": "off"
+        "jest/no-deprecated-functions": "off",
+        "sonarjs/function-return-type": "off",
+        "sonarjs/redundant-type-aliases": "off"
     },
     "env": {
         "browser": true,

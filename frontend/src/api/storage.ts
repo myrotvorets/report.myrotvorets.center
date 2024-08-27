@@ -8,6 +8,7 @@ import {
     sendAndWait,
 } from '../utils/worker';
 
+// eslint-disable-next-line sonarjs/pseudo-random
 const randomString = (): string => Math.random().toString(36).substring(2, 15);
 
 function listener({ data }: MessageEvent): void {

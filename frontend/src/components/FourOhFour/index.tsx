@@ -3,7 +3,7 @@ import { Link } from 'preact-router';
 
 export default function FourOhFour(): h.JSX.Element {
     return (
-        <div id="error" class="alert">
+        <div id="error" className="alert">
             Ти вступаєш в річку,
             <br />
             Але річка не залишається колишньою.

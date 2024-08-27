@@ -71,6 +71,7 @@ export default class Submenu extends Component<Props, State> {
     };
 
     private readonly _onClickCaptureHandler = (e: h.JSX.TargetedMouseEvent<HTMLElement>): void => {
+        // eslint-disable-next-line sonarjs/different-types-comparison
         if (e.target && (e.target as HTMLElement).closest('li') === e.currentTarget) {
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -97,7 +98,7 @@ export default class Submenu extends Component<Props, State> {
                 ref={this._ref}
                 role="menuitem"
             >
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid, sonarjs/anchor-is-valid */}
                 <a href="#" role="button" aria-haspopup="true" aria-expanded={open ? 'true' : 'false'}>
                     {title}
                 </a>

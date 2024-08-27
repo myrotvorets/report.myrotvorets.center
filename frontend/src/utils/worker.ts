@@ -102,6 +102,7 @@ export type WorkerResponse =
     | WorkerResponseUpload
     | WorkerResponseUploadProgress;
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 export function sendAndWait<Request = unknown, Payload = unknown>(
     worker: Worker | undefined,
     req: Request,

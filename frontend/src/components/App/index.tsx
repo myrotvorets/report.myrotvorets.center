@@ -40,7 +40,7 @@ class App extends Component<Props, State> {
                 worker.addEventListener('error', this._onWorkerError);
                 this.props.setWorker(worker);
                 this._worker = worker;
-            } catch (e) {
+            } catch {
                 // Do nothing, we will handle the error in componentDidMount()
             }
         }
