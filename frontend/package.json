@@ -70,7 +70,7 @@
   },
   "description": "Frontend of https://report.myrotvorets.center/",
   "dependencies": {
-    "@bugsnag/js": "^7.6.0",
+    "@bugsnag/js": "^8.0.0",
     "firebase": "^10.0.0",
     "preact": "^10.5.12",
     "preact-router": "^4.0.0",
