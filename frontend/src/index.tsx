@@ -40,7 +40,6 @@ if (!process.env.BUILD_SSR) {
                     if (installingWorker) {
                         installingWorker.addEventListener('statechange', () => {
                             if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                // eslint-disable-next-line promise/no-nesting
                                 reg.update().catch((e: unknown) => console.error(e));
                             }
                         });

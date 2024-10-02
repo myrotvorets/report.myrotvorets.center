@@ -1,7 +1,3 @@
-/* eslint-disable jest/valid-title */
-/* eslint-disable jest/expect-expect */
-/* eslint-disable jest/no-disabled-tests */
-/* eslint-disable jest/no-export */
 import { h } from 'preact';
 import { route } from 'preact-router';
 import CodeVerifier from '../CodeVerifier';

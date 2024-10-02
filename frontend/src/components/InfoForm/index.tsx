@@ -213,7 +213,6 @@ class InfoForm extends Component<Props, State> {
     private _verifyCriminal(): void {
         const { id } = this.props;
         // findCriminalById() never fails
-        // eslint-disable-next-line no-void
         void findCriminalById(id!).then((r) => {
             if ('id' in r) {
                 this.setState({

@@ -80,7 +80,6 @@ class CheckCriminalForm extends Component<unknown, State> {
 
         if (matches) {
             // findCriminalBySlug() cannot fail
-            // eslint-disable-next-line no-void
             void findCriminalBySlug(matches[1]).then((criminal: Criminal | Error) => {
                 if (criminal instanceof Error && criminal.message === 'NOT_FOUND') {
                     this.setState({

@@ -6,10 +6,9 @@
     "extends": [
         "@myrotvorets/myrotvorets-preact-ts"
     ],
+    "reportUnusedDisableDirectives": true,
     "rules": {
-        "jest/no-deprecated-functions": "off",
-        "sonarjs/function-return-type": "off",
-        "sonarjs/redundant-type-aliases": "off"
+        "jest/no-deprecated-functions": "off"
     },
     "env": {
         "browser": true,

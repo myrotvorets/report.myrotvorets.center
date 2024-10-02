@@ -98,7 +98,7 @@ export default class Submenu extends Component<Props, State> {
                 ref={this._ref}
                 role="menuitem"
             >
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid, sonarjs/anchor-is-valid */}
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a href="#" role="button" aria-haspopup="true" aria-expanded={open ? 'true' : 'false'}>
                     {title}
                 </a>
