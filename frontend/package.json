@@ -49,7 +49,7 @@
     "minimatch": "^10.0.0",
     "postcss": "^8.4.33",
     "postcss-loader": "^8.1.0",
-    "purgecss-webpack-plugin": "^6.0.0",
+    "purgecss-webpack-plugin": "^7.0.0",
     "ref-loader": "^1.0.3",
     "sass": "^1.70.0",
     "sass-loader": "^16.0.0",
