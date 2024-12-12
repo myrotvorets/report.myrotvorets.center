@@ -17,7 +17,6 @@ import { notFoundHandler } from './middleware/notfound';
 import { errorHandler } from './middleware/error';
 
 const app = express();
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const bsExpress = Bugsnag.getPlugin('express')!;
 app.set('trust proxy', true);
 

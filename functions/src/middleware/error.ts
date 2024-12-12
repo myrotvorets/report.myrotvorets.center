@@ -4,7 +4,7 @@ interface IWithStatus {
     status: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function errorHandler(err: any, req: Request, res: Response, next: NextFunction): void {
     if (res.headersSent) {
         next(err);
