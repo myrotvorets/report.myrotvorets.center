@@ -27,7 +27,7 @@
     "express-validator": "^7.0.0",
     "fetch-retry-ts": "^1.2.1",
     "firebase-admin": "^13.0.0",
-    "firebase-functions": "^5.0.0"
+    "firebase-functions": "^6.1.2"
   },
   "devDependencies": {
     "@myrotvorets/eslint-config-myrotvorets-ts": "^3.0.0-rc.1",
