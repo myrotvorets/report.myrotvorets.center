@@ -46,6 +46,11 @@ export function sendMail(
         ],
     };
 
+    if (process.env.FUNCTIONS_EMULATOR === 'true') {
+        console.dir(postBody, { depth: Infinity });
+        return Promise.resolve({ Messages: [] });
+    }
+
     const auth = Buffer.from(`${process.env.MAILJET_APIKEY_PUBLIC}:${process.env.MAILJET_APIKEY_PRIVATE}`).toString(
         'base64',
     );

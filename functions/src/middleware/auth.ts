@@ -6,6 +6,11 @@ interface AuthError extends Error {
 }
 
 export function authMiddleware(req: Request, _res: Response, next: NextFunction): void {
+    if (process.env.FUNCTIONS_EMULATOR === 'true') {
+        next();
+        return;
+    }
+
     if (!req.headers.authorization?.startsWith('Bearer ')) {
         next({
             success: false,
