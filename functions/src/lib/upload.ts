@@ -1,5 +1,5 @@
-import path from 'path';
-import admin from 'firebase-admin';
+import path from 'node:path';
+import { getStorage } from 'firebase-admin/storage';
 import { create as createArchive } from 'archiver';
 import Bugsnag from '@bugsnag/js';
 import type { ReportEntry } from '../types';
@@ -9,7 +9,7 @@ const errorHandler = (e: Error): never => {
     throw e;
 };
 
-const bucket = admin.storage().bucket();
+const bucket = getStorage().bucket();
 
 export async function archiveFilesAndUpload(entry: ReportEntry): Promise<string> {
     if (entry.path) {
@@ -46,7 +46,8 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<string>
                 return `https://storage.googleapis.com/${bucket.name}/${fname}`;
             }
         } catch (e) {
-            Bugsnag.notify(e as Error);
+            const err = e instanceof Error ? e : new Error(String(e));
+            Bugsnag.notify(err);
             return '';
         } finally {
             try {
@@ -55,7 +56,8 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<string>
                     force: true,
                 });
             } catch (e) {
-                Bugsnag.notify(e as Error);
+                const err = e instanceof Error ? e : new Error(String(e));
+                Bugsnag.notify(err);
             }
         }
     }

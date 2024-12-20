@@ -23,7 +23,8 @@ export function checkEmail(req: Request, res: Response): void {
             }),
         )
         .catch((e: unknown) => {
-            Bugsnag.notify(e as Error);
+            const err = e instanceof Error ? e : new Error(String(e));
+            Bugsnag.notify(err);
             res.json({
                 success: true,
                 status: 'DUNNO',

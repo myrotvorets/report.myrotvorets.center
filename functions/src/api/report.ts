@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import authMiddleware from '../middleware/auth';
+import { authMiddleware } from '../middleware/auth';
 import { saveToDatabase } from '../middleware/savetodb';
 import { commonValidationHandler, reportAddValidator, reportUpdateValidator } from '../middleware/validator';
 import { finalOK } from '../middleware/finalok';

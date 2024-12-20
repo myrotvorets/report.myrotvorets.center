@@ -1,12 +1,10 @@
-import * as admin from 'firebase-admin';
-import * as functions from 'firebase-functions';
+import { initializeApp } from 'firebase-admin/app';
 import Bugsnag from '@bugsnag/js';
 import bugsnagPluginExpress from '@bugsnag/plugin-express';
-import type { RuntimeConfig } from '../types';
 
-admin.initializeApp();
+initializeApp();
 Bugsnag.start({
-    apiKey: (functions.config() as RuntimeConfig).bugsnag.apikey,
+    apiKey: process.env.BUGSNAG_APIKEY!,
     appType: 'backend',
     plugins: [bugsnagPluginExpress],
 });

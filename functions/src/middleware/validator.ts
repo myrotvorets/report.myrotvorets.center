@@ -1,4 +1,4 @@
-import { Result, ValidationError, body, param, validationResult } from 'express-validator';
+import { Result, type ValidationError, body, param, validationResult } from 'express-validator';
 import type { NextFunction, Request, Response } from 'express';
 
 export const reportAddValidator = [
