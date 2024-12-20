@@ -1,8 +1,4 @@
-import * as functions from 'firebase-functions';
 import { fetch } from '@adobe/fetch';
-import type { RuntimeConfig } from '../types';
-
-const config = functions.config() as RuntimeConfig;
 
 interface To {
     readonly Email: string;
@@ -50,7 +46,14 @@ export function sendMail(
         ],
     };
 
-    const auth = Buffer.from(`${config.mailjet.apikey.public}:${config.mailjet.apikey.private}`).toString('base64');
+    if (process.env.FUNCTIONS_EMULATOR === 'true') {
+        console.dir(postBody, { depth: Infinity });
+        return Promise.resolve({ Messages: [] });
+    }
+
+    const auth = Buffer.from(`${process.env.MAILJET_APIKEY_PUBLIC}:${process.env.MAILJET_APIKEY_PRIVATE}`).toString(
+        'base64',
+    );
 
     return fetch('https://api.mailjet.com/v3.1/send', {
         method: 'POST',

@@ -1,12 +1,16 @@
-import * as admin from 'firebase-admin';
-import * as functions from 'firebase-functions';
+import { initializeApp } from 'firebase-admin/app';
 import Bugsnag from '@bugsnag/js';
 import bugsnagPluginExpress from '@bugsnag/plugin-express';
-import type { RuntimeConfig } from '../types';
+import { config } from 'dotenv';
 
-admin.initializeApp();
+config({ path: ['.env.local', '.env'] });
+
+initializeApp();
+
 Bugsnag.start({
-    apiKey: (functions.config() as RuntimeConfig).bugsnag.apikey,
+    apiKey: process.env.BUGSNAG_APIKEY!,
     appType: 'backend',
+    releaseStage: process.env.FUNCTIONS_EMULATOR !== 'true' ? 'production' : 'development',
+    enabledReleaseStages: ['production'],
     plugins: [bugsnagPluginExpress],
 });

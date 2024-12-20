@@ -1,11 +1,16 @@
-import admin from 'firebase-admin';
+import { getAuth } from 'firebase-admin/auth';
 import type { NextFunction, Request, Response } from 'express';
 
 interface AuthError extends Error {
     code: string;
 }
 
-export default function authMiddleware(req: Request, res: Response, next: NextFunction): void {
+export function authMiddleware(req: Request, _res: Response, next: NextFunction): void {
+    if (process.env.FUNCTIONS_EMULATOR === 'true') {
+        next();
+        return;
+    }
+
     if (!req.headers.authorization?.startsWith('Bearer ')) {
         next({
             success: false,
@@ -19,8 +24,7 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
 
     const [, idToken] = req.headers.authorization.split('Bearer ');
 
-    admin
-        .auth()
+    getAuth()
         .verifyIdToken(idToken)
         .then((decoded) => {
             req.user = decoded;

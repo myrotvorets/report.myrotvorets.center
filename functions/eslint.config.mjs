@@ -19,5 +19,8 @@ export default [
                 ...globals.jest,
             },
         },
+        rules: {
+            'no-console': 'off',
+        },
     },
 ];

@@ -43,6 +43,12 @@ jobs:
         run: npm rebuild && npm run prepare --if-present
         working-directory: functions
 
+      - name: Set up .env
+        run: echo "${FUNCTIONS_ENV}" > .env
+        env:
+          FUNCTIONS_ENV: ${{ secrets.FUNCTIONS_ENV }}
+        working-directory: functions
+
       - name: Start deployment
         uses: chrnorm/deployment-action@55729fcebec3d284f60f5bcabbd8376437d696b1 # v2.0.7
         id: deployment
@@ -70,3 +76,8 @@ jobs:
           token: "${{ github.token }}"
           state: "failure"
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - name: Kill .env
+        run: rm -f .env
+        working-directory: functions
+        if: always()
