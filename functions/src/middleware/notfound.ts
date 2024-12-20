@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 
-export function notFoundHandler(req: Request, res: Response, next: NextFunction): void {
+export function notFoundHandler(_req: Request, _res: Response, next: NextFunction): void {
     next({
         success: false,
         status: 404,

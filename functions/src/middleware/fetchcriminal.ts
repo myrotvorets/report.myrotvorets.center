@@ -34,7 +34,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
             ips.push(req.ip);
         }
 
-        const id = req.params.id;
+        const { id } = req.params;
         fetch(`https://api.myrotvorets.center/simplesearch/v1/${id}`, {
             headers: {
                 'User-Agent': 'Report.Myrtovorets.Center Verification Bot',
@@ -69,7 +69,8 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
                 });
             })
             .catch((e: unknown) => {
-                Bugsnag.notify(e as Error);
+                const err = e instanceof Error ? e : new Error(String(e));
+                Bugsnag.notify(err);
                 return setImmediate<Record<string, unknown>[]>(next, {
                     success: false,
                     status: 400,
