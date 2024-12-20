@@ -1,9 +1,9 @@
-import admin from 'firebase-admin';
+import { getDatabase } from 'firebase-admin/database';
 import Bugsnag from '@bugsnag/js';
 import type { NextFunction, Request, Response } from 'express';
 import type { AddUpdateRequestBody, ReportEntry } from '../types';
 
-const db = admin.database();
+const db = getDatabase();
 
 export async function saveToDatabase(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,7 +33,8 @@ export async function saveToDatabase(
 
         await db.ref('/reports').push(entry);
     } catch (e) {
-        Bugsnag.notify(e as Error);
+        const err = e instanceof Error ? e : new Error(String(e));
+        Bugsnag.notify(err);
         next({
             success: false,
             status: 500,

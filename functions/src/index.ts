@@ -1,10 +1,11 @@
 import './lib/init';
-import * as functions from 'firebase-functions';
+import { onRequest } from 'firebase-functions/v2/https';
+import { onValueCreated } from 'firebase-functions/v2/database';
 import express from 'express';
 import cors from 'cors';
 import Bugsnag from '@bugsnag/js';
 
-import type { ReportEntry, RuntimeConfig } from './types';
+import type { ReportEntry } from './types';
 
 import { checkEmail } from './api/checkemail';
 import { reportNewCriminal, reportUpdateCriminal } from './api/report';
@@ -36,29 +37,27 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 app.use(bsExpress.errorHandler);
 
-export const api = functions.region('us-central1').https.onRequest(app);
+export const api = onRequest({ region: 'us-central1' }, app);
 
-export const handleReport = functions.database
-    .ref('/reports/{child}')
-    .onCreate(async (snapshot: functions.database.DataSnapshot): Promise<unknown> => {
-        try {
-            const entry = snapshot.val() as ReportEntry;
-            const url = await archiveFilesAndUpload(entry);
-            const message = buildMessageFromReportEntry(entry, url);
+export const handleReport = onValueCreated('/reports/{child}', async (event): Promise<unknown> => {
+    try {
+        const entry = event.data.val() as ReportEntry;
+        const url = await archiveFilesAndUpload(entry);
+        const message = buildMessageFromReportEntry(entry, url);
 
-            if (entry.note !== '[skip]') {
-                const config = functions.config() as RuntimeConfig;
-                return await sendMail(
-                    config.mail.from,
-                    entry.email,
-                    config.mail[entry.note === 'dev' ? 'devto' : 'to'],
-                    'В Чистилище',
-                    message,
-                );
-            }
-        } catch (e) {
-            Bugsnag.notify(e as Error);
+        if (entry.note !== '[skip]') {
+            return await sendMail(
+                process.env.MAIL_FROM!,
+                entry.email,
+                process.env[entry.note === 'dev' ? 'MAIL_DEVTO' : 'MAIL_TO']!,
+                'В Чистилище',
+                message,
+            );
         }
+    } catch (e) {
+        const err = e instanceof Error ? e : new Error(String(e));
+        Bugsnag.notify(err);
+    }
 
-        return null;
-    });
+    return null;
+});
