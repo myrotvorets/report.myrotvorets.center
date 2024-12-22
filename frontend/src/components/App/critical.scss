@@ -1,5 +1,6 @@
-@import '../../scss/vars';
-@import '../../scss/mixins';
+@use "sass:meta";
+@use '../../scss/vars';
+@use '../../scss/mixins';
 
 *,
 *::before,
@@ -16,19 +17,19 @@ body {
 }
 
 body {
-    font-family: $font-family-sans-serif;
-    font-size: $font-size-base;
-    font-weight: $font-weight-base;
-    line-height: $line-height-base;
+    font-family: vars.$font-family-sans-serif;
+    font-size: vars.$font-size-base;
+    font-weight: vars.$font-weight-base;
+    line-height: vars.$line-height-base;
     background: linear-gradient(#002b62, #fff) fixed no-repeat;
-    color: $color-on-surface;
+    color: vars.$color-on-surface;
     display: flex;
     flex-direction: column;
 }
 
-@media (max-width: $viewport-upto-s) {
+@media (max-width: vars.$viewport-upto-s) {
     body {
-        font-size: $font-size-l;
+        font-size: vars.$font-size-l;
     }
 }
 
@@ -37,7 +38,7 @@ main {
     flex: 1 0 auto;
     max-width: 95%;
     width: 85ch;
-    padding: 2 * $block-padding $block-padding;
+    padding: 2 * vars.$block-padding vars.$block-padding;
     margin: 0 auto;
     flex-direction: column;
     justify-content: center;
@@ -50,9 +51,9 @@ main {
     }
 }
 
-@import '../Header/header.scss';
-@import '../NavBar/navbar-nojs.scss';
-@import '../Footer/footer.scss';
+@include meta.load-css('../Header/header.scss');
+@include meta.load-css('../NavBar/navbar-nojs.scss');
+@include meta.load-css('../Footer/footer.scss');
 
 a.skip-main {
     left:-999px;

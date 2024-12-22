@@ -1,3 +1,6 @@
+@use "mixins";
+@use "vars";
+
 button, input, optgroup, select, textarea {
 	font-family: inherit;
 	font-size: 100%;
@@ -70,9 +73,9 @@ textarea {
 }
 
 button, input[type="button"], input[type="reset"], input[type="submit"] {
-	@include fb-color("primary");
-	border: 1px solid $color-primary-light;
-	border-radius: #{$border-radius};
+	@include mixins.fb-color("primary");
+	border: 1px solid vars.$color-primary-light;
+	border-radius: #{vars.$border-radius};
 	font-size: 1em;
 	line-height: 1.2;
 	outline: none;
@@ -80,7 +83,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"] {
 	text-decoration: none;
 
 	&:hover {
-		@include fb-color("secondary");
+		@include mixins.fb-color("secondary");
 		cursor: pointer;
 	}
 }
@@ -108,14 +111,14 @@ input[type="color"],
 textarea {
 	-webkit-backface-visibility: hidden;
 	-webkit-appearance: none;
-	@include fb-color("surface");
-	@include rounded-border;
+	@include mixins.fb-color("surface");
+	@include mixins.rounded-border;
 	outline: none;
 	padding: .7rem 1rem;
 	outline-offset: 0;
 
 	&:focus {
-		border-color: $color-primary-light;
+		border-color: vars.$color-primary-light;
 	}
 
 	&:disabled {
@@ -132,5 +135,5 @@ button.link {
 	border: 0;
 	padding-left: 0;
 	padding-right: 0;
-	color: $color-primary;
+	color: vars.$color-primary;
 }

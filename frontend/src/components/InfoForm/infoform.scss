@@ -1,4 +1,4 @@
-@import "../../scss/vars";
+@use "../../scss/vars";
 
 .input-group {
     display: flex;
@@ -43,12 +43,12 @@
         display: flex;
         align-items: center;
         padding: .375rem .75rem;
-        color: $color-on-surface-alt;
+        color: vars.$color-on-surface-alt;
         text-align: center;
         white-space: nowrap;
-        background-color: $color-background;
-        border: 1px solid $color-primary-light;
-        border-radius: #{$border-radius};
+        background-color: vars.$color-background;
+        border: 1px solid vars.$color-primary-light;
+        border-radius: #{vars.$border-radius};
     }
 
     > .form-control {

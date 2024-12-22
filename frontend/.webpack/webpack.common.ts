@@ -1,22 +1,25 @@
 import { DefinePlugin, ProvidePlugin, Configuration as WebpackConfiguration } from 'webpack';
-import webpackDevServer from 'webpack-dev-server';
+import type { Configuration } from 'webpack-dev-server';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { HwpAttributesPlugin } from 'hwp-attributes-plugin';
+// eslint-disable-next-line import/default
 import CopyPlugin from 'copy-webpack-plugin';
 import { execSync } from 'child_process';
 import { Config as SVGOConfig } from 'svgo';
 
 export const BugsnagAPIKey = 'ef7411ba5af267034db13d800de8a235';
-export let version: string;
+let ver: string;
 try {
     // eslint-disable-next-line sonarjs/no-os-command-from-path
-    version = execSync('git describe --always --long', { cwd: path.resolve(path.join(__dirname, '..')) })
+    ver = execSync('git describe --always --long', { cwd: path.resolve(path.join(__dirname, '..')) })
         .toString()
         .trim();
 } catch {
-    version = 'development';
+    ver = 'development';
 }
+
+export const version = ver;
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -32,7 +35,7 @@ const prodMinifyOptions: HtmlWebpackPlugin.MinifyOptions = {
 };
 
 // See https://github.com/webpack/webpack/issues/15131#issuecomment-1008827305
-const config: WebpackConfiguration & { devServer: webpackDevServer.Configuration } = {
+const config: WebpackConfiguration & { devServer: Configuration } = {
     context: path.resolve(__dirname, '..'),
     node: false,
     entry: {

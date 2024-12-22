@@ -1,11 +1,11 @@
-@import "../../scss/vars";
-@import "../../scss/mixins";
+@use "../../scss/vars";
+@use "../../scss/mixins";
 
 .alert {
     @extend %block;
-    @include fb-color("error");
+    @include mixins.fb-color("error");
     border-color: #B50000;
-    margin: $block-margin 0;
+    margin: vars.$block-margin 0;
     width: 100%;
 
     a {

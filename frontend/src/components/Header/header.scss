@@ -1,9 +1,9 @@
-@import "../../scss/vars";
-@import "../../scss/mixins";
+@use "../../scss/vars";
+@use "../../scss/mixins";
 
 .site-header {
-    padding: 2 * $block-inner-padding $block-inner-padding;
-    background: $color-header-background url(../../assets/myrotvorets.svg#u) no-repeat 50% / contain;
+    padding: 2 * vars.$block-inner-padding vars.$block-inner-padding;
+    background: vars.$color-header-background url(../../assets/myrotvorets.svg#u) no-repeat 50% / contain;
     text-align: center;
 
     h1 {
@@ -17,7 +17,7 @@
     }
 
     h1, h2 {
-        color: $color-highlight-on-primary;
+        color: vars.$color-highlight-on-primary;
         text-shadow: 0 1px 1px #000;
         margin: 0;
         padding: 0;
@@ -32,10 +32,10 @@
         h1 {
             z-index: 500;
             position: absolute;
-            left: $block-inner-padding;
-            font-size: $font-size-base;
+            left: vars.$block-inner-padding;
+            font-size: vars.$font-size-base;
             line-height: 1;
-            top: (3rem - $font-size-base) * 0.5;
+            top: (3rem - vars.$font-size-base) * 0.5;
         }
 
         h2 { display: none; }

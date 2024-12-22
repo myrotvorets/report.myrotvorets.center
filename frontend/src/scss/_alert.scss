@@ -1,7 +1,10 @@
+@use "mixins";
+@use "vars";
+
 .alert {
 	@extend %block;
-	@include fb-color("error");
-	margin: $block-margin;
+	@include mixins.fb-color("error");
+	margin: vars.$block-margin;
 	flex: 0 0 auto;
 }
 

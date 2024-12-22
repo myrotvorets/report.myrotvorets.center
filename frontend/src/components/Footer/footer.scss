@@ -1,8 +1,8 @@
-@import '../../scss/vars';
-@import '../../scss/mixins';
+@use '../../scss/vars';
+@use '../../scss/mixins';
 
 .site-footer {
-    @include fb-color('primary', true);
+    @include mixins.fb-color('primary', true);
     text-align: center;
     padding: 0.9em;
 

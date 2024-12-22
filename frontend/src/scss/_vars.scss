@@ -1,3 +1,4 @@
+@use "sass:color";
 $spacer: 2rem;
 
 // Fonts
@@ -46,25 +47,25 @@ $color-highlight-on-primary-dark:    $color-secondary !default;
 
 $color-highlight-on-secondary:       $color-primary-dark !default;
 $color-highlight-on-secondary-light: $color-primary-dark !default;
-$color-highlight-on-secondary-dark:  darken($color-primary-dark, 11%) !default; /* #00184D */
+$color-highlight-on-secondary-dark:  color.adjust($color-primary-dark, $lightness: -11%) !default; /* #00184D */
 
 $color-surface:                      #FFFFFF !default;
 $color-on-surface:                   #000000 !default;
 $color-highlight-on-surface:         $color-primary-dark !default;
 
-$color-surface-alt:                  darken($color-surface, 2%) !default;
+$color-surface-alt:                  color.adjust($color-surface, $lightness: -2%) !default;
 $color-on-surface-alt:               #000000 !default;
-$color-highlight-on-surface-alt:     darken($color-primary-dark, 2%) !default;    /* #0051a9 */
+$color-highlight-on-surface-alt:     color.adjust($color-primary-dark, $lightness: -2%) !default;    /* #0051a9 */
 
 $color-error:                        #A80000 !default;
 $color-on-error:                     $color-secondary-light !default;
 $color-highlight-on-error:           #FFFFFF !default;
 
-$color-background:                   darken($color-surface, 8%) !default;         /* #EBEBEB */
-$color-header-background:            darken($color-primary-dark, 10%) !default;   /* #001951 */
+$color-background:                   color.adjust($color-surface, $lightness: -8%) !default;         /* #EBEBEB */
+$color-header-background:            color.adjust($color-primary-dark, $lightness: -10%) !default;   /* #001951 */
 
 // Menu
-$color-menu-background:            darken($color-header-background, 2%);
+$color-menu-background:            color.adjust($color-header-background, $lightness: -2%);
 $color-menu-link:                  $color-secondary;
 $color-menu-link-hover-background: $color-secondary;
 $color-menu-link-hover:            $color-on-secondary;

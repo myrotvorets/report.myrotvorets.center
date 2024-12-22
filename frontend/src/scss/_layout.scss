@@ -1,3 +1,5 @@
+@use "vars";
+
 *, *::before, *::after {
 	box-sizing: border-box;
 }
@@ -15,12 +17,12 @@ html {
 }
 
 body {
-	font-family: $font-family-sans-serif;
-	font-size: $font-size-base;
-	font-weight: $font-weight-base;
-	line-height: $line-height-base;
-	background: $color-background;
-	color: $color-on-surface;
+	font-family: vars.$font-family-sans-serif;
+	font-size: vars.$font-size-base;
+	font-weight: vars.$font-weight-base;
+	line-height: vars.$line-height-base;
+	background: vars.$color-background;
+	color: vars.$color-on-surface;
 	display: flex;
 	flex-direction: column;
 }
@@ -31,16 +33,16 @@ h1, h2, h3, p {
 }
 
 h1, h2, h3 {
-	margin-bottom: $headings-margin-bottom;
-	font-family: if($headings-font-family, $headings-font-family, $font-family-sans-serif);
-	font-weight: $headings-font-weight;
-	line-height: $headings-line-height;
-	color: if($headings-color, $headings-color, $color-on-surface);
+	margin-bottom: vars.$headings-margin-bottom;
+	font-family: if(vars.$headings-font-family, vars.$headings-font-family, vars.$font-family-sans-serif);
+	font-weight: vars.$headings-font-weight;
+	line-height: vars.$headings-line-height;
+	color: if(vars.$headings-color, vars.$headings-color, vars.$color-on-surface);
 }
 
-h1 { font-size: #{$h1-font-size-factor * $font-size-base}; }
-h2 { font-size: #{$h2-font-size-factor * $font-size-base}; }
-h3 { font-size: #{$h3-font-size-factor * $font-size-base}; }
+h1 { font-size: #{vars.$h1-font-size-factor * vars.$font-size-base}; }
+h2 { font-size: #{vars.$h2-font-size-factor * vars.$font-size-base}; }
+h3 { font-size: #{vars.$h3-font-size-factor * vars.$font-size-base}; }
 
 p {
 	margin-bottom: 1em;
@@ -50,7 +52,7 @@ p {
 	flex-grow: 1;
 	position: relative;
 	z-index: 0;
-	padding: $block-padding;
+	padding: vars.$block-padding;
 }
 
 #app > section {

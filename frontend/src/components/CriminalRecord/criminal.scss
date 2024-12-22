@@ -1,10 +1,10 @@
-@import '../../scss/vars';
+@use '../../scss/vars';
 
 .Criminal {
-    border: 1px solid $color-primary;
-    border-radius: #{$border-radius};
-    padding: $block-inner-padding;
-    margin: 0 0 $block-margin;
+    border: 1px solid vars.$color-primary;
+    border-radius: #{vars.$border-radius};
+    padding: vars.$block-inner-padding;
+    margin: 0 0 vars.$block-margin;
 
     dt {
         font-weight: bold;
@@ -24,7 +24,7 @@
     dt.thumb {
         width: 156px;
         height: 156px;
-        margin: 0 $block-margin 0 0;
+        margin: 0 vars.$block-margin 0 0;
         display: flex;
         align-items: center;
         justify-content: center;

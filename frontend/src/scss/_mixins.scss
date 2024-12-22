@@ -1,41 +1,44 @@
+@use "sass:map";
+@use "vars";
+
 @mixin block-margin-top {
-	margin-top: $block-margin;
+	margin-top: vars.$block-margin;
 }
 
 @mixin inner-padding {
-	padding: $block-inner-padding;
+	padding: vars.$block-inner-padding;
 }
 
 @mixin block-padding {
-	padding: $block-padding;
+	padding: vars.$block-padding;
 }
 
 @mixin block-margin {
-	margin: $block-margin;
+	margin: vars.$block-margin;
 }
 
 @mixin cancel-inner-padding {
-	margin: -$block-inner-padding;
+	margin: -(vars.$block-inner-padding);
 }
 
 @mixin cancel-block-padding {
-	margin: -$block-padding;
+	margin: -(vars.$block-padding);
 }
 
 @mixin fb-color($name, $a: false) {
-	color: map-get($theme-on, $name);
-	background-color: map-get($theme, $name);
+	color: map.get(vars.$theme-on, $name);
+	background-color: map.get(vars.$theme, $name);
 
 	@if $a {
 		a {
-			color: map-get($theme-hl, $name);
+			color: map.get(vars.$theme-hl, $name);
 		}
 	}
 }
 
 @mixin hb-color($name, $a: false) {
-	color: map-get($theme-hl, $name);
-	background-color: map-get($theme, $name);
+	color: map.get(vars.$theme-hl, $name);
+	background-color: map.get(vars.$theme, $name);
 
 	@if $a {
 		a { color: inherit; }
@@ -44,36 +47,36 @@
 
 %block {
 	@include fb-color("surface", true);
-	border: 1px solid rgba($color-primary-dark, 0.175);
-	border-radius: #{$border-radius};
-	padding: $block-padding;
-	margin: 0 0 $block-margin;
+	border: 1px solid rgba(vars.$color-primary-dark, 0.175);
+	border-radius: #{vars.$border-radius};
+	padding: vars.$block-padding;
+	margin: 0 0 vars.$block-margin;
 }
 
 %block-header {
-	margin: #{-$block-padding} #{-$block-padding} $block-padding;
+	margin: #{-(vars.$block-padding)} #{-(vars.$block-padding)} vars.$block-padding;
 	@include fb-color("primary", true);
 	@include inner-padding;
 	font-size: 1.4rem;
-	line-height: $headings-line-height;
-	font-weight: $headings-font-weight;
-	border-radius: calc(#{$border-radius} - 1px) calc(#{$border-radius} - 1px) 0 0;
+	line-height: vars.$headings-line-height;
+	font-weight: vars.$headings-font-weight;
+	border-radius: calc(#{vars.$border-radius} - 1px) calc(#{vars.$border-radius} - 1px) 0 0;
 }
 
 %block-footer {
-	margin: $block-padding #{-$block-padding} #{-$block-padding};
+	margin: vars.$block-padding #{-(vars.$block-padding)} #{-(vars.$block-padding)};
 	@include inner-padding;
 	@include fb-color("surface-alt", true);
 	font-size: 1.3rem;
 	line-height: 1;
-	border-radius: 0 0 calc(#{$border-radius} - 1px) calc(#{$border-radius} - 1px);
+	border-radius: 0 0 calc(#{vars.$border-radius} - 1px) calc(#{vars.$border-radius} - 1px);
 }
 
 @mixin border {
-	border: 1px solid $color-primary-light;
+	border: 1px solid vars.$color-primary-light;
 }
 
 @mixin rounded-border {
 	@include border;
-	border-radius: #{$border-radius};
+	border-radius: #{vars.$border-radius};
 }

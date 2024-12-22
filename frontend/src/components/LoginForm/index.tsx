@@ -91,7 +91,7 @@ class LoginForm extends Component<MappedProps, State> {
                 <Alert message={error} />
 
                 <label htmlFor="email" className="required">
-                    Електронна адреса<span className="sr-only"> (обов'язкове поле)</span>:
+                    Електронна адреса<span className="sr-only"> (обовʼязкове поле)</span>:
                 </label>
                 <input
                     type="email"
@@ -124,7 +124,7 @@ class LoginForm extends Component<MappedProps, State> {
                     <li>Перевірте інтернет-з’єднання.</li>
                     <li>Переконайтеся, що ви правильно вказали електронну адресу.</li>
                     <li>
-                        Перевірте доступний обсяг пам’яті для папки "Вхідні" та інші можливі проблеми з налаштуваннями.
+                        Перевірте доступний обсяг пам’яті для папки «Вхідні» та інші можливі проблеми з налаштуваннями.
                     </li>
                 </ul>
                 <p>

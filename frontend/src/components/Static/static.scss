@@ -1,13 +1,13 @@
-@import '../../scss/vars';
+@use '../../scss/vars';
 
 .static {
     h2, h3, h4 {
-        font-size: $font-size-base * 1.25;
+        font-size: vars.$font-size-base * 1.25;
         text-align: center;
     }
 
     h5 {
-        font-size: $font-size-base;
+        font-size: vars.$font-size-base;
     }
 
     .fnt--bold {
@@ -15,7 +15,7 @@
     }
     
     .clr--red {
-        color: $color-error;
+        color: vars.$color-error;
     }
 
     img {
@@ -33,7 +33,7 @@
         margin-bottom: 3em;
 
         > h2, > h3, > h4 {
-            color: $color-highlight-on-surface;
+            color: vars.$color-highlight-on-surface;
         }
     }
 
@@ -41,7 +41,7 @@
         margin-bottom: 2em;
 
         >h3, > h4, > h5 {
-            color: $color-highlight-on-surface-alt;
+            color: vars.$color-highlight-on-surface-alt;
             margin-bottom: .5em;
         }
     }
@@ -53,5 +53,5 @@
 
 .grounds h3 {
     text-align: left;
-    font-size: $font-size-base;
+    font-size: vars.$font-size-base;
 }

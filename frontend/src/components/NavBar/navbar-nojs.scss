@@ -1,4 +1,4 @@
-@import "../../scss/vars";
+@use "../../scss/vars";
 
 $menu-height: 3rem;
 $menu-width: 20rem;
@@ -7,7 +7,7 @@ $menu-width: 20rem;
     text-align: left;
     font-size: 1rem;
     line-height: 1.5;
-    background: $color-menu-background;
+    background: vars.$color-menu-background;
     flex: 0 0 auto;
 
     height: $menu-height;
@@ -22,7 +22,7 @@ $menu-width: 20rem;
     .nav__menu,
     .nav__submenu {
         list-style: none;
-        background: $color-menu-background;
+        background: vars.$color-menu-background;
         padding: 0;
         margin: 0;
         display: flex;
@@ -52,7 +52,7 @@ $menu-width: 20rem;
             padding: .5rem .625rem;
             display: block;
 
-            color: $color-menu-link;
+            color: vars.$color-menu-link;
             font-weight: 700;
             text-decoration: none;
 
@@ -65,8 +65,8 @@ $menu-width: 20rem;
     .nav__menuitem:hover,
     .nav__menuitem.expanded {
         > a {
-            color: $color-menu-link-hover;
-            background: $color-menu-link-hover-background;
+            color: vars.$color-menu-link-hover;
+            background: vars.$color-menu-link-hover-background;
             transition: background 0.7s cubic-bezier(0.11, 0.6, 0.24, 0.89);
         }
     }
