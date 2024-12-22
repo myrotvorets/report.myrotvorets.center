@@ -139,7 +139,7 @@ const config: WebpackConfiguration & { devServer: Configuration } = {
         }),
         new HtmlWebpackPlugin({
             minify: process.env.NODE_ENV === 'production' ? prodMinifyOptions : false,
-            template: '!!ejs-compiled-loader!./src/index.ejs',
+            template: '!!@myrotvorets/ejs-compiled-loader!./src/index.ejs',
             xhtml: true,
             templateParameters: {
                 version,
