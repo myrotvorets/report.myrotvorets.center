@@ -25,7 +25,7 @@
     "@babel/preset-env": "^7.23.9",
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
-    "@myrotvorets/eslint-config-myrotvorets-preact-ts": "^2.7.1",
+    "@myrotvorets/eslint-config-myrotvorets-preact-ts": "^3.0.0",
     "@types/glob": "^8.1.0",
     "@types/minimatch": "^5.1.2",
     "@types/node": ">= 20.11.16",
