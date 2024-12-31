@@ -8,12 +8,9 @@ export interface Criminal {
     id: number;
     link: string;
     name: string;
-    nname: string;
-    tname: string;
     dob: string;
     country: string;
     address: string;
-    description: string;
     attachments?: Attachment[];
 }
 
