@@ -61,6 +61,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
 
                 Bugsnag.notify(new Error(`${r.error} ${r.message} ${r.statusCode}`));
 
+                console.error(r);
                 return setImmediate<Record<string, unknown>[]>(next, {
                     success: false,
                     status: 400,
@@ -70,6 +71,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
             })
             .catch((e: unknown) => {
                 const err = e instanceof Error ? e : new Error(String(e));
+                console.error(e);
                 Bugsnag.notify(err);
                 return setImmediate<Record<string, unknown>[]>(next, {
                     success: false,
