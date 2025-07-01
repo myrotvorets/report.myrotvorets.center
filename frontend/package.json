@@ -27,7 +27,7 @@
     "@babel/preset-typescript": "^7.26.0",
     "@myrotvorets/ejs-compiled-loader": "^4.0.0",
     "@myrotvorets/eslint-config-myrotvorets-preact-ts": "^3.0.1",
-    "@types/glob": "^8.1.0",
+    "@types/glob": "^9.0.0",
     "@types/minimatch": "^5.1.2",
     "@types/node": ">=22.10.2",
     "@types/webpack-bugsnag-plugins": "^1.4.5",
