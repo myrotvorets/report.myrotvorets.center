@@ -71,7 +71,7 @@
   "description": "Frontend of https://report.myrotvorets.center/",
   "dependencies": {
     "@bugsnag/js": "^8.1.2",
-    "firebase": "^11.1.0",
+    "firebase": "^12.0.0",
     "preact": "^10.25.3",
     "preact-router": "^4.1.2",
     "unistore": "^3.5.2",
