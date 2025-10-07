@@ -1,4 +1,4 @@
-import { Component, ComponentChild, h } from 'preact';
+import { Component, type ComponentChild, type TargetedEvent, h } from 'preact';
 import { Link, route } from 'preact-router';
 import { withVisitorCheck } from '../../hocs/withLoginCheck';
 import { withWorker } from '../../hocs/withWorker';
@@ -37,7 +37,7 @@ class CodeVerifier extends Component<Props, State> {
         }
     }
 
-    private readonly _onEmailUpdate = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
+    private readonly _onEmailUpdate = ({ currentTarget }: TargetedEvent<HTMLInputElement>): void => {
         const { value } = currentTarget;
         this.setState({
             email: value,
@@ -45,7 +45,7 @@ class CodeVerifier extends Component<Props, State> {
         });
     };
 
-    private readonly _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
+    private readonly _onFormSubmit = (e: TargetedEvent<HTMLFormElement>): void => {
         e.preventDefault();
         this._signIn();
     };
