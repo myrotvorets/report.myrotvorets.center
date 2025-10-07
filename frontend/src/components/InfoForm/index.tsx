@@ -1,4 +1,4 @@
-import { Component, ComponentChild, h } from 'preact';
+import { Component, type ComponentChild, type TargetedEvent, h } from 'preact';
 import { Link, route } from 'preact-router';
 import Bugsnag from '@bugsnag/js';
 import { withLoginCheck } from '../../hocs/withLoginCheck';
@@ -100,7 +100,7 @@ class InfoForm extends Component<Props, State> {
 
     private readonly _onInputChanged = ({
         currentTarget,
-    }: h.JSX.TargetedEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
+    }: TargetedEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
         const { name, value } = currentTarget;
 
         this.setState((prevState: Readonly<State>): Partial<State> => {
@@ -114,7 +114,7 @@ class InfoForm extends Component<Props, State> {
         });
     };
 
-    private readonly _onFileChange = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
+    private readonly _onFileChange = ({ currentTarget }: TargetedEvent<HTMLInputElement>): void => {
         const { files } = currentTarget;
         if (files) {
             const { length } = files;
@@ -142,7 +142,7 @@ class InfoForm extends Component<Props, State> {
         }
     };
 
-    private readonly _onFormSubmit = (event: h.JSX.TargetedEvent<HTMLFormElement>): void => {
+    private readonly _onFormSubmit = (event: TargetedEvent<HTMLFormElement>): void => {
         event.preventDefault();
         const form = event.currentTarget;
         if (form.checkValidity()) {

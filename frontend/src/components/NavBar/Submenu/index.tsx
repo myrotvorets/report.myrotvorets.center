@@ -1,4 +1,12 @@
-import { Component, ComponentChild, RefObject, createRef, h } from 'preact';
+import {
+    Component,
+    type ComponentChild,
+    type RefObject,
+    type TargetedKeyboardEvent,
+    type TargetedMouseEvent,
+    createRef,
+    h,
+} from 'preact';
 
 interface Props {
     title: string;
@@ -35,14 +43,14 @@ export default class Submenu extends Component<Props, State> {
         }
     };
 
-    private readonly _onKeyDownHandler = (e: h.JSX.TargetedKeyboardEvent<HTMLLIElement>): void => {
+    private readonly _onKeyDownHandler = (e: TargetedKeyboardEvent<HTMLLIElement>): void => {
         const { open } = this.state;
         if (open && e.key === 'Escape') {
             this.setState({ open: false });
         }
     };
 
-    private readonly _onMouseEnterHandler = (e: h.JSX.TargetedMouseEvent<HTMLLIElement>): void => {
+    private readonly _onMouseEnterHandler = (e: TargetedMouseEvent<HTMLLIElement>): void => {
         const li = e.currentTarget;
         const ul = li.parentElement;
         if (
@@ -56,7 +64,7 @@ export default class Submenu extends Component<Props, State> {
         }
     };
 
-    private readonly _onMouseLeaveHandler = (e: h.JSX.TargetedMouseEvent<HTMLLIElement>): void => {
+    private readonly _onMouseLeaveHandler = (e: TargetedMouseEvent<HTMLLIElement>): void => {
         const li = e.currentTarget;
         const ul = li.parentElement;
         if (
@@ -70,7 +78,7 @@ export default class Submenu extends Component<Props, State> {
         }
     };
 
-    private readonly _onClickCaptureHandler = (e: h.JSX.TargetedMouseEvent<HTMLElement>): void => {
+    private readonly _onClickCaptureHandler = (e: TargetedMouseEvent<HTMLElement>): void => {
         // eslint-disable-next-line sonarjs/different-types-comparison
         if (e.target && (e.target as HTMLElement).closest('li') === e.currentTarget) {
             e.preventDefault();

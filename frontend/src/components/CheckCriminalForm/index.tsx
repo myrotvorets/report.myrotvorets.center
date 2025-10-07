@@ -1,4 +1,4 @@
-import { Component, ComponentChild, Fragment, h } from 'preact';
+import { Component, type ComponentChild, Fragment, type TargetedEvent, h } from 'preact';
 import { route } from 'preact-router';
 import { withLoginCheck } from '../../hocs/withLoginCheck';
 import { Criminal, findCriminalBySlug } from '../../api/myrotvorets';
@@ -24,7 +24,7 @@ class CheckCriminalForm extends Component<unknown, State> {
         criminal: null,
     };
 
-    private readonly _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
+    private readonly _onFormSubmit = (e: TargetedEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const form = e.currentTarget;
         if (form.checkValidity()) {
@@ -46,7 +46,7 @@ class CheckCriminalForm extends Component<unknown, State> {
         }
     };
 
-    private readonly _onUrlChanged = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
+    private readonly _onUrlChanged = ({ currentTarget }: TargetedEvent<HTMLInputElement>): void => {
         this.setState({
             url: currentTarget.value,
             urlValid: currentTarget.checkValidity(),

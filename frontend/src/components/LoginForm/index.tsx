@@ -1,4 +1,4 @@
-import { Component, ComponentChild, RefObject, createRef, h } from 'preact';
+import { Component, type ComponentChild, type RefObject, type TargetedEvent, createRef, h } from 'preact';
 import Alert from '../Alert';
 import { withVisitorCheck } from '../../hocs/withLoginCheck';
 import { withWorker } from '../../hocs/withWorker';
@@ -29,7 +29,7 @@ class LoginForm extends Component<MappedProps, State> {
         this._ref.current?.focus();
     }
 
-    private readonly _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): void => {
+    private readonly _onFormSubmit = (e: TargetedEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const { state, email, emailValid } = this.state;
 
@@ -38,7 +38,7 @@ class LoginForm extends Component<MappedProps, State> {
         }
     };
 
-    private readonly _emailUpdateHandler = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
+    private readonly _emailUpdateHandler = ({ currentTarget }: TargetedEvent<HTMLInputElement>): void => {
         const { value } = currentTarget;
         this.setState({
             email: value,

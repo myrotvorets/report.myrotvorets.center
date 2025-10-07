@@ -1,4 +1,4 @@
-import { Component, ComponentChild, h } from 'preact';
+import { Component, type ComponentChild, type TargetedEvent, h } from 'preact';
 import { route } from 'preact-router';
 import { withLoginCheck } from '../../hocs/withLoginCheck';
 
@@ -11,14 +11,14 @@ class StartForm extends Component<unknown, State> {
         action: '',
     };
 
-    private readonly _onActionChanged = ({ currentTarget }: h.JSX.TargetedEvent<HTMLInputElement>): void => {
+    private readonly _onActionChanged = ({ currentTarget }: TargetedEvent<HTMLInputElement>): void => {
         const { value } = currentTarget;
         this.setState({
             action: value,
         });
     };
 
-    private readonly _onFormSubmit = (e: h.JSX.TargetedEvent<HTMLFormElement>): unknown => {
+    private readonly _onFormSubmit = (e: TargetedEvent<HTMLFormElement>): unknown => {
         e.preventDefault();
         const form = e.currentTarget;
         if (form.checkValidity()) {
