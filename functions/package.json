@@ -18,7 +18,7 @@
     "@adobe/fetch": "^3.6.4",
     "@bugsnag/js": "^8.1.2",
     "@bugsnag/plugin-express": "^8.1.1",
-    "@types/archiver": "^6.0.3",
+    "@types/archiver": "^7.0.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "archiver": "^7.0.1",
