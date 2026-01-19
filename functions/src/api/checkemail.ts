@@ -7,7 +7,7 @@ interface DebounceResponse {
 }
 
 export function checkEmail(req: Request, res: Response): void {
-    const email = req.params.email;
+    const email = req.params.email as string;
 
     fetch(`https://disposable.debounce.io/?email=${encodeURIComponent(email)}`, {
         headers: {
