@@ -1,10 +1,10 @@
-import { h } from 'preact';
-import { Link } from 'preact-router';
+import { JSX } from 'preact';
+import { Link } from 'preact-router/match';
 
 import logo from '../../../assets/myrotvorets.svg';
 import '../static.scss';
 
-export default function About(): h.JSX.Element {
+export default function About(): JSX.Element {
     return (
         <section className="static block block--centered">
             <header className="block__header">Про Центр «Миротворець»</header>

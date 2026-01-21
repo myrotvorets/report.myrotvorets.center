@@ -1,20 +1,22 @@
-import { ComponentType, RenderableProps, h } from 'preact';
+import { ComponentType, JSX, RenderableProps } from 'preact';
 import { Suspense, lazy as loafing } from 'preact/compat';
 import { Route, Router } from 'preact-router';
 import Loader from '../Loader';
 
-function lazy<T>(loader: () => Promise<{ default: T }> | { default: T }): T {
+type DefaultExport<T> = T extends { default: infer U } ? U : T;
+
+function lazy<T>(loader: () => Promise<{ default: T }> | { default: T }): DefaultExport<T> {
     if (process.env.BUILD_SSR) {
-        return (loader() as { default: T }).default;
+        return (loader() as { default: T }).default as DefaultExport<T>;
     }
 
-    return loafing(loader as () => Promise<{ default: T }>);
+    return loafing(loader as () => Promise<{ default: T }>) as DefaultExport<T>;
 }
 
-function suspenseWrapper<T>(Component: ComponentType<T>): (props: RenderableProps<T>) => h.JSX.Element {
+function suspenseWrapper<T>(Component: ComponentType<T>): (props: RenderableProps<T>) => JSX.Element {
     if (process.env.BUILD_SSR) {
         // eslint-disable-next-line react/display-name
-        return (props: RenderableProps<T>): h.JSX.Element => (
+        return (props: RenderableProps<T>): JSX.Element => (
             <main id="content">
                 <Component {...props} />
             </main>
@@ -22,7 +24,7 @@ function suspenseWrapper<T>(Component: ComponentType<T>): (props: RenderableProp
     }
 
     // eslint-disable-next-line react/display-name
-    return (props: RenderableProps<T>): h.JSX.Element => (
+    return (props: RenderableProps<T>): JSX.Element => (
         <main id="content">
             <Suspense fallback={<Loader />}>
                 <Component {...props} />
@@ -132,7 +134,7 @@ const ComplaintsRoute = lazy(
 
 const FourOhFourRoute = lazy(() => import(/* webpackMode: "eager" */ '../../components/FourOhFour'));
 
-export default function AppRouter(): h.JSX.Element {
+export default function AppRouter(): JSX.Element {
     return (
         <Router>
             <Route path="/" component={suspenseWrapper<object>(HomeRoute)} />

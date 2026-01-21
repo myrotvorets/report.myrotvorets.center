@@ -1,5 +1,5 @@
 /* eslint-disable promise/no-nesting */
-import { h, render } from 'preact';
+import { JSX, render } from 'preact';
 import { Provider } from 'unistore/preact';
 import store from './redux/store';
 import App from './components/App';
@@ -8,7 +8,7 @@ import { startBugsnag } from './lib/bugsnag';
 
 import './polyfills/form-reportvalidity';
 
-export default function Application(): h.JSX.Element {
+export default function Application(): JSX.Element {
     return (
         <ErrorBoundary>
             <Provider store={store}>

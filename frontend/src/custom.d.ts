@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-extraneous-class */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 declare module '*.svg' {
@@ -73,3 +74,15 @@ declare interface NavigatorNetworkInformation {
 declare interface Navigator extends NavigatorNetworkInformation {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 declare interface WorkerNavigator extends NavigatorNetworkInformation {}
+
+declare module 'preact-router/match' {
+    import type { AnchorHTMLAttributes, ComponentChildren, VNode } from 'preact';
+
+    export interface LinkProps extends AnchorHTMLAttributes {
+        activeClassName?: string;
+        children?: ComponentChildren;
+    }
+
+    export function Link(props: LinkProps): VNode;
+    export default class Match {}
+}

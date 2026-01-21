@@ -1,5 +1,6 @@
 import { Component, type ComponentChild, type TargetedEvent } from 'preact';
-import { Link, route } from 'preact-router';
+import { Link } from 'preact-router/match';
+import { route } from 'preact-router';
 import { withVisitorCheck } from '../../hocs/withLoginCheck';
 import { withWorker } from '../../hocs/withWorker';
 import { ResSignInPayload, W_SIGNIN, WorkerRequestSignIn, sendAndWait } from '../../utils/worker';
