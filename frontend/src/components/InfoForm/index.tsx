@@ -1,4 +1,4 @@
-import { Component, type ComponentChild, type TargetedEvent, h } from 'preact';
+import { Component, type ComponentChild, type TargetedEvent } from 'preact';
 import { Link, route } from 'preact-router';
 import Bugsnag from '@bugsnag/js';
 import { withLoginCheck } from '../../hocs/withLoginCheck';

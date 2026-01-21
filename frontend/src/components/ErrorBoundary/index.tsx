@@ -1,4 +1,4 @@
-import { Component, ComponentChild, Fragment, h } from 'preact';
+import { Component, ComponentChild, Fragment } from 'preact';
 import '../Alert/alert.scss';
 import Bugsnag from '@bugsnag/js';
 

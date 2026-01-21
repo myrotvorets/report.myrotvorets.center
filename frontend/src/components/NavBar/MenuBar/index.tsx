@@ -1,4 +1,4 @@
-import { Component, ComponentChild, h } from 'preact';
+import { Component, ComponentChild } from 'preact';
 
 interface State {
     open: boolean;

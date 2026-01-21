@@ -1,4 +1,4 @@
-import { Component, type ComponentChild, Fragment, type TargetedEvent, h } from 'preact';
+import { Component, type ComponentChild, Fragment, type TargetedEvent } from 'preact';
 import { route } from 'preact-router';
 import { withLoginCheck } from '../../hocs/withLoginCheck';
 import { Criminal, findCriminalBySlug } from '../../api/myrotvorets';
