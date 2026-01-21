@@ -5,7 +5,6 @@ import {
     type TargetedKeyboardEvent,
     type TargetedMouseEvent,
     createRef,
-    h,
 } from 'preact';
 
 interface Props {

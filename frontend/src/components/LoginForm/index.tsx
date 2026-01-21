@@ -1,4 +1,4 @@
-import { Component, type ComponentChild, type RefObject, type TargetedEvent, createRef, h } from 'preact';
+import { Component, type ComponentChild, type RefObject, type TargetedEvent, createRef } from 'preact';
 import Alert from '../Alert';
 import { withVisitorCheck } from '../../hocs/withLoginCheck';
 import { withWorker } from '../../hocs/withWorker';

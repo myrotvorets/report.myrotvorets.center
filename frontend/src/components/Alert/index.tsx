@@ -1,4 +1,4 @@
-import { Component, ComponentChild, RefObject, createRef, h } from 'preact';
+import { Component, ComponentChild, RefObject, createRef } from 'preact';
 
 import './alert.scss';
 

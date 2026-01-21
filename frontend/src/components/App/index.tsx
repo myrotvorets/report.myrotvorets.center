@@ -1,4 +1,4 @@
-import { Component, ComponentChild, Fragment, h } from 'preact';
+import { Component, ComponentChild, Fragment } from 'preact';
 import { ActionBinder, connect } from 'unistore/preact';
 import { ActionMap } from 'unistore';
 import { AppState } from '../../redux/store';

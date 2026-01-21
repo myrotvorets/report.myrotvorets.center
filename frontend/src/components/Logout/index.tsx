@@ -1,9 +1,9 @@
-import { Component, ComponentChild, h } from 'preact';
-import { ActionBinder, connect } from 'unistore/preact';
+import { Component, type ComponentChild } from 'preact';
+import { type ActionBinder, connect } from 'unistore/preact';
 import { ActionMap } from 'unistore';
 import { route } from 'preact-router';
 import { logOutUser } from '../../redux/actions';
-import { AppState } from '../../redux/store';
+import { type AppState } from '../../redux/store';
 import Loader from '../../components/Loader';
 
 type OwnProps = unknown;

@@ -1,4 +1,4 @@
-import { Component, type ComponentChild, type TargetedEvent, h } from 'preact';
+import { Component, type ComponentChild, type TargetedEvent } from 'preact';
 import { Link, route } from 'preact-router';
 import { withVisitorCheck } from '../../hocs/withLoginCheck';
 import { withWorker } from '../../hocs/withWorker';

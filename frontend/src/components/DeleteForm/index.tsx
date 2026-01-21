@@ -1,4 +1,4 @@
-import { Component, ComponentChild, h } from 'preact';
+import { Component, ComponentChild } from 'preact';
 
 export default class DeleteForm extends Component {
     // eslint-disable-next-line @typescript-eslint/class-methods-use-this

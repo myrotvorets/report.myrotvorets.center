@@ -2,8 +2,8 @@
     "compilerOptions": {
         "target": "ES2019",
         "module": "ES2020",
-        "jsx": "react",
-        "jsxFactory": "h",
+        "jsx": "react-jsx",
+        "jsxImportSource": "preact",
         "sourceMap": true,
         "strict": true,
         "noUnusedLocals": false,
