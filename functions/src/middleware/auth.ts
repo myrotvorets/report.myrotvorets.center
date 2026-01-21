@@ -28,11 +28,11 @@ export function authMiddleware(req: Request, _res: Response, next: NextFunction)
         .verifyIdToken(idToken)
         .then((decoded) => {
             req.user = decoded;
-            return setImmediate(next);
+            return setImmediate<[]>(next);
         })
         .catch((err: unknown) => {
             const e = err as AuthError;
-            setImmediate<Record<string, unknown>[]>(next, {
+            setImmediate<[Record<string, unknown>]>(next, {
                 success: false,
                 status: 401,
                 code: 'AUTH_FAILED',

@@ -12,12 +12,9 @@ export interface Criminal {
     id: number;
     link: string;
     name: string;
-    nname: string;
-    tname: string;
     dob: string;
     country: string;
     address: string;
-    description: string;
     attachments?: Attachment[];
 }
 
@@ -35,7 +32,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
         }
 
         const { id } = req.params;
-        fetch(`https://api.myrotvorets.center/simplesearch/v1/${id}`, {
+        fetch(`https://api.myrotvorets.app/myrotvorets/v1/byid/${id}`, {
             headers: {
                 'User-Agent': 'Report.Myrtovorets.Center Verification Bot',
                 Accept: 'application/json',
@@ -47,7 +44,7 @@ export function fetchCriminal(req: Request, res: Response, next: NextFunction): 
             .then((r: Criminal | ErrorResponse) => {
                 if ('id' in r) {
                     req.criminal = r;
-                    return setImmediate(next);
+                    return setImmediate<[]>(next);
                 }
 
                 if (r.statusCode === 404) {
