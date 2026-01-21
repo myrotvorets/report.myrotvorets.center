@@ -47,11 +47,11 @@ function apiCall(url: string): Promise<Criminal | Error> {
 }
 
 export function findCriminalBySlug(slug: string): Promise<Criminal | Error> {
-    return apiCall(`https://api.myrotvorets.center/simplesearch/v1/byslug/${encodeURIComponent(slug)}`);
+    return apiCall(`https://api.myrotvorets.app/myrotvorets/v1/byslug/${encodeURIComponent(slug)}`);
 }
 
 export function findCriminalById(id: number | string): Promise<Criminal | Error> {
-    return apiCall(`https://api.myrotvorets.center/simplesearch/v1/${id}`);
+    return apiCall(`https://api.myrotvorets.app/myrotvorets/v1/byid/${id}`);
 }
 
 export function isKnownCriminal(id: number | string): Criminal | false {
