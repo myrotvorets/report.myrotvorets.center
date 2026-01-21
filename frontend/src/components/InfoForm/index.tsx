@@ -1,5 +1,6 @@
 import { Component, type ComponentChild, type TargetedEvent } from 'preact';
-import { Link, route } from 'preact-router';
+import { Link } from 'preact-router/match';
+import { route } from 'preact-router';
 import Bugsnag from '@bugsnag/js';
 import { withLoginCheck } from '../../hocs/withLoginCheck';
 import { Criminal, findCriminalById, isKnownCriminal } from '../../api/myrotvorets';

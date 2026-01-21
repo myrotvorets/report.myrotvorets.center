@@ -1,6 +1,6 @@
-import { h } from 'preact';
+import { JSX } from 'preact';
 import { connect } from 'unistore/preact';
-import { Link } from 'preact-router';
+import { Link } from 'preact-router/match';
 import { AppState } from '../../redux/store';
 
 import MenuBar from './MenuBar/index';
@@ -15,7 +15,7 @@ interface MappedProps {
 
 type Props = MappedProps;
 
-function NavBar(props: Readonly<Props>): h.JSX.Element {
+function NavBar(props: Readonly<Props>): JSX.Element {
     const { loggedIn } = props;
     return (
         <MenuBar>

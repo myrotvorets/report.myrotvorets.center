@@ -1,5 +1,6 @@
 import { Component, ComponentChild } from 'preact';
-import { Link, route } from 'preact-router';
+import { Link } from 'preact-router/match';
+import { route } from 'preact-router';
 import { connect } from 'unistore/preact';
 import { AppState } from '../../redux/store';
 
