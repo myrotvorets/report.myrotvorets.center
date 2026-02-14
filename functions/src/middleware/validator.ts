@@ -13,7 +13,7 @@ export const reportAddValidator = [
 ];
 
 export const reportUpdateValidator = [
-    param('id').exists().isNumeric().withMessage('INVALID').toInt(),
+    param('id').exists().isUUID('loose').withMessage('INVALID'),
     body('name', 'BAD_REQUEST').exists().trim(),
     body('dob', 'BAD_REQUEST').optional({ checkFalsy: true }).isISO8601().withMessage('INVALID').toDate(),
     body('country', 'BAD_REQUEST').exists().trim(),
