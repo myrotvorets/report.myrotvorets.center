@@ -40,10 +40,13 @@ const errorCodes: Record<string, string> = {
     'auth/invalid-email': 'Неправильна електронна адреса.',
     'auth/user-disabled': 'Обліковий запис користувача вимкнено або заблоковано.',
     'auth/missing-continue-uri':
+        // eslint-disable-next-line sonarjs/no-hardcoded-secrets
         'Внутрішня помилка (auth/missing-continue-uri). Будь ласка, повідомте про це support@myrotvorets.center',
     'auth/invalid-continue-uri':
+        // eslint-disable-next-line sonarjs/no-hardcoded-secrets
         'Внутрішня помилка (auth/invalid-continue-uri). Будь ласка, повідомте про це support@myrotvorets.center',
     'auth/unauthorized-continue-uri':
+        // eslint-disable-next-line sonarjs/no-hardcoded-secrets
         'Внутрішня помилка (auth/unauthorized-continue-uri). Будь ласка, повідомте про це support@myrotvorets.center',
 };
 
