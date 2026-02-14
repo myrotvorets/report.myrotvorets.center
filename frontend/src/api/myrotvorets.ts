@@ -5,7 +5,7 @@ export interface Attachment {
 }
 
 export interface Criminal {
-    id: number;
+    id: string;
     link: string;
     name: string;
     dob: string;
@@ -20,7 +20,7 @@ interface ErrorResponse {
     message: string;
 }
 
-const map = new Map<number | string, Criminal>();
+const map = new Map<string, Criminal>();
 
 function apiCall(url: string): Promise<Criminal | Error> {
     return fetch(url)
@@ -50,10 +50,10 @@ export function findCriminalBySlug(slug: string): Promise<Criminal | Error> {
     return apiCall(`https://api.myrotvorets.app/myrotvorets/v1/byslug/${encodeURIComponent(slug)}`);
 }
 
-export function findCriminalById(id: number | string): Promise<Criminal | Error> {
+export function findCriminalById(id: string): Promise<Criminal | Error> {
     return apiCall(`https://api.myrotvorets.app/myrotvorets/v1/byid/${id}`);
 }
 
-export function isKnownCriminal(id: number | string): Criminal | false {
+export function isKnownCriminal(id: string): Criminal | false {
     return map.get(id) ?? false;
 }

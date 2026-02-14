@@ -66,7 +66,7 @@ class InfoForm extends Component<Props, State> {
     public constructor(props: Props) {
         super(props);
 
-        const criminal = props.mode === 'update' ? isKnownCriminal(+props.id) : false;
+        const criminal = props.mode === 'update' ? isKnownCriminal(props.id) : false;
 
         this.state = {
             error: '',
@@ -89,9 +89,8 @@ class InfoForm extends Component<Props, State> {
 
     public componentDidMount(): void {
         if (this.props.mode === 'update') {
-            const id = this.props.id;
-            const coerced = +id;
-            if (Number.isNaN(coerced) || `${coerced}` !== id || coerced % 1 !== 0 || coerced < 0) {
+            const { id } = this.props;
+            if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu.test(id)) {
                 route('/start');
             } else if (this.state.state === 'verifying') {
                 this._verifyCriminal();
