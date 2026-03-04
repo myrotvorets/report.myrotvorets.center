@@ -52,7 +52,7 @@
     "sass": "^1.83.0",
     "sass-loader": "^16.0.4",
     "style-loader": "^4.0.0",
-    "svgo": "^4.0.0",
+    "svgo": "^4.0.1",
     "svgo-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.3.11",
     "ts-node": "^10.9.2",
