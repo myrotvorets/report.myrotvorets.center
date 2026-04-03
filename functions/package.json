@@ -34,7 +34,7 @@
     "@myrotvorets/eslint-config-myrotvorets-ts": "^3.1.1",
     "eslint-formatter-gha": "^2.0.1",
     "firebase-functions-test": "^3.4.1",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.0"
   },
   "private": true,
   "description": "Cloud Functions for https://report.myrotvorets.center/",
