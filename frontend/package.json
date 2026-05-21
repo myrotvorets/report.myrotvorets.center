@@ -50,7 +50,7 @@
     "purgecss-webpack-plugin": "^8.0.0",
     "ref-loader": "^1.0.3",
     "sass": "^1.83.0",
-    "sass-loader": "^16.0.4",
+    "sass-loader": "^17.0.0",
     "style-loader": "^4.0.0",
     "svgo": "^4.0.0",
     "svgo-loader": "^5.0.0",
