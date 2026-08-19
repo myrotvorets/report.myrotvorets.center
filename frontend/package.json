@@ -20,7 +20,7 @@
     "@babel/plugin-transform-numeric-separator": "^7.25.9",
     "@babel/plugin-transform-object-assign": "^7.25.9",
     "@babel/plugin-transform-object-rest-spread": "^8.0.0",
-    "@babel/plugin-transform-optional-chaining": "^7.25.9",
+    "@babel/plugin-transform-optional-chaining": "^8.0.0",
     "@babel/plugin-transform-react-jsx": "^8.0.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.26.3",
