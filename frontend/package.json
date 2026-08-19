@@ -15,7 +15,7 @@
   "author": "Myrotvorets <support@myrotvorets.center> (https://myrotvorets.center/)",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.26.0",
+    "@babel/core": "^8.0.0",
     "@babel/plugin-transform-class-properties": "^7.25.9",
     "@babel/plugin-transform-numeric-separator": "^7.25.9",
     "@babel/plugin-transform-object-assign": "^7.25.9",
