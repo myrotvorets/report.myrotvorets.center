@@ -1,13 +1,9 @@
 import path from 'node:path';
+import { finished } from 'node:stream/promises';
 import { getStorage } from 'firebase-admin/storage';
 import { create as createArchive } from 'archiver';
 import Bugsnag from '@bugsnag/js';
 import type { ReportEntry } from '../types';
-
-const errorHandler = (e: Error): never => {
-    Bugsnag.notify(e);
-    throw e;
-};
 
 const bucket = getStorage().bucket();
 
@@ -22,28 +18,35 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<string>
             });
 
             if (folder[0].length) {
-                const fileStream = bucket.file(fname).createWriteStream({
-                    public: true,
+                const file = bucket.file(fname);
+                const fileStream = file.createWriteStream({
                     resumable: false,
                 });
-
-                fileStream.once('error', errorHandler);
 
                 const archive = createArchive('zip', {
                     zlib: { level: 4 },
                 });
 
-                archive.once('error', errorHandler);
                 archive.pipe(fileStream);
 
                 folder[0].forEach((userFile) => {
                     const stream = userFile.createReadStream();
-                    stream.once('error', errorHandler);
                     archive.append(stream, { name: path.basename(userFile.name) });
                 });
 
                 await archive.finalize();
-                return `https://storage.googleapis.com/${bucket.name}/${fname}`;
+                await finished(fileStream);
+
+                const expires = new Date();
+                expires.setDate(expires.getDate() + 7);
+
+                const [url] = await file.getSignedUrl({
+                    action: 'read',
+                    expires,
+                    version: 'v4',
+                });
+
+                return url;
             }
         } catch (e) {
             const err = e instanceof Error ? e : new Error(String(e));
