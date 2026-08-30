@@ -23,7 +23,7 @@
     "@babel/plugin-transform-optional-chaining": "^8.0.0",
     "@babel/plugin-transform-react-jsx": "^8.0.0",
     "@babel/preset-env": "^8.0.0",
-    "@babel/preset-react": "^7.26.3",
+    "@babel/preset-react": "^8.0.0",
     "@babel/preset-typescript": "^7.26.0",
     "@myrotvorets/ejs-compiled-loader": "^4.0.0",
     "@myrotvorets/eslint-config-myrotvorets-preact-ts": "^3.0.1",
