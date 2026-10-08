@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@adobe/fetch": "^3.6.4",
-    "@bugsnag/js": "^8.8.1",
-    "@bugsnag/plugin-express": "^8.8.0",
+    "@bugsnag/js": "^9.0.0",
+    "@bugsnag/plugin-express": "^9.0.0",
     "@types/archiver": "^7.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
