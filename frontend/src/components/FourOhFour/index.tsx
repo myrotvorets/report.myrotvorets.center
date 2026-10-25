@@ -1,5 +1,4 @@
 import { JSX } from 'preact';
-import { Link } from 'preact-router/match';
 
 export default function FourOhFour(): JSX.Element {
     return (
@@ -11,7 +10,7 @@ export default function FourOhFour(): JSX.Element {
             Цієї web-сторінки тут вже немає 😞
             <br />
             <p>
-                <Link href="/">Повернутися до головної сторінки</Link>
+                <a href="/">Повернутися до головної сторінки</a>
             </p>
         </div>
     );

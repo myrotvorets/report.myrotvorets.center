@@ -1,5 +1,5 @@
-import { Component, type ComponentChild, Fragment, type TargetedEvent } from 'preact';
-import { route } from 'preact-router';
+import { Component, type ComponentChild, type ContextType, Fragment, type TargetedEvent } from 'preact';
+import { LocationProvider } from 'preact-iso';
 import { withLoginCheck } from '../../hocs/withLoginCheck';
 import { Criminal, findCriminalBySlug } from '../../api/myrotvorets';
 import Alert from '../Alert';
@@ -15,6 +15,10 @@ interface State {
 }
 
 class CheckCriminalForm extends Component<unknown, State> {
+    public static readonly contextType = LocationProvider.ctx;
+
+    declare public context: ContextType<typeof LocationProvider.ctx>;
+
     public state: Readonly<State> = {
         busy: false,
         url: '',
@@ -56,7 +60,7 @@ class CheckCriminalForm extends Component<unknown, State> {
     private readonly _onBackButtonClicked = (): void => {
         const { stage } = this.state;
         if (stage === 0) {
-            route('/start');
+            this.context.route('/start');
         } else {
             this.setState({ stage: stage - 1 });
         }
@@ -115,7 +119,7 @@ class CheckCriminalForm extends Component<unknown, State> {
     private _doStage1(): void {
         const { criminal } = this.state;
         if (criminal) {
-            route(`/criminal/update/${criminal.id}`);
+            this.context.route(`/criminal/update/${criminal.id}`);
         }
     }
 

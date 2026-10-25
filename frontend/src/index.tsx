@@ -1,4 +1,5 @@
 import { JSX, render } from 'preact';
+import { LocationProvider } from 'preact-iso';
 import { Provider } from 'unistore/preact';
 import store from './redux/store';
 import App from './components/App';
@@ -11,7 +12,9 @@ export default function Application(): JSX.Element {
     return (
         <ErrorBoundary>
             <Provider store={store}>
-                <App />
+                <LocationProvider>
+                    <App />
+                </LocationProvider>
             </Provider>
         </ErrorBoundary>
     );
