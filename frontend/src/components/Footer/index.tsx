@@ -1,13 +1,16 @@
 import { h } from 'preact';
+import { useState } from 'preact/hooks';
 
 import refresh from '../../assets/refresh.svg';
 import './footer.scss';
 
 export default function Footer(): h.JSX.Element {
+    const [year] = useState(() => new Date().getFullYear());
+
     return (
         <footer className="site-footer">
             <p>
-                &copy; {new Date().getFullYear()} <a href="https://myrotvorets.center/">Myrotvorets Research Center</a>
+                &copy; {year} <a href="https://myrotvorets.center/">Myrotvorets Research Center</a>
             </p>
             <p>
                 Версія:{' '}
