@@ -5,7 +5,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { HwpAttributesPlugin } from 'hwp-attributes-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import { execSync } from 'child_process';
-import { Config as SVGOConfig } from 'svgo';
+import type { Config as SVGOConfig } from 'svgo' with { 'resolution-mode': 'import' };
 
 export const BugsnagAPIKey = 'ef7411ba5af267034db13d800de8a235';
 let ver: string;
@@ -37,6 +37,9 @@ const prodMinifyOptions: HtmlWebpackPlugin.MinifyOptions = {
 const config: WebpackConfiguration & { devServer: Configuration } = {
     context: path.resolve(__dirname, '..'),
     node: false,
+    experiments: {
+        typescript: false,
+    },
     entry: {
         bundle: path.resolve(__dirname, '../src/index.tsx'),
     },
@@ -104,16 +107,6 @@ const config: WebpackConfiguration & { devServer: Configuration } = {
                 ],
             },
             {
-                test: /\.png$/u,
-                issuer: /\.json$/u,
-                type: 'javascript/auto',
-                loader: 'file-loader',
-                options: {
-                    name: '[name].[contenthash:5].[ext]',
-                    esModule: false,
-                },
-            },
-            {
                 test: /\.(png|jpe?g|webp)$/u,
                 type: 'asset/resource',
             },
@@ -121,7 +114,7 @@ const config: WebpackConfiguration & { devServer: Configuration } = {
                 test: /\.json$/u,
                 issuer: /\.ejs$/u,
                 type: 'asset/resource',
-                use: ['extract-loader', 'ref-loader'],
+                use: [path.resolve(__dirname, 'manifest-assets-loader.cjs')],
             },
         ],
     },

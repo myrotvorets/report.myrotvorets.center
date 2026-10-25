@@ -10,7 +10,7 @@ function lazy<T>(loader: () => Promise<{ default: T }> | { default: T }): Defaul
         return (loader() as { default: T }).default as DefaultExport<T>;
     }
 
-    return loafing(loader as () => Promise<{ default: T }>) as DefaultExport<T>;
+    return loafing(loader as () => Promise<{ default: T }>);
 }
 
 function suspenseWrapper<T>(Component: ComponentType<T>): (props: RenderableProps<T>) => JSX.Element {

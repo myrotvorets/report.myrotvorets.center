@@ -5,7 +5,7 @@ import { merge } from 'webpack-merge';
 import commonConfig from './webpack.common';
 
 export default function (): Configuration {
-    return merge(commonConfig, {
+    return merge<Configuration>(commonConfig, {
         mode: 'development',
         performance: {
             maxEntrypointSize: 500 * 1024,
@@ -19,5 +19,5 @@ export default function (): Configuration {
             ],
         },
         plugins: [new ForkTsCheckerWebpackPlugin()],
-    } as Configuration);
+    });
 }

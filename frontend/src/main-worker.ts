@@ -22,7 +22,6 @@ import {
     W_UPLOAD_PROGRESS,
     WorkerRequest,
     WorkerResponse,
-    WorkerResponseAuthStateChanged,
     WorkerResponseGetToken,
     WorkerResponseSendLink,
     WorkerResponseSignIn,
@@ -58,7 +57,7 @@ auth.languageCode = 'uk';
 onAuthStateChanged(auth, (user: User | null): void => {
     const payload = user === null ? null : user.toJSON();
 
-    self.postMessage({ type: W_AUTH_STATE_CHANGED, payload } as WorkerResponseAuthStateChanged);
+    self.postMessage({ type: W_AUTH_STATE_CHANGED, payload });
 });
 
 function getToken(): void {
@@ -70,7 +69,7 @@ function getToken(): void {
                 self.postMessage({
                     type: W_GETTOKEN,
                     payload: { success: true, token, uid: currentUser.uid },
-                } as WorkerResponseGetToken),
+                } satisfies WorkerResponseGetToken),
             )
             .catch((err: unknown) => {
                 const e = err as FirebaseError;
@@ -81,13 +80,13 @@ function getToken(): void {
                         message: e.code in errorCodes ? errorCodes[e.code] : e.message,
                         code: e.code,
                     },
-                } as WorkerResponseGetToken);
+                } satisfies WorkerResponseGetToken);
             });
     } else {
         self.postMessage({
             type: W_GETTOKEN,
             payload: { success: false, message: 'Будь ласка, увійдіть ще раз.', code: 'NOT_AUTHORIZED' },
-        } as WorkerResponseGetToken);
+        } satisfies WorkerResponseGetToken);
     }
 }
 
@@ -97,7 +96,7 @@ function sendLink(email: string, url: string): void {
             self.postMessage({
                 type: W_SENDLINK,
                 payload: { success: true },
-            } as WorkerResponseSendLink),
+            } satisfies WorkerResponseSendLink),
         )
         .catch((err: unknown) => {
             const e = err as FirebaseError;
@@ -108,7 +107,7 @@ function sendLink(email: string, url: string): void {
                     message: e.code in errorCodes ? errorCodes[e.code] : e.message,
                     code: e.code,
                 },
-            } as WorkerResponseSendLink);
+            } satisfies WorkerResponseSendLink);
         });
 }
 
@@ -118,7 +117,7 @@ function signIn(email: string, link: string): void {
             self.postMessage({
                 type: W_SIGNIN,
                 payload: { success: true },
-            } as WorkerResponseSignIn),
+            } satisfies WorkerResponseSignIn),
         )
         .catch((err: unknown) => {
             const e = err as FirebaseError;
@@ -129,7 +128,7 @@ function signIn(email: string, link: string): void {
                     message: e.code in errorCodes ? errorCodes[e.code] : e.message,
                     code: e.code,
                 },
-            } as WorkerResponseSignIn);
+            } satisfies WorkerResponseSignIn);
         });
 }
 
@@ -141,7 +140,7 @@ function signOut(): void {
                 payload: {
                     success: true,
                 },
-            } as WorkerResponseSignOut),
+            } satisfies WorkerResponseSignOut),
         )
         .catch((err: unknown) => {
             const e = err as FirebaseError;
@@ -152,7 +151,7 @@ function signOut(): void {
                     message: e.code in errorCodes ? errorCodes[e.code] : e.message,
                     code: e.code,
                 },
-            } as WorkerResponseSignOut);
+            } satisfies WorkerResponseSignOut);
         });
 }
 
@@ -169,7 +168,7 @@ function uploadFile(uid: string, name: string, file: Blob): void {
                 payload: {
                     progress,
                 },
-            } as WorkerResponse);
+            } satisfies WorkerResponse);
         },
         (e: Error): void => {
             const err = e as Error & { code?: string };
@@ -180,7 +179,7 @@ function uploadFile(uid: string, name: string, file: Blob): void {
                     message: err.code && err.code in errorCodes ? errorCodes[err.code] : err.message,
                     code: err.code,
                 },
-            } as WorkerResponse);
+            });
         },
         (): void => {
             self.postMessage({
@@ -188,7 +187,7 @@ function uploadFile(uid: string, name: string, file: Blob): void {
                 payload: {
                     success: true,
                 },
-            } as WorkerResponse);
+            } satisfies WorkerResponse);
         },
     );
 }

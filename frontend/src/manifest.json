@@ -4,18 +4,18 @@
 	"lang": "uk",
 	"icons": [
 		{
-			"src": "@ref(./assets/logo192.png)",
+			"src": "./assets/logo192.png",
 			"type": "image/png",
 			"sizes": "192x192",
 			"purpose": "any maskable"
 		},
 		{
-			"src": "@ref(./assets/logo256.png)",
+			"src": "./assets/logo256.png",
 			"type": "image/png",
 			"sizes": "256x256"
 		},
 		{
-			"src": "@ref(./assets/logo512.png)",
+			"src": "./assets/logo512.png",
 			"type": "image/png",
 			"sizes": "512x512"
 		}

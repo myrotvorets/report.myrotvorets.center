@@ -31,7 +31,9 @@ export default function Authenticator(): h.JSX.Element | null {
                         url.hostname !== window.location.hostname &&
                         /^(report\.myrotvorets\.(center|dev)|localhost)$/iu.test(url.hostname)
                     ) {
-                        window.location.host = url.host;
+                        const redirectUrl = new URL(link);
+                        redirectUrl.host = url.host;
+                        window.location.assign(redirectUrl.href);
                         return null;
                     }
                 } catch {
