@@ -22,6 +22,7 @@ export async function saveToDatabase(
 
         const entry: ReportEntry = {
             ...req.body,
+            uploaderUid: req.user?.uid ?? '',
             dob: req.body.dob ? req.body.dob.toISOString().split('T')[0] : '',
             clink,
             cname,
