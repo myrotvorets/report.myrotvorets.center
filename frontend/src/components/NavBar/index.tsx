@@ -1,6 +1,5 @@
 import { JSX } from 'preact';
 import { connect } from 'unistore/preact';
-import { Link } from 'preact-router/match';
 import { AppState } from '../../redux/store';
 
 import MenuBar from './MenuBar/index';
@@ -20,22 +19,22 @@ function NavBar(props: Readonly<Props>): JSX.Element {
     return (
         <MenuBar>
             <MenuItem>
-                <Link href={loggedIn ? '/start' : '/'}>Головна</Link>
+                <a href={loggedIn ? '/start' : '/'}>Головна</a>
             </MenuItem>
             {!loggedIn && (
                 <MenuItem>
-                    <Link href="/login">Увійти</Link>
+                    <a href="/login">Увійти</a>
                 </MenuItem>
             )}
             <Submenu title="Взаємодія">
                 <MenuItem>
-                    <Link href="/about">Про Центр</Link>
+                    <a href="/about">Про Центр</a>
                 </MenuItem>
                 <MenuItem>
-                    <Link href="/about/crimes">Перелік злочинів, що досліджуються Центром</Link>
+                    <a href="/about/crimes">Перелік злочинів, що досліджуються Центром</a>
                 </MenuItem>
                 <MenuItem>
-                    <Link href="/about/grounds">Підстави діяльності Центру</Link>
+                    <a href="/about/grounds">Підстави діяльності Центру</a>
                 </MenuItem>
                 <MenuItem>
                     <a href="https://myrotvorets.center/contacts/" target="_blank" rel="noopener noreferrer">
@@ -43,7 +42,7 @@ function NavBar(props: Readonly<Props>): JSX.Element {
                     </a>
                 </MenuItem>
                 <MenuItem>
-                    <Link href="/about/complaints">Порядок подання скарг</Link>
+                    <a href="/about/complaints">Порядок подання скарг</a>
                 </MenuItem>
             </Submenu>
             <Submenu title="Наші проекти">
@@ -65,7 +64,7 @@ function NavBar(props: Readonly<Props>): JSX.Element {
             </Submenu>
             {loggedIn && (
                 <MenuItem>
-                    <Link href="/logout">Вийти</Link>
+                    <a href="/logout">Вийти</a>
                 </MenuItem>
             )}
         </MenuBar>

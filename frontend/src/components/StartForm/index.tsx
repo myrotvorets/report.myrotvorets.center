@@ -1,5 +1,5 @@
-import { Component, type ComponentChild, type TargetedEvent } from 'preact';
-import { route } from 'preact-router';
+import { Component, type ComponentChild, type ContextType, type TargetedEvent } from 'preact';
+import { LocationProvider } from 'preact-iso';
 import { withLoginCheck } from '../../hocs/withLoginCheck';
 
 interface State {
@@ -7,6 +7,10 @@ interface State {
 }
 
 class StartForm extends Component<unknown, State> {
+    public static readonly contextType = LocationProvider.ctx;
+
+    declare public context: ContextType<typeof LocationProvider.ctx>;
+
     public state: Readonly<State> = {
         action: '',
     };
@@ -24,11 +28,11 @@ class StartForm extends Component<unknown, State> {
         if (form.checkValidity()) {
             switch (this.state.action) {
                 case 'add':
-                    route('/criminal/add');
+                    this.context.route('/criminal/add');
                     break;
 
                 case 'update':
-                    route('/update/check');
+                    this.context.route('/update/check');
                     break;
 
                 default:

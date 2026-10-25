@@ -1,7 +1,7 @@
-import { Component, type ComponentChild } from 'preact';
+import { Component, type ComponentChild, type ContextType } from 'preact';
 import { type ActionBinder, connect } from 'unistore/preact';
 import { ActionMap } from 'unistore';
-import { route } from 'preact-router';
+import { LocationProvider } from 'preact-iso';
 import { logOutUser } from '../../redux/actions';
 import { type AppState } from '../../redux/store';
 import Loader from '../../components/Loader';
@@ -22,11 +22,15 @@ interface State {
 }
 
 class LogoutRoute extends Component<Props, State> {
+    public static readonly contextType = LocationProvider.ctx;
+
+    declare public context: ContextType<typeof LocationProvider.ctx>;
+
     public componentDidMount(): void {
         if (this.props.loggedIn) {
             this.props.logOutUser().catch((error: unknown) => this.setState({ error: error as Error }));
         } else {
-            route('/');
+            this.context.route('/');
         }
     }
 
@@ -36,7 +40,7 @@ class LogoutRoute extends Component<Props, State> {
         }
 
         if (!this.props.loggedIn) {
-            route('/');
+            this.context.route('/');
         }
     }
 

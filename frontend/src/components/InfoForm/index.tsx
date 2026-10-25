@@ -1,6 +1,5 @@
-import { Component, type ComponentChild, type TargetedEvent } from 'preact';
-import { Link } from 'preact-router/match';
-import { route } from 'preact-router';
+import { Component, type ComponentChild, type ContextType, type TargetedEvent } from 'preact';
+import { LocationProvider } from 'preact-iso';
 import Bugsnag from '@bugsnag/js';
 import { withLoginCheck } from '../../hocs/withLoginCheck';
 import { Criminal, findCriminalById, isKnownCriminal } from '../../api/myrotvorets';
@@ -43,6 +42,10 @@ interface State {
 }
 
 class InfoForm extends Component<Props, State> {
+    public static readonly contextType = LocationProvider.ctx;
+
+    declare public context: ContextType<typeof LocationProvider.ctx>;
+
     private static _parseError(e: ErrorResponse | Error): string {
         if (e instanceof Error) {
             return e.message;
@@ -93,7 +96,7 @@ class InfoForm extends Component<Props, State> {
         if (this.props.mode === 'update') {
             const { id } = this.props;
             if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu.test(id)) {
-                route('/start');
+                this.context.route('/start');
             } else if (this.state.state === 'verifying') {
                 this._verifyCriminal();
             }
@@ -214,7 +217,7 @@ class InfoForm extends Component<Props, State> {
                     state: 'idle',
                 });
             } else {
-                route('/start');
+                this.context.route('/start');
             }
         });
     }
@@ -278,9 +281,9 @@ class InfoForm extends Component<Props, State> {
                     </p>
                     <p>Якщо ви зробили все правильно, запис найближчим часом зʼявиться в Чистилищі.</p>
                     <p>
-                        <Link href="/start">
+                        <a href="/start">
                             <strong>Наступна жертва</strong>
-                        </Link>
+                        </a>
                     </p>
                 </div>
             );

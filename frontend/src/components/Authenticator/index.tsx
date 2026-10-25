@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { useEffect } from 'preact/hooks';
-import { route } from 'preact-router';
+import { useLocation } from 'preact-iso';
 import CodeVerifier from '../CodeVerifier';
 import { lsGet } from '../../utils/localstorage';
 
@@ -19,6 +19,7 @@ function isSignInWithEmailLink(link: string): boolean {
 }
 
 export default function Authenticator(): h.JSX.Element | null {
+    const { route } = useLocation();
     const link = typeof window !== 'undefined' ? window.location.href : '';
     const isSignIn = isSignInWithEmailLink(link);
     let redirectHref: string | undefined;
@@ -49,7 +50,7 @@ export default function Authenticator(): h.JSX.Element | null {
         } else if (!isSignIn) {
             route('/');
         }
-    }, [redirectHref, isSignIn]);
+    }, [redirectHref, isSignIn, route]);
 
     if (isSignIn && !redirectHref) {
         const email = lsGet('email');

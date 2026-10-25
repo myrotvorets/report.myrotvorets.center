@@ -1,6 +1,7 @@
 import { ComponentConstructor, ComponentType, h } from 'preact';
 import { connect } from 'unistore/preact';
-import { route } from 'preact-router';
+import { useLocation } from 'preact-iso';
+import { useEffect } from 'preact/hooks';
 import { AppState } from '../redux/store';
 import Loader from '../components/Loader';
 
@@ -30,6 +31,13 @@ export const withLoginCheck = <P extends object>(
 ): ComponentConstructor<P, unknown> =>
     connect<P, unknown, AppState, MappedProps>(mapStateToProps)(
         ({ state, ...props }: P & MappedProps): h.JSX.Element | null => {
+            const { route } = useLocation();
+            useEffect(() => {
+                if (state !== 'unknown' && state !== 'user') {
+                    route('/login');
+                }
+            }, [state, route]);
+
             switch (state) {
                 case 'unknown':
                     return <Loader />;
@@ -38,7 +46,6 @@ export const withLoginCheck = <P extends object>(
                     return <WrappedComponent {...(props as P)} />;
 
                 default:
-                    route('/login');
                     return null;
             }
         },
@@ -49,6 +56,13 @@ export const withVisitorCheck = <P extends object>(
 ): ComponentConstructor<P, unknown> =>
     connect<P, unknown, AppState, MappedProps>(mapStateToProps)(
         ({ state, ...props }: P & MappedProps): h.JSX.Element | null => {
+            const { route } = useLocation();
+            useEffect(() => {
+                if (state !== 'unknown' && state !== 'visitor') {
+                    route('/start');
+                }
+            }, [state, route]);
+
             switch (state) {
                 case 'unknown':
                     return <Loader />;
@@ -57,7 +71,6 @@ export const withVisitorCheck = <P extends object>(
                     return <WrappedComponent {...(props as P)} />;
 
                 default:
-                    route('/start');
                     return null;
             }
         },

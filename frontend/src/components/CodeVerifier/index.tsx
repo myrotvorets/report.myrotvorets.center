@@ -1,6 +1,5 @@
-import { Component, type ComponentChild, type TargetedEvent } from 'preact';
-import { Link } from 'preact-router/match';
-import { route } from 'preact-router';
+import { Component, type ComponentChild, type ContextType, type TargetedEvent } from 'preact';
+import { LocationProvider } from 'preact-iso';
 import { withVisitorCheck } from '../../hocs/withLoginCheck';
 import { withWorker } from '../../hocs/withWorker';
 import { ResSignInPayload, W_SIGNIN, WorkerRequestSignIn, sendAndWait } from '../../utils/worker';
@@ -26,6 +25,10 @@ interface State {
 }
 
 class CodeVerifier extends Component<Props, State> {
+    public static readonly contextType = LocationProvider.ctx;
+
+    declare public context: ContextType<typeof LocationProvider.ctx>;
+
     public state: Readonly<State> = {
         email: this.props.email,
         error: '',
@@ -67,7 +70,7 @@ class CodeVerifier extends Component<Props, State> {
             .then((r) => {
                 if (r.success) {
                     lsSet('email', '');
-                    route('/start');
+                    this.context.route('/start');
                 } else {
                     this.setState({
                         busy: false,
@@ -86,7 +89,7 @@ class CodeVerifier extends Component<Props, State> {
                 <Alert>
                     <p>{error}</p>
                     <p>
-                        <Link href="/">Повернутись</Link>
+                        <a href="/">Повернутись</a>
                     </p>
                 </Alert>
             );

@@ -1,13 +1,11 @@
 import { ComponentType, JSX, RenderableProps } from 'preact';
-import { Suspense, lazy as loafing } from 'preact/compat';
-import { Route, Router } from 'preact-router';
+import { Suspense } from 'preact/compat';
+import { Route, Router, lazy as loafing, useRoute } from 'preact-iso';
 import Loader from '../Loader';
 
-type DefaultExport<T> = T extends { default: infer U } ? U : T;
-
-function lazy<T>(loader: () => Promise<{ default: T }> | { default: T }): DefaultExport<T> {
+function lazy<T>(loader: () => Promise<{ default: T }> | { default: T }): T {
     if (process.env.BUILD_SSR) {
-        return (loader() as { default: T }).default as DefaultExport<T>;
+        return (loader() as { default: T }).default;
     }
 
     return loafing(loader as () => Promise<{ default: T }>);
@@ -22,13 +20,16 @@ function suspenseWrapper<T>(Component: ComponentType<T>): (props: RenderableProp
         );
     }
 
-    return (props: RenderableProps<T>): JSX.Element => (
-        <main id="content">
-            <Suspense fallback={<Loader />}>
-                <Component {...props} />
-            </Suspense>
-        </main>
-    );
+    return (props: RenderableProps<T>): JSX.Element => {
+        const { path } = useRoute();
+        return (
+            <main id="content">
+                <Suspense fallback={<Loader />}>
+                    <Component key={path} {...props} />
+                </Suspense>
+            </main>
+        );
+    };
 }
 
 const HomeRoute = lazy(
@@ -132,22 +133,35 @@ const ComplaintsRoute = lazy(
 
 const FourOhFourRoute = lazy(() => import(/* webpackMode: "eager" */ '../../components/FourOhFour'));
 
+const HomePage = suspenseWrapper(HomeRoute);
+const LoginPage = suspenseWrapper(LoginRoute);
+const LogoutPage = suspenseWrapper(LogoutRoute);
+const AuthPage = suspenseWrapper(AuthRoute);
+const StartPage = suspenseWrapper(StartRoute);
+const CheckCriminalPage = suspenseWrapper(CheckCriminalRoute);
+const AboutPage = suspenseWrapper(AboutRoute);
+const CrimesPage = suspenseWrapper(CrimesRoute);
+const GroundsPage = suspenseWrapper(GroundsRoute);
+const ComplaintsPage = suspenseWrapper(ComplaintsRoute);
+const AddCriminalPage = suspenseWrapper(AddCriminalRoute);
+const FourOhFourPage = suspenseWrapper(FourOhFourRoute);
+
 export default function AppRouter(): JSX.Element {
     return (
         <Router>
-            <Route path="/" component={suspenseWrapper<object>(HomeRoute)} />
-            <Route path="/login" component={suspenseWrapper(LoginRoute)} />
-            <Route path="/logout" component={suspenseWrapper<object>(LogoutRoute)} />
-            <Route path="/auth" component={suspenseWrapper(AuthRoute)} />
-            <Route path="/start" component={suspenseWrapper(StartRoute)} />
-            <Route path="/update/check" component={suspenseWrapper(CheckCriminalRoute)} />
-            <Route path="/about/complaints" component={suspenseWrapper(ComplaintsRoute)} />
-            <Route path="/about/crimes" component={suspenseWrapper(CrimesRoute)} />
-            <Route path="/about/grounds" component={suspenseWrapper(GroundsRoute)} />
-            <Route path="/about" component={suspenseWrapper(AboutRoute)} />
-            <Route path="/criminal/add" component={suspenseWrapper(AddCriminalRoute)} mode="add" />
-            <Route path="/criminal/update/:id" component={suspenseWrapper(AddCriminalRoute)} mode="update" />
-            <Route default component={suspenseWrapper(FourOhFourRoute)} />
+            <Route path="/" component={HomePage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/logout" component={LogoutPage} />
+            <Route path="/auth" component={AuthPage} />
+            <Route path="/start" component={StartPage} />
+            <Route path="/update/check" component={CheckCriminalPage} />
+            <Route path="/about/complaints" component={ComplaintsPage} />
+            <Route path="/about/crimes" component={CrimesPage} />
+            <Route path="/about/grounds" component={GroundsPage} />
+            <Route path="/about" component={AboutPage} />
+            <Route path="/criminal/add" component={AddCriminalPage} mode="add" />
+            <Route path="/criminal/update/:id" component={AddCriminalPage} mode="update" />
+            <Route default component={FourOhFourPage} />
         </Router>
     );
 }

@@ -1,5 +1,4 @@
 import { JSX } from 'preact';
-import { Link } from 'preact-router/match';
 
 import logo from '../../../assets/myrotvorets.svg';
 import '../static.scss';
@@ -29,9 +28,8 @@ export default function About(): JSX.Element {
             </p>
             <p>
                 <strong>
-                    Центр «Миротворець» здійснює свою діяльність <Link href="/about/grounds">чітко згідно</Link> з
-                    чинним законодавством України і міжнародними нормативно-правовими актами, ратифікованими нашою
-                    державою.
+                    Центр «Миротворець» здійснює свою діяльність <a href="/about/grounds">чітко згідно</a> з чинним
+                    законодавством України і міжнародними нормативно-правовими актами, ратифікованими нашою державою.
                 </strong>
             </p>
             <p>

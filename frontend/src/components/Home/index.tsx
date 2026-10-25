@@ -1,6 +1,5 @@
-import { Component, ComponentChild } from 'preact';
-import { Link } from 'preact-router/match';
-import { route } from 'preact-router';
+import { Component, ComponentChild, type ContextType } from 'preact';
+import { LocationProvider } from 'preact-iso';
 import { connect } from 'unistore/preact';
 import { AppState } from '../../redux/store';
 
@@ -13,14 +12,18 @@ interface MappedProps {
 type Props = OwnProps & MappedProps;
 
 class Home extends Component<Props> {
+    public static readonly contextType = LocationProvider.ctx;
+
+    declare public context: ContextType<typeof LocationProvider.ctx>;
+
     private readonly _formSubmitHandler = (e: Event): void => {
         e.preventDefault();
         const { loggedIn } = this.props;
 
         if (loggedIn) {
-            route('/start');
+            this.context.route('/start');
         } else {
-            route('/login');
+            this.context.route('/login');
         }
     };
 
@@ -29,10 +32,10 @@ class Home extends Component<Props> {
             <form className="block block--centered" onSubmit={this._formSubmitHandler}>
                 <header className="block__header">Повідомити про ймовірного злочинця</header>
                 <p>
-                    <Link href="/about">Центр «Миротворець»</Link> досліджує{' '}
-                    <Link href="/about/crimes">ознаки злочинів</Link> проти національної безпеки України, миру, безпеки
-                    людства та міжнародного правопорядку <Link href="/about/grounds">відповідно до</Link> чинного
-                    законодавства України та міжнародних нормативно-правових актів, ратифікованих нашою державою.
+                    <a href="/about">Центр «Миротворець»</a> досліджує <a href="/about/crimes">ознаки злочинів</a> проти
+                    національної безпеки України, миру, безпеки людства та міжнародного правопорядку{' '}
+                    <a href="/about/grounds">відповідно до</a> чинного законодавства України та міжнародних
+                    нормативно-правових актів, ратифікованих нашою державою.
                 </p>
                 <p>
                     Перед тим, як повідомити нам про обʼєкт, в діях якого містяться явні ознаки скоєння злочинів, що
