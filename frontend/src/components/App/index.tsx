@@ -25,7 +25,7 @@ interface State {
 }
 
 class App extends Component<Props, State> {
-    private readonly _worker: Worker | undefined;
+    declare private readonly _worker: Worker | undefined;
 
     public constructor(props: Props) {
         super(props);

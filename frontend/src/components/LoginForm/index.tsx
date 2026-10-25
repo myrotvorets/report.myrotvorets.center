@@ -24,7 +24,7 @@ class LoginForm extends Component<MappedProps, State> {
         emailValid: undefined,
     };
 
-    private readonly _ref: RefObject<HTMLInputElement> = createRef();
+    private readonly _ref: RefObject<HTMLInputElement | null> = createRef();
 
     public componentDidMount(): void {
         this._ref.current?.focus();

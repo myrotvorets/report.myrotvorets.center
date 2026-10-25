@@ -63,7 +63,7 @@ class InfoForm extends Component<Props, State> {
         }
     }
 
-    private _uploadedFiles?: { uid: string; files: File[]; path: string };
+    declare private _uploadedFiles?: { uid: string; files: File[]; path: string };
 
     public constructor(props: Props) {
         super(props);
@@ -190,22 +190,18 @@ class InfoForm extends Component<Props, State> {
     };
 
     private readonly _onFileUploadProgress = (progress: number): void => {
-        this.setState(
-            ({ uploadedFileNumber, filesToUpload }: State): Partial<State> => ({
-                status: `Завантаження файлу ${uploadedFileNumber} із ${filesToUpload}: ${
-                    progress >= 0 ? progress.toString() : '?'
-                }%`,
-            }),
-        );
+        this.setState(({ uploadedFileNumber, filesToUpload }: State): Partial<State> => ({
+            status: `Завантаження файлу ${uploadedFileNumber} із ${filesToUpload}: ${
+                progress >= 0 ? progress.toString() : '?'
+            }%`,
+        }));
     };
 
     private readonly _onOverallUploadProgress = (fileNumber: number): void => {
-        this.setState(
-            ({ filesToUpload }: State): Partial<State> => ({
-                uploadedFileNumber: fileNumber,
-                status: `Завантаження файлу ${fileNumber} із ${filesToUpload}: 0%`,
-            }),
-        );
+        this.setState(({ filesToUpload }: State): Partial<State> => ({
+            uploadedFileNumber: fileNumber,
+            status: `Завантаження файлу ${fileNumber} із ${filesToUpload}: 0%`,
+        }));
     };
 
     private _verifyCriminal(): void {
