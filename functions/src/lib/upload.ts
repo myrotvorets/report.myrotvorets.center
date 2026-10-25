@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import type { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { getStorage } from 'firebase-admin/storage';
-import { create as createArchive } from 'archiver';
+import { ZipArchive } from 'archiver';
 import Bugsnag from '@bugsnag/js';
 import type { ReportEntry } from '../types';
 import { getSubmissionId } from './upload-path';
@@ -46,7 +46,7 @@ export async function archiveFilesAndUpload(entry: ReportEntry): Promise<string>
             resumable: false,
             preconditionOpts: { ifGenerationMatch: 0 },
         });
-        const archive = createArchive('zip', { zlib: { level: 4 } });
+        const archive = new ZipArchive({ zlib: { level: 4 } });
         const sources: Readable[] = [];
         const uploaded = pipeline(archive, fileStream);
 
