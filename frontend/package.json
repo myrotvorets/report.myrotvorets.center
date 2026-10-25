@@ -40,7 +40,7 @@
     "html-webpack-plugin": "^5.6.8",
     "hwp-attributes-plugin": "^2.2.1",
     "hwp-inline-runtime-chunk-plugin": "^2.0.6",
-    "jsdom": "^26.1.0",
+    "jsdom": "^30.0.0",
     "mini-css-extract-plugin": "^2.10.2",
     "minimatch": "^10.2.6",
     "postcss": "^8.5.31",
