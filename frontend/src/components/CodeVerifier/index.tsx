@@ -5,6 +5,7 @@ import { withVisitorCheck } from '../../hocs/withLoginCheck';
 import { withWorker } from '../../hocs/withWorker';
 import { ResSignInPayload, W_SIGNIN, WorkerRequestSignIn, sendAndWait } from '../../utils/worker';
 import Alert from '../Alert';
+import { lsSet } from '../../utils/localstorage';
 
 interface OwnProps {
     link: string;
@@ -65,7 +66,7 @@ class CodeVerifier extends Component<Props, State> {
         sendAndWait<WorkerRequestSignIn, ResSignInPayload>(worker, request, W_SIGNIN)
             .then((r) => {
                 if (r.success) {
-                    window.localStorage.removeItem('email');
+                    lsSet('email', '');
                     route('/start');
                 } else {
                     this.setState({
