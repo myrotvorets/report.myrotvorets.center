@@ -1,5 +1,14 @@
-import { Result, type ValidationError, body, param, validationResult } from 'express-validator';
+import { Result, type ValidationChain, type ValidationError, body, param, validationResult } from 'express-validator';
 import type { NextFunction, Request, Response } from 'express';
+import { getSubmissionId } from '../lib/upload-path';
+
+const uploadPathValidator = (): ValidationChain =>
+    body('path', 'BAD_REQUEST')
+        .isString()
+        .bail()
+        .custom(
+            (value: string, { req }) => value === '' || getSubmissionId(value, (req as Request).user?.uid) !== null,
+        );
 
 export const reportAddValidator = [
     body('name', 'BAD_REQUEST').exists().trim().isLength({ min: 5 }).withMessage('TOO_SHORT'),
@@ -9,7 +18,7 @@ export const reportAddValidator = [
     body('phone', 'BAD_REQUEST').exists().trim(),
     body('description', 'BAD_REQUEST').exists().trim().isLength({ min: 10 }).withMessage('TOO_SHORT'),
     body('note', 'BAD_REQUEST').exists().trim(),
-    body('path', 'BAD_REQUEST').exists().trim(),
+    uploadPathValidator(),
 ];
 
 export const reportUpdateValidator = [
@@ -21,7 +30,7 @@ export const reportUpdateValidator = [
     body('phone', 'BAD_REQUEST').exists().trim(),
     body('description', 'BAD_REQUEST').exists().trim().isLength({ min: 10 }).withMessage('TOO_SHORT'),
     body('note', 'BAD_REQUEST').exists().trim(),
-    body('path', 'BAD_REQUEST').exists().trim(),
+    uploadPathValidator(),
 ];
 
 export function commonValidationHandler(req: Request, res: Response, next: NextFunction): void {

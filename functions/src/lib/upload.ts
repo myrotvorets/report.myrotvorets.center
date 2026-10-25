@@ -1,66 +1,84 @@
 import path from 'node:path';
+import { randomUUID } from 'node:crypto';
+import type { Readable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 import { getStorage } from 'firebase-admin/storage';
 import { create as createArchive } from 'archiver';
 import Bugsnag from '@bugsnag/js';
 import type { ReportEntry } from '../types';
-
-const errorHandler = (e: Error): never => {
-    Bugsnag.notify(e);
-    throw e;
-};
+import { getSubmissionId } from './upload-path';
 
 const bucket = getStorage().bucket();
 
 export async function archiveFilesAndUpload(entry: ReportEntry): Promise<string> {
-    if (entry.path) {
-        const date = new Date().toISOString().split('T')[0];
-        const fname = `${date}/${path.basename(entry.path)}.zip`;
+    if (!entry.path) {
+        return '';
+    }
 
-        try {
-            const folder = await bucket.getFiles({
-                prefix: `incoming/${entry.path}`,
+    try {
+        if (getSubmissionId(entry.path, entry.uploaderUid) === null) {
+            throw new Error('Invalid upload ownership or submission path');
+        }
+
+        const date = new Date().toISOString().split('T')[0];
+        const fname = `${date}/${randomUUID()}.zip`;
+        const prefix = `incoming/${entry.path}/`;
+        const [listedFiles] = await bucket.getFiles({ prefix });
+        const files = listedFiles
+            .filter((file) => {
+                const name = file.name.slice(prefix.length);
+                return file.name.startsWith(prefix) && name !== '' && !name.includes('/');
+            })
+            .map((file) => {
+                if (!file.metadata.generation) {
+                    throw new Error('Missing upload generation');
+                }
+
+                return bucket.file(file.name, { generation: file.metadata.generation });
             });
 
-            if (folder[0].length) {
-                const fileStream = bucket.file(fname).createWriteStream({
-                    public: true,
-                    resumable: false,
-                });
+        if (!files.length) {
+            return '';
+        }
 
-                fileStream.once('error', errorHandler);
+        const fileStream = bucket.file(fname).createWriteStream({
+            public: true,
+            resumable: false,
+            preconditionOpts: { ifGenerationMatch: 0 },
+        });
+        const archive = createArchive('zip', { zlib: { level: 4 } });
+        const sources: Readable[] = [];
+        const uploaded = pipeline(archive, fileStream);
 
-                const archive = createArchive('zip', {
-                    zlib: { level: 4 },
-                });
+        try {
+            files.forEach((file) => {
+                const source = file.createReadStream();
+                sources.push(source);
+                source.once('error', (err: Error) => archive.destroy(err));
+                archive.append(source, { name: path.basename(file.name) });
+            });
 
-                archive.once('error', errorHandler);
-                archive.pipe(fileStream);
+            await Promise.all([archive.finalize(), uploaded]);
+        } catch (e) {
+            archive.abort();
+            archive.destroy();
+            fileStream.destroy();
+            sources.forEach((source) => source.destroy());
+            await uploaded.catch(() => undefined);
+            throw e;
+        }
 
-                folder[0].forEach((userFile) => {
-                    const stream = userFile.createReadStream();
-                    stream.once('error', errorHandler);
-                    archive.append(stream, { name: path.basename(userFile.name) });
-                });
-
-                await archive.finalize();
-                return `https://storage.googleapis.com/${bucket.name}/${fname}`;
-            }
+        try {
+            await Promise.all(files.map((file) => file.delete()));
         } catch (e) {
             const err = e instanceof Error ? e : new Error(String(e));
             Bugsnag.notify(err);
-            return '';
-        } finally {
-            try {
-                await bucket.deleteFiles({
-                    prefix: `incoming/${entry.path}`,
-                    force: true,
-                });
-            } catch (e) {
-                const err = e instanceof Error ? e : new Error(String(e));
-                Bugsnag.notify(err);
-            }
         }
-    }
 
-    return '';
+        return `https://storage.googleapis.com/${bucket.name}/${fname}`;
+    } catch (e) {
+        const err = e instanceof Error ? e : new Error(String(e));
+        Bugsnag.notify(err);
+        return '';
+    }
 }

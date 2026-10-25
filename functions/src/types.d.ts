@@ -28,6 +28,7 @@ export interface AddUpdateRequestBody {
 }
 
 export interface ReportEntry {
+    uploaderUid?: string;
     name: string;
     dob: string;
     country: string;
