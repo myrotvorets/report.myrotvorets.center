@@ -14,6 +14,7 @@ import { UploadTask, getStorage, ref, uploadBytesResumable } from '@firebase/sto
 import firebaseConfig from './config/firebase';
 import {
     W_AUTH_STATE_CHANGED,
+    W_CANCEL_UPLOAD,
     W_GETTOKEN,
     W_SENDLINK,
     W_SIGNIN,
@@ -60,7 +61,7 @@ onAuthStateChanged(auth, (user: User | null): void => {
     self.postMessage({ type: W_AUTH_STATE_CHANGED, payload });
 });
 
-function getToken(): void {
+function getToken(requestId: string): void {
     const { currentUser } = auth;
     if (currentUser) {
         currentUser
@@ -68,6 +69,7 @@ function getToken(): void {
             .then((token) =>
                 self.postMessage({
                     type: W_GETTOKEN,
+                    requestId,
                     payload: { success: true, token, uid: currentUser.uid },
                 } satisfies WorkerResponseGetToken),
             )
@@ -75,6 +77,7 @@ function getToken(): void {
                 const e = err as FirebaseError;
                 self.postMessage({
                     type: W_GETTOKEN,
+                    requestId,
                     payload: {
                         success: false,
                         message: e.code in errorCodes ? errorCodes[e.code] : e.message,
@@ -85,16 +88,18 @@ function getToken(): void {
     } else {
         self.postMessage({
             type: W_GETTOKEN,
+            requestId,
             payload: { success: false, message: 'Будь ласка, увійдіть ще раз.', code: 'NOT_AUTHORIZED' },
         } satisfies WorkerResponseGetToken);
     }
 }
 
-function sendLink(email: string, url: string): void {
+function sendLink(email: string, url: string, requestId: string): void {
     sendSignInLinkToEmail(auth, email, { handleCodeInApp: true, url })
         .then(() =>
             self.postMessage({
                 type: W_SENDLINK,
+                requestId,
                 payload: { success: true },
             } satisfies WorkerResponseSendLink),
         )
@@ -102,6 +107,7 @@ function sendLink(email: string, url: string): void {
             const e = err as FirebaseError;
             self.postMessage({
                 type: W_SENDLINK,
+                requestId,
                 payload: {
                     success: false,
                     message: e.code in errorCodes ? errorCodes[e.code] : e.message,
@@ -111,11 +117,12 @@ function sendLink(email: string, url: string): void {
         });
 }
 
-function signIn(email: string, link: string): void {
+function signIn(email: string, link: string, requestId: string): void {
     signInWithEmailLink(auth, email, link)
         .then(() =>
             self.postMessage({
                 type: W_SIGNIN,
+                requestId,
                 payload: { success: true },
             } satisfies WorkerResponseSignIn),
         )
@@ -123,6 +130,7 @@ function signIn(email: string, link: string): void {
             const e = err as FirebaseError;
             self.postMessage({
                 type: W_SIGNIN,
+                requestId,
                 payload: {
                     success: false,
                     message: e.code in errorCodes ? errorCodes[e.code] : e.message,
@@ -132,11 +140,12 @@ function signIn(email: string, link: string): void {
         });
 }
 
-function signOut(): void {
+function signOut(requestId: string): void {
     fbSignOut(auth)
         .then(() =>
             self.postMessage({
                 type: W_SIGNOUT,
+                requestId,
                 payload: {
                     success: true,
                 },
@@ -146,6 +155,7 @@ function signOut(): void {
             const e = err as FirebaseError;
             self.postMessage({
                 type: W_SIGNOUT,
+                requestId,
                 payload: {
                     success: false,
                     message: e.code in errorCodes ? errorCodes[e.code] : e.message,
@@ -155,25 +165,31 @@ function signOut(): void {
         });
 }
 
-function uploadFile(uid: string, name: string, file: Blob): void {
+const uploads = new Map<string, UploadTask>();
+
+function uploadFile(uid: string, name: string, file: Blob, requestId: string): void {
     const task: UploadTask = uploadBytesResumable(ref(getStorage(), `incoming/${uid}/${name}`), file);
+    uploads.set(requestId, task);
     task.on(
         'state_changed',
         (snapshot): void => {
             const progress = snapshot.totalBytes
-                ? Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100) / 10
+                ? Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 1000) / 10
                 : -1;
             self.postMessage({
                 type: W_UPLOAD_PROGRESS,
+                requestId,
                 payload: {
                     progress,
                 },
             } satisfies WorkerResponse);
         },
         (e: Error): void => {
+            uploads.delete(requestId);
             const err = e as Error & { code?: string };
             self.postMessage({
                 type: W_UPLOAD_FILE,
+                requestId,
                 payload: {
                     success: false,
                     message: err.code && err.code in errorCodes ? errorCodes[err.code] : err.message,
@@ -182,8 +198,10 @@ function uploadFile(uid: string, name: string, file: Blob): void {
             });
         },
         (): void => {
+            uploads.delete(requestId);
             self.postMessage({
                 type: W_UPLOAD_FILE,
+                requestId,
                 payload: {
                     success: true,
                 },
@@ -192,28 +210,40 @@ function uploadFile(uid: string, name: string, file: Blob): void {
     );
 }
 
-self.addEventListener('message', ({ data }: MessageEvent): void => {
-    if ('type' in data) {
+self.addEventListener('message', ({ data }: MessageEvent<unknown>): void => {
+    if (
+        data &&
+        typeof data === 'object' &&
+        'type' in data &&
+        'requestId' in data &&
+        typeof data.requestId === 'string'
+    ) {
         const d = data as WorkerRequest;
+        const requestId = data.requestId;
         switch (d.type) {
             case W_GETTOKEN:
-                getToken();
+                getToken(requestId);
                 break;
 
             case W_SIGNIN:
-                signIn(d.payload.email, d.payload.link);
+                signIn(d.payload.email, d.payload.link, requestId);
                 break;
 
             case W_SIGNOUT:
-                signOut();
+                signOut(requestId);
                 break;
 
             case W_SENDLINK:
-                sendLink(d.payload.email, d.payload.url);
+                sendLink(d.payload.email, d.payload.url, requestId);
                 break;
 
             case W_UPLOAD_FILE:
-                uploadFile(d.payload.uid, d.payload.name, d.payload.file);
+                uploadFile(d.payload.uid, d.payload.name, d.payload.file, requestId);
+                break;
+
+            case W_CANCEL_UPLOAD:
+                uploads.get(requestId)?.cancel();
+                uploads.delete(requestId);
                 break;
 
             default:

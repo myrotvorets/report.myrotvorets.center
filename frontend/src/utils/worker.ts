@@ -7,15 +7,18 @@ export const W_SIGNIN = 'signin';
 export const W_SIGNOUT = 'signout';
 export const W_UPLOAD_FILE = 'upload';
 export const W_UPLOAD_PROGRESS = 'upload_progress';
+export const W_CANCEL_UPLOAD = 'cancel_upload';
 
 export interface BaseWorkerRequest<Type, Payload> {
     type: Type;
     payload: Payload;
+    requestId?: string;
 }
 
 interface BaseWorkerResponse<Type, Payload> {
     type: Type;
     payload: Payload;
+    requestId?: string;
 }
 
 interface ReqSignInPayload {
@@ -79,12 +82,15 @@ export type WorkerRequestSignOut = BaseWorkerRequest<typeof W_SIGNOUT, undefined
 export type WorkerRequestSendLink = BaseWorkerRequest<typeof W_SENDLINK, ReqSendLinkPayload>;
 export type WorkerRequestUpload = BaseWorkerRequest<typeof W_UPLOAD_FILE, ReqUploadPayload>;
 
+export type WorkerRequestCancelUpload = BaseWorkerRequest<typeof W_CANCEL_UPLOAD, undefined>;
+
 export type WorkerRequest =
     | WorkerRequestGetToken
     | WorkerRequestSignIn
     | WorkerRequestSignOut
     | WorkerRequestSendLink
-    | WorkerRequestUpload;
+    | WorkerRequestUpload
+    | WorkerRequestCancelUpload;
 
 export type WorkerResponseAuthStateChanged = BaseWorkerResponse<typeof W_AUTH_STATE_CHANGED, User | null>;
 export type WorkerResponseGetToken = BaseWorkerResponse<typeof W_GETTOKEN, ResGetTokenPayload>;
@@ -96,32 +102,81 @@ export type WorkerResponseUploadProgress = BaseWorkerResponse<typeof W_UPLOAD_PR
 
 export type WorkerResponse =
     | WorkerResponseAuthStateChanged
+    | WorkerResponseGetToken
     | WorkerResponseSignIn
     | WorkerResponseSignOut
     | WorkerResponseSendLink
     | WorkerResponseUpload
     | WorkerResponseUploadProgress;
 
+interface RequestOptions {
+    timeoutMs?: number;
+    onProgress?: (progress: number) => void;
+}
+
+let nextRequestId = 0;
+
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
-export function sendAndWait<Request = unknown, Payload = unknown>(
+export function sendAndWait<Request extends BaseWorkerRequest<string, unknown>, Payload = unknown>(
     worker: Worker | undefined,
     req: Request,
     what: string,
+    { timeoutMs = 60000, onProgress }: RequestOptions = {},
 ): Promise<Payload> {
     if (!worker) {
         return Promise.reject(new Error('Внутрішня помилка: робітник загинув смертю хоробрих.'));
     }
 
-    return new Promise<Payload>((resolve) => {
-        const listener = ({ data }: MessageEvent): void => {
-            if ('type' in data && (data as BaseWorkerRequest<string, unknown>).type === what) {
-                worker.removeEventListener('message', listener);
-                const { payload } = data as BaseWorkerResponse<unknown, Payload>;
-                resolve(payload);
+    const requestId = String(++nextRequestId);
+    return new Promise<Payload>((resolve, reject) => {
+        const controller = new AbortController();
+        const cleanup = (): void => {
+            // Callbacks run after the timer has been initialized.
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            clearTimeout(timer);
+            controller.abort();
+        };
+        const onError = (): void => {
+            cleanup();
+            reject(new Error('Помилка зв’язку з робітником. Будь ласка, оновіть сторінку.'));
+        };
+        const listener = ({ data }: MessageEvent<unknown>): void => {
+            if (!data || typeof data !== 'object' || !('requestId' in data) || data.requestId !== requestId) {
+                return;
+            }
+
+            const response = data as BaseWorkerResponse<string, Payload>;
+            if (response.type === what) {
+                cleanup();
+                resolve(response.payload);
+            } else if (response.type === W_UPLOAD_PROGRESS && onProgress) {
+                onProgress((data as WorkerResponseUploadProgress).payload.progress);
             }
         };
+        const timer = setTimeout(() => {
+            cleanup();
+            reject(new Error('Час очікування відповіді минув. Будь ласка, повторіть спробу.'));
+            if (req.type === W_UPLOAD_FILE) {
+                try {
+                    worker.postMessage({
+                        type: W_CANCEL_UPLOAD,
+                        requestId,
+                        payload: undefined,
+                    } satisfies WorkerRequestCancelUpload);
+                } catch {
+                    // The worker may already be unavailable; the request is rejected above.
+                }
+            }
+        }, timeoutMs);
 
-        worker.addEventListener('message', listener);
-        worker.postMessage(req);
+        worker.addEventListener('message', listener, { signal: controller.signal });
+        worker.addEventListener('error', onError, { signal: controller.signal });
+        worker.addEventListener('messageerror', onError, { signal: controller.signal });
+        try {
+            worker.postMessage({ ...req, requestId });
+        } catch (error) {
+            cleanup();
+            reject(error instanceof Error ? error : new Error(String(error)));
+        }
     });
 }

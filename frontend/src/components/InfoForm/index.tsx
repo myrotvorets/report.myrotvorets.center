@@ -63,6 +63,8 @@ class InfoForm extends Component<Props, State> {
         }
     }
 
+    private _uploadedFiles?: { uid: string; files: File[]; path: string };
+
     public constructor(props: Props) {
         super(props);
 
@@ -115,6 +117,7 @@ class InfoForm extends Component<Props, State> {
     };
 
     private readonly _onFileChange = ({ currentTarget }: TargetedEvent<HTMLInputElement>): void => {
+        this._uploadedFiles = undefined;
         const { files } = currentTarget;
         if (files) {
             const { length } = files;
@@ -170,6 +173,7 @@ class InfoForm extends Component<Props, State> {
                 })
                 .then((j) => {
                     if (j.success) {
+                        this._uploadedFiles = undefined;
                         this._resetLocalStorage();
                         this.setState({ state: 'success' });
                         return;
@@ -185,29 +189,23 @@ class InfoForm extends Component<Props, State> {
         }
     };
 
-    private readonly _onFileUploadProgress = (e: Event): void => {
-        if (e instanceof CustomEvent) {
-            const { detail: progress } = e as CustomEvent<number>;
-            this.setState(
-                ({ uploadedFileNumber, filesToUpload }: State): Partial<State> => ({
-                    status: `Завантаження файлу ${uploadedFileNumber} із ${filesToUpload}: ${
-                        progress >= 0 ? progress.toString() : '?'
-                    }%`,
-                }),
-            );
-        }
+    private readonly _onFileUploadProgress = (progress: number): void => {
+        this.setState(
+            ({ uploadedFileNumber, filesToUpload }: State): Partial<State> => ({
+                status: `Завантаження файлу ${uploadedFileNumber} із ${filesToUpload}: ${
+                    progress >= 0 ? progress.toString() : '?'
+                }%`,
+            }),
+        );
     };
 
-    private readonly _onOverallUploadProgress = (e: Event): void => {
-        if (e instanceof CustomEvent) {
-            const { detail } = e as CustomEvent<number>;
-            this.setState(
-                ({ filesToUpload }: State): Partial<State> => ({
-                    uploadedFileNumber: detail,
-                    status: `Завантаження файлу ${detail} із ${filesToUpload}: 0%`,
-                }),
-            );
-        }
+    private readonly _onOverallUploadProgress = (fileNumber: number): void => {
+        this.setState(
+            ({ filesToUpload }: State): Partial<State> => ({
+                uploadedFileNumber: fileNumber,
+                status: `Завантаження файлу ${fileNumber} із ${filesToUpload}: 0%`,
+            }),
+        );
     };
 
     private _verifyCriminal(): void {
@@ -229,6 +227,16 @@ class InfoForm extends Component<Props, State> {
         const f = form.elements.namedItem('files');
 
         if (f instanceof HTMLInputElement && f.files && f.files.length > 0) {
+            const files = Array.from(f.files);
+            const uploaded = this._uploadedFiles;
+            if (
+                uploaded?.uid === uid &&
+                uploaded.files.length === files.length &&
+                uploaded.files.every((file, index) => file === files[index])
+            ) {
+                return uploaded.path;
+            }
+
             try {
                 this.setState({
                     status: 'Завантаження файлів…',
@@ -236,16 +244,18 @@ class InfoForm extends Component<Props, State> {
                     uploadedFileNumber: -1,
                 });
 
-                document.addEventListener('fileuploadprogress', this._onFileUploadProgress);
-                document.addEventListener('overalluploadprogress', this._onOverallUploadProgress);
-
-                return await uploadFiles(this.props.worker!, uid, f.files);
+                const path = await uploadFiles(
+                    this.props.worker!,
+                    uid,
+                    f.files,
+                    this._onFileUploadProgress,
+                    this._onOverallUploadProgress,
+                );
+                this._uploadedFiles = { uid, files, path };
+                return path;
             } catch (e) {
                 Bugsnag.notify(e as Error);
                 throw e;
-            } finally {
-                document.removeEventListener('overalluploadprogress', this._onOverallUploadProgress);
-                document.removeEventListener('fileuploadprogress', this._onFileUploadProgress);
             }
         }
 

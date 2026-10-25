@@ -1,5 +1,6 @@
 import { Component, type ComponentChild, type RefObject, type TargetedEvent, createRef } from 'preact';
 import Alert from '../Alert';
+import { lsSet } from '../../utils/localstorage';
 import { withVisitorCheck } from '../../hocs/withLoginCheck';
 import { withWorker } from '../../hocs/withWorker';
 import { ResSendLinkPayload, W_SENDLINK, WorkerRequestSendLink, sendAndWait } from '../../utils/worker';
@@ -72,7 +73,7 @@ class LoginForm extends Component<MappedProps, State> {
             .then((r) => {
                 let state: Partial<State>;
                 if (r.success) {
-                    window.localStorage.setItem('email', email);
+                    lsSet('email', email);
                     state = { state: 'link_sent' };
                 } else {
                     state = { error: r.message || r.code, state: 'initial' };
