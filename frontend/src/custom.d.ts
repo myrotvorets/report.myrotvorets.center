@@ -86,3 +86,4 @@ declare module 'preact-router/match' {
     export function Link(props: LinkProps): VNode;
     export default class Match {}
 }
+declare module '*.scss';
