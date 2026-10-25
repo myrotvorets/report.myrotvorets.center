@@ -1,4 +1,3 @@
-/* eslint-disable promise/no-nesting */
 import { JSX, render } from 'preact';
 import { Provider } from 'unistore/preact';
 import store from './redux/store';
@@ -32,23 +31,9 @@ if (!process.env.BUILD_SSR) {
         process.env.NODE_ENV === 'production' &&
         !/^((127|192\.168|10)\.|localhost)/u.test(window.location.hostname)
     ) {
-        navigator.serviceWorker
-            .register('/sw.js')
-            .then((reg) =>
-                reg.addEventListener('updatefound', () => {
-                    const installingWorker = reg.installing;
-                    if (installingWorker) {
-                        installingWorker.addEventListener('statechange', () => {
-                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                reg.update().catch((e: unknown) => console.error(e));
-                            }
-                        });
-                    }
-                }),
-            )
-            .catch((e: unknown) => {
-                console.error(e);
-            });
+        navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch((e: unknown) => {
+            console.error(e);
+        });
     }
 
     document.getElementById('version')!.addEventListener('click', () => {
