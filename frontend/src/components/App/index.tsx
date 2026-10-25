@@ -29,6 +29,7 @@ class App extends Component<Props, State> {
 
     public constructor(props: Props) {
         super(props);
+        let error: Error | undefined;
 
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (self.Worker) {
@@ -41,26 +42,20 @@ class App extends Component<Props, State> {
                 this.props.setWorker(worker);
                 this._worker = worker;
             } catch {
-                // Do nothing, we will handle the error in componentDidMount()
+                error = new Error('Worker load failed');
             }
-        }
-    }
-
-    public componentDidMount(): void {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (!self.Worker) {
-            throw new Error('Unsupported browser');
+        } else {
+            error = new Error('Unsupported browser');
         }
 
-        if (!this._worker) {
-            throw new Error('Worker load failed');
-        }
+        this.state = { error };
     }
 
     public componentWillUnmount(): void {
         if (this._worker) {
             this._worker.removeEventListener('message', this._onWorkerMessage);
             this._worker.removeEventListener('error', this._onWorkerError);
+            this._worker.terminate();
         }
     }
 
@@ -85,7 +80,9 @@ class App extends Component<Props, State> {
                 </a>
                 <Header />
                 <NavBar />
-                <ErrorBoundary error={this.state.error}>{this._worker && <AppRouter />}</ErrorBoundary>
+                <ErrorBoundary>
+                    <AppRouter workerError={this.state.error} />
+                </ErrorBoundary>
                 <Footer />
             </Fragment>
         );

@@ -1,7 +1,14 @@
-import { ComponentType, JSX, RenderableProps } from 'preact';
-import { Suspense } from 'preact/compat';
+import { ComponentType, JSX, RenderableProps, createContext } from 'preact';
+import { useCallback, useContext, useMemo, useState } from 'preact/hooks';
 import { Route, Router, lazy as loafing, useRoute } from 'preact-iso';
-import Loader from '../Loader';
+import Alert from '../Alert';
+
+interface Props {
+    workerError?: Error;
+}
+
+const WorkerErrorContext = createContext<Error | undefined>(undefined);
+WorkerErrorContext.displayName = 'WorkerErrorContext';
 
 function lazy<T>(loader: () => Promise<{ default: T }> | { default: T }): T {
     if (process.env.BUILD_SSR) {
@@ -11,24 +18,20 @@ function lazy<T>(loader: () => Promise<{ default: T }> | { default: T }): T {
     return loafing(loader as () => Promise<{ default: T }>);
 }
 
-function suspenseWrapper<T>(Component: ComponentType<T>): (props: RenderableProps<T>) => JSX.Element {
-    if (process.env.BUILD_SSR) {
-        return (props: RenderableProps<T>): JSX.Element => (
-            <main id="content">
-                <Component {...props} />
-            </main>
-        );
-    }
-
+function pageWrapper<T>(
+    Component: ComponentType<T>,
+    requiresWorker = false,
+): (props: RenderableProps<T>) => JSX.Element {
     return (props: RenderableProps<T>): JSX.Element => {
         const { path } = useRoute();
-        return (
-            <main id="content">
-                <Suspense fallback={<Loader />}>
-                    <Component key={path} {...props} />
-                </Suspense>
-            </main>
-        );
+        const workerError = useContext(WorkerErrorContext);
+        if (requiresWorker && workerError) {
+            return (
+                <Alert message="Не вдалося підключитися до сервісу входу та надсилання повідомлень. Оновіть сторінку та спробуйте ще раз." />
+            );
+        }
+
+        return <Component key={path} {...props} />;
     };
 }
 
@@ -133,35 +136,52 @@ const ComplaintsRoute = lazy(
 
 const FourOhFourRoute = lazy(() => import(/* webpackMode: "eager" */ '../../components/FourOhFour'));
 
-const HomePage = suspenseWrapper(HomeRoute);
-const LoginPage = suspenseWrapper(LoginRoute);
-const LogoutPage = suspenseWrapper(LogoutRoute);
-const AuthPage = suspenseWrapper(AuthRoute);
-const StartPage = suspenseWrapper(StartRoute);
-const CheckCriminalPage = suspenseWrapper(CheckCriminalRoute);
-const AboutPage = suspenseWrapper(AboutRoute);
-const CrimesPage = suspenseWrapper(CrimesRoute);
-const GroundsPage = suspenseWrapper(GroundsRoute);
-const ComplaintsPage = suspenseWrapper(ComplaintsRoute);
-const AddCriminalPage = suspenseWrapper(AddCriminalRoute);
-const FourOhFourPage = suspenseWrapper(FourOhFourRoute);
+const HomePage = pageWrapper(HomeRoute);
+const LoginPage = pageWrapper(LoginRoute, true);
+const LogoutPage = pageWrapper(LogoutRoute, true);
+const AuthPage = pageWrapper(AuthRoute, true);
+const StartPage = pageWrapper(StartRoute, true);
+const CheckCriminalPage = pageWrapper(CheckCriminalRoute, true);
+const AboutPage = pageWrapper(AboutRoute);
+const CrimesPage = pageWrapper(CrimesRoute);
+const GroundsPage = pageWrapper(GroundsRoute);
+const ComplaintsPage = pageWrapper(ComplaintsRoute);
+const AddCriminalPage = pageWrapper(AddCriminalRoute, true);
+const FourOhFourPage = pageWrapper(FourOhFourRoute);
 
-export default function AppRouter(): JSX.Element {
+export default function AppRouter({ workerError }: Readonly<Props>): JSX.Element {
+    const [loading, setLoading] = useState(false);
+    const onLoadStart = useCallback((): void => setLoading(true), []);
+    const onLoadEnd = useCallback((): void => setLoading(false), []);
+
+    // Keep the Router vnode stable while its loading indicator updates.
+    const routes = useMemo(
+        () => (
+            <Router onLoadStart={onLoadStart} onLoadEnd={onLoadEnd}>
+                <Route path="/" component={HomePage} />
+                <Route path="/login" component={LoginPage} />
+                <Route path="/logout" component={LogoutPage} />
+                <Route path="/auth" component={AuthPage} />
+                <Route path="/start" component={StartPage} />
+                <Route path="/update/check" component={CheckCriminalPage} />
+                <Route path="/about/complaints" component={ComplaintsPage} />
+                <Route path="/about/crimes" component={CrimesPage} />
+                <Route path="/about/grounds" component={GroundsPage} />
+                <Route path="/about" component={AboutPage} />
+                <Route path="/criminal/add" component={AddCriminalPage} mode="add" />
+                <Route path="/criminal/update/:id" component={AddCriminalPage} mode="update" />
+                <Route default component={FourOhFourPage} />
+            </Router>
+        ),
+        [onLoadStart, onLoadEnd],
+    );
+
     return (
-        <Router>
-            <Route path="/" component={HomePage} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/logout" component={LogoutPage} />
-            <Route path="/auth" component={AuthPage} />
-            <Route path="/start" component={StartPage} />
-            <Route path="/update/check" component={CheckCriminalPage} />
-            <Route path="/about/complaints" component={ComplaintsPage} />
-            <Route path="/about/crimes" component={CrimesPage} />
-            <Route path="/about/grounds" component={GroundsPage} />
-            <Route path="/about" component={AboutPage} />
-            <Route path="/criminal/add" component={AddCriminalPage} mode="add" />
-            <Route path="/criminal/update/:id" component={AddCriminalPage} mode="update" />
-            <Route default component={FourOhFourPage} />
-        </Router>
+        <WorkerErrorContext.Provider value={workerError}>
+            <main id="content" aria-busy={loading}>
+                {loading && <output>Завантаження сторінки…</output>}
+                {routes}
+            </main>
+        </WorkerErrorContext.Provider>
     );
 }
