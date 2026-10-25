@@ -1,10 +1,10 @@
-import type admin from 'firebase-admin';
+import type { DecodedIdToken } from 'firebase-admin/auth';
 import type { Criminal } from './middleware/fetchcriminal';
 
 declare module 'express' {
     interface Request {
         criminal?: Criminal;
-        user?: admin.auth.DecodedIdToken;
+        user?: DecodedIdToken;
         storageLink?: string;
         archivePassword?: string;
     }
