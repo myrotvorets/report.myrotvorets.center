@@ -42,10 +42,7 @@ export interface ErrorResponseValidationFailed extends ErrorResponse {
 }
 
 export type InformantApiResponse =
-    | SuccessfulResponse
-    | ErrorResponse
-    | ErrorResponseAuthFailed
-    | ErrorResponseValidationFailed;
+    SuccessfulResponse | ErrorResponse | ErrorResponseAuthFailed | ErrorResponseValidationFailed;
 
 const communicationError: ErrorResponse = {
     success: false,

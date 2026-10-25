@@ -20,7 +20,7 @@ export default class Submenu extends Component<Props, State> {
         open: false,
     };
 
-    private readonly _ref: RefObject<HTMLLIElement> = createRef();
+    private readonly _ref: RefObject<HTMLLIElement | null> = createRef();
 
     public componentDidMount(): void {
         document.addEventListener('focusin', this._onFocusInHandler);
@@ -82,11 +82,9 @@ export default class Submenu extends Component<Props, State> {
         if (e.target && (e.target as HTMLElement).closest('li') === e.currentTarget) {
             e.preventDefault();
             e.stopImmediatePropagation();
-            this.setState(
-                (prevState): Partial<State> => ({
-                    open: !prevState.open,
-                }),
-            );
+            this.setState((prevState): Partial<State> => ({
+                open: !prevState.open,
+            }));
         } else if (e.target && (e.target as HTMLElement).getAttribute('href') !== '#') {
             this.setState({ open: false });
         }

@@ -10,11 +10,9 @@ export default class MenuBar extends Component<unknown, State> {
     };
 
     private readonly _onMenuOpenClicked = (): void => {
-        this.setState(
-            (prevState: Readonly<State>): Partial<State> => ({
-                open: !prevState.open,
-            }),
-        );
+        this.setState((prevState: Readonly<State>): Partial<State> => ({
+            open: !prevState.open,
+        }));
     };
 
     private readonly _onMouseLeaveHandler = (): void => {
