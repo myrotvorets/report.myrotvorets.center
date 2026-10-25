@@ -1,4 +1,5 @@
-import { Configuration as WebpackConfiguration } from 'webpack';
+import { type Compilation, Configuration as WebpackConfiguration } from 'webpack';
+import { createHash } from 'node:crypto';
 import { merge } from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
 import { PurgeCSSPlugin } from 'purgecss-webpack-plugin';
@@ -58,6 +59,22 @@ export default function (): WebpackConfiguration {
                 include: ['index.html', /\.m?js$/u, /\.svg$/u, /\.css$/u, /\.png$/u],
                 excludeChunks: ['runtime'],
                 dontCacheBustURLsMatching: /\.[0-9a-f]{5}\./u,
+                manifestTransforms: [
+                    (entries, compilation): { manifest: typeof entries; warnings: string[] } => ({
+                        manifest: entries.map((entry): typeof entry & { integrity: string } => {
+                            const asset = (compilation as Compilation).getAsset(entry.url.replace(/^\//u, ''));
+                            if (!asset) {
+                                throw new Error(`Missing precache asset: ${entry.url}`);
+                            }
+
+                            return {
+                                ...entry,
+                                integrity: `sha384-${createHash('sha384').update(asset.source.source()).digest('base64')}`,
+                            };
+                        }),
+                        warnings: [],
+                    }),
+                ],
             }),
             new MiniCssExtractPlugin({
                 filename: '[name].[contenthash:5].css',

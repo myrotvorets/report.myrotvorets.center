@@ -1,14 +1,12 @@
 /// <reference lib="webworker"/>
 
-import { cacheNames, clientsClaim, skipWaiting } from 'workbox-core';
-import { registerRoute, setCatchHandler } from 'workbox-routing';
-import { cleanupOutdatedCaches, matchPrecache, precacheAndRoute } from 'workbox-precaching';
-import { NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
+import { NavigationRoute, registerRoute, setCatchHandler } from 'workbox-routing';
+import { cleanupOutdatedCaches, createHandlerBoundToURL, matchPrecache, precacheAndRoute } from 'workbox-precaching';
+import { StaleWhileRevalidate } from 'workbox-strategies';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { ExpirationPlugin } from 'workbox-expiration';
 
-skipWaiting();
-clientsClaim();
+// Let updates wait until existing tabs close, preserving their release and form state.
 cleanupOutdatedCaches();
 
 declare let self: ServiceWorkerGlobalScope;
@@ -16,15 +14,8 @@ const manifest = self.__WB_MANIFEST;
 precacheAndRoute(manifest, { ignoreURLParametersMatching: [/.*/u] });
 
 registerRoute(
-    ({ request }) => request.mode === 'navigate',
-    new NetworkFirst({
-        cacheName: cacheNames.precache,
-        networkTimeoutSeconds: 5,
-        plugins: [
-            new CacheableResponsePlugin({
-                statuses: [200],
-            }),
-        ],
+    new NavigationRoute(createHandlerBoundToURL('/index.html'), {
+        denylist: [/^\/__\//u],
     }),
 );
 

@@ -22,7 +22,7 @@
     ],
     "headers": [
       {
-        "source": "index.html",
+        "source": "**",
         "headers": [
           {
             "key": "Cache-Control",
@@ -31,20 +31,11 @@
         ]
       },
       {
-        "source": "sw.js",
+        "regex": "/.*\\.[0-9a-f]{5}\\.(jpg|jpeg|png|webp|svg|css|js|mjs|json)(\\.map)?$",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "max-age=0, must-revalidate"
-          }
-        ]
-      },
-      {
-        "source": "**/*.@(jpg|jpeg|png|webp|css|js|mjs|map)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "max-age=31536000"
+            "value": "public, max-age=31536000, immutable"
           }
         ]
       }
