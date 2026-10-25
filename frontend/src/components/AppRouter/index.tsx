@@ -1,5 +1,5 @@
 import { ComponentType, JSX, RenderableProps, createContext } from 'preact';
-import { useContext, useMemo, useState } from 'preact/hooks';
+import { useCallback, useContext, useMemo, useState } from 'preact/hooks';
 import { Route, Router, lazy as loafing, useRoute } from 'preact-iso';
 import Alert from '../Alert';
 
@@ -151,11 +151,13 @@ const FourOhFourPage = pageWrapper(FourOhFourRoute);
 
 export default function AppRouter({ workerError }: Readonly<Props>): JSX.Element {
     const [loading, setLoading] = useState(false);
+    const onLoadStart = useCallback((): void => setLoading(true), []);
+    const onLoadEnd = useCallback((): void => setLoading(false), []);
 
     // Keep the Router vnode stable while its loading indicator updates.
     const routes = useMemo(
         () => (
-            <Router onLoadStart={() => setLoading(true)} onLoadEnd={() => setLoading(false)}>
+            <Router onLoadStart={onLoadStart} onLoadEnd={onLoadEnd}>
                 <Route path="/" component={HomePage} />
                 <Route path="/login" component={LoginPage} />
                 <Route path="/logout" component={LogoutPage} />
@@ -171,13 +173,13 @@ export default function AppRouter({ workerError }: Readonly<Props>): JSX.Element
                 <Route default component={FourOhFourPage} />
             </Router>
         ),
-        [],
+        [onLoadStart, onLoadEnd],
     );
 
     return (
         <WorkerErrorContext.Provider value={workerError}>
             <main id="content" aria-busy={loading}>
-                {loading && <p role="status">Завантаження сторінки…</p>}
+                {loading && <output>Завантаження сторінки…</output>}
                 {routes}
             </main>
         </WorkerErrorContext.Provider>
