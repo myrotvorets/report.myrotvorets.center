@@ -1,5 +1,5 @@
 import { DefinePlugin, ProvidePlugin, Configuration as WebpackConfiguration } from 'webpack';
-import type { Configuration } from 'webpack-dev-server';
+import type { Configuration } from 'webpack-dev-server' with { 'resolution-mode': 'import' };
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { HwpAttributesPlugin } from 'hwp-attributes-plugin';
